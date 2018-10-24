@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamHaddock", "TeamHaddock\TeamHaddock\TeamHaddock.csproj", "{D3D53AF7-285A-49FE-99B7-68D3CAF942CA}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "TeamHaddockContent", "TeamHaddock\TeamHaddockContent\TeamHaddockContent.contentproj", "{817DB343-31D2-4701-9A89-06CCD417F0C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TeamHaddockContent", "TeamHaddock\TeamHaddockContent\TeamHaddockContent.contentproj", "{817DB343-31D2-4701-9A89-06CCD417F0C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

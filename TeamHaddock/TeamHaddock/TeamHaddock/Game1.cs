@@ -19,6 +19,20 @@ namespace TeamHaddock
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        /// <summary>
+        ///     List of states for the game
+        /// </summary>
+        public enum GameStates
+        {
+            MainMenu,
+            InGame,
+            HighScore,
+            // Options, // Might add later
+            Credits,
+            Exit
+        }
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -70,7 +84,7 @@ namespace TeamHaddock
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
+            UtilityClass.Update();
 
             base.Update(gameTime);
         }

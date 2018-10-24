@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Missile_Master_2
+namespace TeamHaddock
 {
     /// <summary>
     ///     An object that can be used to depict a sprite in world space which can detect pixel level collisions with other

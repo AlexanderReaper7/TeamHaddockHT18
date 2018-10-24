@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Missile_Master_2
+namespace TeamHaddock
 {
     /// <summary>
     ///     Class responsible for Player movement, drawing etc.
