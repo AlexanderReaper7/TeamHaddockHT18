@@ -46,6 +46,67 @@ namespace TeamHaddock
             }
         }
 
+        public static Jump()
+        {
+            if (player_sprint_speed <= 10) player_sprint_speed += gameTime.ElapsedGameTime.Milliseconds / 100;
+
+
+
+            // Gör så att om min karaktär går till vänster sidan utav skärmen, att gå vänster koden slutar att fungera
+            if (player_character_position.X < min_x_player)
+                wall_collision_left = true;
+            else
+                wall_collision_left = false;
+
+            // Gör så att min karaktär kan gå vänster
+            if (keyboard.IsKeyDown(Keys.Left) && wall_collision_left == false)
+            {
+                player_character_position.X -= 5 * player_sprint_speed / 500;
+                key_left = true;
+                if (player_sprint_speed < 500) player_sprint_speed += gameTime.ElapsedGameTime.Milliseconds;
+            }
+
+            // Detta gör så att jag kan resetta player_sprint_speed 
+            if (keyboard.IsKeyUp(Keys.Left) && key_right == false) player_sprint_speed = 1;
+            // Gör så att min karaktär kan gå höger
+            if (keyboard.IsKeyDown(Keys.Right))
+            {
+                player_character_position.X += 5 * player_sprint_speed / 500;
+                key_right = true;
+                if (player_sprint_speed < 500) player_sprint_speed += gameTime.ElapsedGameTime.Milliseconds;
+            }
+
+            // Detta gör så att jag kan resetta player_sprint_speed
+            if (keyboard.IsKeyUp(Keys.Right) && key_left == false) player_sprint_speed = 1;
+
+
+            // Detta är gravitationen för mitt spel
+            if (player_is_falling && player_jump_and_fall_speed <= 0)
+                player_character_position.Y -= 10 * player_jump_and_fall_speed / 285;
+            if (player_jump_and_fall_speed <= 0)
+            {
+                player_is_falling = true;
+                player_is_jumping = false;
+            }
+
+            // Gör så att min karaktär kan hoppa
+            if (keyboard.IsKeyDown(Keys.Space)) player_is_jumping = true;
+            // Om du är på plattformen och trycker på space så hoppar du i jump_duration sekunder 
+            if (player_is_jumping && player_jump_and_fall_speed > 0)
+                player_character_position.Y -= 10 * player_jump_and_fall_speed / 285;
+            if (player_character_object.Intersects(ground_object))
+            {
+                player_jump_and_fall_speed = 750f;
+                player_is_falling = false;
+            }
+
+            if (player_is_jumping || player_is_falling)
+                player_jump_and_fall_speed -= gameTime.ElapsedGameTime.Milliseconds * 1.5f;
+            // Detta används för att kameran för spelet ska flytta på sig om spelaren är i mitten av skärmen
+        }
+
+
+
         /// <summary>
         ///     keyboard controls for InGame
         /// </summary>
