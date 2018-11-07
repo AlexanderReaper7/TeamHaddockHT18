@@ -11,12 +11,12 @@ namespace TeamHaddock
         /// <summary>
         ///     Number of menu options
         /// </summary>
-        private readonly Vector2 _selectionMax;
+        private readonly Vector2 selectionMax;
 
         /// <summary>
         ///     Selected menu option
         /// </summary>
-        private Vector2 _selected;
+        private Vector2 selected;
 
         /// <summary>
         ///     Creates a new instance of MenuControls
@@ -24,14 +24,14 @@ namespace TeamHaddock
         /// <param name="selectionMax">Number of menu options</param>
         public MenuControls(Vector2 selectionMax)
         {
-            _selectionMax = selectionMax;
+            this.selectionMax = selectionMax;
         }
 
 
         /// <summary>
         ///     returns selected
         /// </summary>
-        public Vector2 Selected => _selected;
+        public Vector2 Selected => selected;
 
         public bool IsEnterDown { get; private set; }
 
@@ -45,40 +45,49 @@ namespace TeamHaddock
         {
             // When W or UP arrow keys are pressed
             if (UtilityClass.SingleActivationKey(Keys.W) || UtilityClass.SingleActivationKey(Keys.Up))
-                if (_selected.Y > 0)
-                    _selected.Y--;
+            {
+                if (selected.Y > 0)
+                {
+                    selected.Y--;
+                }
+            }
 
             // When A or Left arrow keys are pressed
             if (UtilityClass.SingleActivationKey(Keys.A) || UtilityClass.SingleActivationKey(Keys.Left))
-                if (_selected.X > 0)
-                    _selected.X--;
+            {
+                if (selected.X > 0)
+                {
+                    selected.X--;
+                }
+            }
 
             // When S or Down arrow keys are pressed
             if (UtilityClass.SingleActivationKey(Keys.S) || UtilityClass.SingleActivationKey(Keys.Down))
-                if (_selected.Y < _selectionMax.Y)
-                    _selected.Y++;
+            {
+                if (selected.Y < selectionMax.Y)
+                {
+                    selected.Y++;
+                }
+            }
 
             // When D or Right arrow keys are pressed
             if (UtilityClass.SingleActivationKey(Keys.D) || UtilityClass.SingleActivationKey(Keys.Right))
             {
                 // And selected.X is LESS THAN selectionMax.X, preventing it from exceeding maximum X selection range, 
-                if (_selected.X < _selectionMax.X) _selected.X++;
+                if (selected.X < selectionMax.X)
+                {
+                    selected.X++;
+                }
 
-                // if Enter is pressed
-                if (UtilityClass.SingleActivationKey(Keys.Enter))
-                    IsEnterDown = true;
-                else
-                    IsEnterDown = false;
-
-                // If Escape pressed
-                if (UtilityClass.SingleActivationKey(Keys.Escape))
-                    IsEscapeDown = true;
-                else
-                    IsEscapeDown = false;
             }
+                // Update Enterkey
+                IsEnterDown = UtilityClass.SingleActivationKey(Keys.Enter);
+
+                // Update
+                IsEscapeDown = UtilityClass.SingleActivationKey(Keys.Escape);
 
             // Return updated selected
-            return _selected;
+            return selected;
         }
     }
 }
