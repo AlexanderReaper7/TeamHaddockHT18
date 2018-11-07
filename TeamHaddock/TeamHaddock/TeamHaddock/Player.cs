@@ -11,36 +11,9 @@ namespace TeamHaddock
     /// </summary>
     internal class Player
     {
-        private KeyboardState _keyboard;
-        private bool _isMainThrusterActive;
-        private Particle _mainThrusterParticle;
-        private bool _colliding;
-        private Vector2 _velocity; // TODO : Make air-resistance and more fluid movement
-        public float Acceleration;
-        public Vector2 Direction;
+        private KeyboardState keyboard;
+        private Vector2 velocity; // TODO : Make air-resistance and more fluid movement
         public CollidableObject CollidableObject;
-        ///
-        private readonly float rotationRate = MathHelper.Pi / 2f; // TODO : Add upgrade levels to rotationRate
-
-        /// <summary>
-        /// Amount of fuel to start level with
-        /// </summary>
-        public const float MaxFuel = 200;
-
-        /// <summary>
-        /// Fuel Remaining
-        /// </summary>
-        public float Fuel;
-
-        /// <summary>
-        /// Texture for explosion
-        /// </summary>
-        private Texture2D _explosionTexture2D;
-
-        /// <summary>
-        /// Texture for V-2 Rocket
-        /// </summary>
-        private Texture2D _v2RocketTexture2D;
 
         /// <summary>
         /// Is the player dead?
@@ -53,46 +26,30 @@ namespace TeamHaddock
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
-            // Load textures
-            _v2RocketTexture2D = content.Load<Texture2D>(@"images/V-2");
-            _explosionTexture2D = content.Load<Texture2D>(@"images/Explosion1");
             // Create a new CollidableObject with starting position 100, 100
-            CollidableObject = new CollidableObject(_v2RocketTexture2D, new Vector2(Game1.ScreenBounds.X / 2, Game1.ScreenBounds.Y / 2)); // TODO: Move player
+            CollidableObject = new CollidableObject(content.Load<Texture2D>(@"Textures/Player"), new Vector2(Game1.ScreenBounds.X / 2, Game1.ScreenBounds.Y / 2)); // TODO: Move player
             // Create a new particle for the main thruster on the player
-            _mainThrusterParticle = new Particle(content.Load<Texture2D>(@"images/RocketFlameAnimationSpriteSheetCut"),
-                new Rectangle((int) CollidableObject.Position.X - (int) CollidableObject.Origin.X,
-                    (int) CollidableObject.Position.Y, 30, CollidableObject.Texture.Height),
-                new Rectangle(0, 0, 26, 13), new Vector2(CollidableObject.Texture.Height, 0), CollidableObject.Rotation,
-                150);
-            // Set Fuel
-            Fuel = MaxFuel;
-            // Logging statement
-            Console.WriteLine("Player Loaded");
         }
 
         public void Update(GameTime gameTime)
         {
             // Get keyboard state
-            _keyboard = Keyboard.GetState();
+            keyboard = Keyboard.GetState();
 
                 // And R key is pressed down
-                if (_keyboard.IsKeyDown(Keys.R))
+                if (keyboard.IsKeyDown(Keys.R))
                 {
                     // Then Reset
                     Reset();
                 }
 
-            // If player is dead
+            // If player is not dead
             if (!IsPlayerDead)
             {
                 // Update Player Controls
                 Controls(gameTime);                
-                // Get new direction derived from Player Rotation TODO: Move direction to CollidableObject
-                Direction = new Vector2((float)Math.Cos(CollidableObject.Rotation), (float)Math.Sin(CollidableObject.Rotation));
-                // Get new velocity TODO: re-document and refine and add Mass
-                _velocity += Direction * Acceleration * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                // Gravity TODO: Make gravity more fluid
-                _velocity.Y += 0.08f;
+                // Gravity
+                velocity.Y += 0.08f;
             }
 
                 // Check for collisions to enemies
