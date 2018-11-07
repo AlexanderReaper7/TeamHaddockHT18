@@ -78,6 +78,7 @@
     <Compile Include="InGame.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="MenuControls.cs" />
+    <Compile Include="SpriteAnimator.cs" />
     <Compile Include="UtilityClass.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
