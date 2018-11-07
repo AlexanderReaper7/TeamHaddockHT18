@@ -15,7 +15,7 @@ namespace TeamHaddock
         /// <summary>
         ///     String array of menu option names
         /// </summary>
-        private static readonly string[] MenuOptionsStr = {"Campaign", "Level Select", "Exit"};
+        private static readonly string[] MenuOptionsStr = {"Play", "", "Exit"};
 
         /// <summary>
         ///     Vector2 array of menu options positions

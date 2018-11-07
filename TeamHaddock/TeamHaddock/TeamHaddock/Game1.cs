@@ -32,7 +32,7 @@ namespace TeamHaddock
             Exit
         }
 
-        public Point ScreenBounds = new Point(1280, 720);
+        public static Point ScreenBounds = new Point(1280, 720);
 
 
         public Game1()
@@ -66,7 +66,7 @@ namespace TeamHaddock
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            MainMenu.LoadContent(Content);
         }
 
         /// <summary>
