@@ -11,12 +11,12 @@ namespace TeamHaddock
         /// <summary>
         /// KeyboardState during this update
         /// </summary>
-        private static KeyboardState _currentKeyboardState;
+        private static KeyboardState currentKeyboardState;
 
         /// <summary>
         /// KeyboardState during last update
         /// </summary>
-        private static KeyboardState _previousKeyboardState;
+        private static KeyboardState previousKeyboardState;
 
         /// <summary>
         /// Update UtilityClass logic
@@ -24,9 +24,9 @@ namespace TeamHaddock
         public static void Update()
         {
             // Set previous KeyboardState
-            _previousKeyboardState = _currentKeyboardState;
+            previousKeyboardState = currentKeyboardState;
             // Get current KeyboardState 
-            _currentKeyboardState = Keyboard.GetState();
+            currentKeyboardState = Keyboard.GetState();
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace TeamHaddock
         public static bool SingleActivationKey(Keys key)
         {
             // If key is down but was up before
-            return _currentKeyboardState.IsKeyDown(key) && _previousKeyboardState.IsKeyUp(key);
+            return currentKeyboardState.IsKeyDown(key) && previousKeyboardState.IsKeyUp(key);
         }
     }
 }

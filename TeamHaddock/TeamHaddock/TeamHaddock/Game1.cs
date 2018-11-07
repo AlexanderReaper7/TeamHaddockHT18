@@ -32,6 +32,8 @@ namespace TeamHaddock
             Exit
         }
 
+        public Point ScreenBounds = new Point(1280, 720);
+
 
         public Game1()
         {
@@ -47,7 +49,10 @@ namespace TeamHaddock
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            // Set window size to ScreenBounds
+            graphics.PreferredBackBufferWidth = ScreenBounds.X;
+            graphics.PreferredBackBufferHeight = ScreenBounds.Y;
+            graphics.ApplyChanges();
 
             base.Initialize();
         }
