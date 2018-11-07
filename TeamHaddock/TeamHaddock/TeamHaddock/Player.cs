@@ -46,7 +46,7 @@ namespace TeamHaddock
             }
         }
 
-        public static Jump()
+        public static jump()
         {
             if (player_sprint_speed <= 10) player_sprint_speed += gameTime.ElapsedGameTime.Milliseconds / 100;
 
