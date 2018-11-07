@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
+// Class Created by Alexander 11-07
 namespace TeamHaddock
 {
     /// <summary>
@@ -13,10 +14,6 @@ namespace TeamHaddock
         /// </summary>
         private readonly Vector2 selectionMax;
 
-        /// <summary>
-        ///     Selected menu option
-        /// </summary>
-        private Vector2 selected;
 
         /// <summary>
         ///     Creates a new instance of MenuControls
@@ -27,27 +24,23 @@ namespace TeamHaddock
             this.selectionMax = selectionMax;
         }
 
-
-        /// <summary>
-        ///     returns selected
-        /// </summary>
-        public Vector2 Selected => selected;
-
         public bool IsEnterDown { get; private set; }
 
-        public bool IsEscapeDown { get; set; }
+        public bool IsEscapeDown { get; private set; }
 
         /// <summary>
         ///     Updates selected menu option in menus
         /// </summary>
-        /// <returns>New Vector2 position</returns>
-        public Vector2 Update()
+        /// <returns>vector2 passed by reference to change</returns>
+        public void UpdateSelected(ref Vector2 selected)
         {
             // When W or UP arrow keys are pressed
             if (UtilityClass.SingleActivationKey(Keys.W) || UtilityClass.SingleActivationKey(Keys.Up))
             {
+                // And selected.Y is GREATER THAN 0, preventing it from exiting the selection range, 
                 if (selected.Y > 0)
                 {
+                    // Then move selected
                     selected.Y--;
                 }
             }
@@ -55,8 +48,10 @@ namespace TeamHaddock
             // When A or Left arrow keys are pressed
             if (UtilityClass.SingleActivationKey(Keys.A) || UtilityClass.SingleActivationKey(Keys.Left))
             {
+                // And selected.X is GREATER THAN 0, preventing it from exiting the selection range, 
                 if (selected.X > 0)
-                {
+                {                    
+                    // Then move selected
                     selected.X--;
                 }
             }
@@ -64,30 +59,29 @@ namespace TeamHaddock
             // When S or Down arrow keys are pressed
             if (UtilityClass.SingleActivationKey(Keys.S) || UtilityClass.SingleActivationKey(Keys.Down))
             {
+                // And selected.Y is LESS THAN selectionMax.Y, preventing it from exceeding maximum Y selection range, 
                 if (selected.Y < selectionMax.Y)
                 {
+                    // Then move selected
                     selected.Y++;
                 }
             }
-
             // When D or Right arrow keys are pressed
             if (UtilityClass.SingleActivationKey(Keys.D) || UtilityClass.SingleActivationKey(Keys.Right))
             {
                 // And selected.X is LESS THAN selectionMax.X, preventing it from exceeding maximum X selection range, 
                 if (selected.X < selectionMax.X)
                 {
+                    // Then move selected
                     selected.X++;
                 }
 
             }
-                // Update Enterkey
+                // Update Enter key
                 IsEnterDown = UtilityClass.SingleActivationKey(Keys.Enter);
 
-                // Update
+                // Update escape key
                 IsEscapeDown = UtilityClass.SingleActivationKey(Keys.Escape);
-
-            // Return updated selected
-            return selected;
         }
     }
 }

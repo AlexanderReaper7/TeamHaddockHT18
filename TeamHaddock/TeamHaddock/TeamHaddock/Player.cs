@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+// Class created by Alexander 11-07
 namespace TeamHaddock
 {
     /// <summary>
@@ -26,7 +26,7 @@ namespace TeamHaddock
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
-            // Create a new CollidableObject with starting position 100, 100
+            // Create a new CollidableObject
             CollidableObject = new CollidableObject(content.Load<Texture2D>(@"Textures/Player"), new Vector2(Game1.ScreenBounds.X / 2, Game1.ScreenBounds.Y / 2));
             // Create a new particle for the main thruster on the player
         }
