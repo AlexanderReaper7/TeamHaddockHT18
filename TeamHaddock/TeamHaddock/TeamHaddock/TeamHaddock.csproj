@@ -73,6 +73,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CollidableObject.cs" />
+    <Compile Include="Credits.cs" />
+    <Compile Include="HighScore.cs" />
+    <Compile Include="InGame.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="MenuControls.cs" />
     <Compile Include="SpriteAnimator.cs" />

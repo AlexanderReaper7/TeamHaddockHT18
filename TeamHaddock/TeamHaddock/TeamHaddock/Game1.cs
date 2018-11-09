@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+// Class created by Alexander 11-07
 namespace TeamHaddock
 {
     /// <summary>
@@ -20,7 +21,7 @@ namespace TeamHaddock
         SpriteBatch spriteBatch;
 
         /// <summary>
-        ///     List of states for the game
+        /// List of menu states
         /// </summary>
         public enum GameStates
         {
@@ -31,9 +32,19 @@ namespace TeamHaddock
             Credits,
             Exit
         }
+        /// <summary>
+        /// Current GameState
+        /// </summary>
+        public static GameStates GameState = GameStates.MainMenu;
 
-        public static Point ScreenBounds = new Point(1280, 720);
+        /// <summary>
+        /// Size of window
+        /// </summary>
+        public static readonly Point ScreenBounds = new Point(1280, 720);
 
+        // TODO : Add these fonts
+        public static SpriteFont NormalMenuFont;
+        public static SpriteFont BoldMenuFont;
 
         public Game1()
         {
@@ -66,7 +77,11 @@ namespace TeamHaddock
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            NormalMenuFont = Content.Load<SpriteFont>(@"Fonts/NormalMenuFont");
+            BoldMenuFont = Content.Load<SpriteFont>(@"Fonts/BoldMenuFont");
+
             MainMenu.LoadContent(Content);
+            InGame.LoadContent(Content);
         }
 
         /// <summary>
@@ -75,7 +90,6 @@ namespace TeamHaddock
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
         /// <summary>
@@ -91,6 +105,25 @@ namespace TeamHaddock
 
             UtilityClass.Update();
 
+            switch (GameState)
+            {
+                case GameStates.MainMenu:
+                    MainMenu.Update();
+                    break;
+                case GameStates.InGame:
+                    InGame.Update(gameTime);
+                    break;
+                case GameStates.HighScore:
+                    HighScore.Update();
+                    break;
+                case GameStates.Credits:
+                    break;
+                case GameStates.Exit:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
             base.Update(gameTime);
         }
 
@@ -102,7 +135,21 @@ namespace TeamHaddock
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            switch (GameState)
+            {
+                case GameStates.MainMenu:
+                    break;
+                case GameStates.InGame:
+                    break;
+                case GameStates.HighScore:
+                    break;
+                case GameStates.Credits:
+                    break;
+                case GameStates.Exit:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
 
             base.Draw(gameTime);
         }

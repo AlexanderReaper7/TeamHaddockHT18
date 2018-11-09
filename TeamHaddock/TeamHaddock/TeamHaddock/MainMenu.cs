@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
+// Class created by Alexander 11-07
 namespace TeamHaddock
 {
     /// <summary>
@@ -15,17 +16,12 @@ namespace TeamHaddock
         /// <summary>
         ///     String array of menu option names
         /// </summary>
-        private static readonly string[] MenuOptionsStr = {"Play", "", "Exit"};
-
-        /// <summary>
-        ///     Vector2 array of menu options positions
-        /// </summary>
-        private static readonly Vector2[] MenuOptionsPos = {new Vector2(Game1.ScreenBounds.X / 8, 20), new Vector2(Game1.ScreenBounds.X / 8, 60), new Vector2(Game1.ScreenBounds.X / 8, 100)};
+        private static readonly string[] MenuOptionsStr = {"Play", "Tutorial", "High Score", "Credits", "Exit"};
 
         /// <summary>
         ///     selected menu option
         /// </summary>
-        private static Vector2 _selected;
+        private static Vector2 selected;
 
         /// <summary>
         ///     MainMenu background image
@@ -43,6 +39,7 @@ namespace TeamHaddock
         /// <param name="content"></param>
         public static void LoadContent(ContentManager content)
         {
+
             Background = content.Load<Texture2D>(@"images/MainMenuBG");
         }
 
@@ -51,7 +48,7 @@ namespace TeamHaddock
         /// </summary>
         public static void Update()
         {
-            _selected = MenuControl.Update(); // Updates selected menu option
+            MenuControl.UpdateSelected(ref selected); // Updates selected menu option
 
             // If enter is not pressed
             if (!MenuControl.IsEnterDown)
@@ -59,21 +56,31 @@ namespace TeamHaddock
                 // Then return
                 return;
             }
-            // Else (enter is pressed) switch gamestate to
-            switch ((int) _selected.Y)
+            // Else (enter is pressed) Then change gamestate and playstate
+            switch ((int) selected.Y)
             {
-                // Campaign
+                // Play
                 case 0:
-                    Game1.GameState = Game1.GameStates.Campaign;
+                    Game1.GameState = Game1.GameStates.InGame;
+                    InGame.PlayState = InGame.PlayStates.Normal;
                     break;
 
-                // Level select
+                // Tutorial
                 case 1:
-                    Game1.GameState = Game1.GameStates.LevelSelect;
+                    Game1.GameState = Game1.GameStates.InGame;
+                    InGame.PlayState = InGame.PlayStates.Tutorial;
                     break;
 
-                // Exit
+                // HighScore 
                 case 2:
+                    Game1.GameState = Game1.GameStates.HighScore;
+                    break;
+                // Credits
+                case 3:
+                    Game1.GameState = Game1.GameStates.Credits;
+                    break;
+                // Exit
+                case 4:
                     Game1.GameState = Game1.GameStates.Exit;
                     break;
                 
@@ -94,8 +101,8 @@ namespace TeamHaddock
             // Iterate through every entry in menuOptionsStr array
             for (int i = 0; i < MenuOptionsStr.Length; i++)
             {
-                // If selected menu option is int i
-                spriteBatch.DrawString((int)_selected.Y == i ? Game1.PixelArt32Bold : Game1.PixelArt32Normal, MenuOptionsStr[i], MenuOptionsPos[i], Color.Black);
+                // If selected menu option is int i have bold font else normal font
+                spriteBatch.DrawString((int)selected.Y == i ? Game1.BoldMenuFont : Game1.NormalMenuFont, MenuOptionsStr[i], new Vector2(10, 40 * i), Color.Black);
             }
         }
     }
