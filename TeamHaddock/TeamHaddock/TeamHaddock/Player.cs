@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+// Class created by Alexander 11-07
 namespace TeamHaddock
 {
     /// <summary>
@@ -26,7 +26,7 @@ namespace TeamHaddock
         /// <param name="content"></param>
         public void LoadContent(ContentManager content)
         {
-            // Create a new CollidableObject with starting position 100, 100
+            // Create a new CollidableObject
             CollidableObject = new CollidableObject(content.Load<Texture2D>(@"Textures/Player"), new Vector2(Game1.ScreenBounds.X / 2, Game1.ScreenBounds.Y / 2));
             // Create a new particle for the main thruster on the player
         }
@@ -54,13 +54,9 @@ namespace TeamHaddock
         //using Microsoft.Xna.Framework;
         //using Microsoft.Xna.Framework.Input;
 
-        //namespace Lbs.groupproject._2018_2019
-        //    {
-        //        /// <summary>
-        //        /// This class is used to check the player 1's keyboard input 
-        //        /// </summary>
-        //        static class PlayerControls
-        //        {
+        public static jump()
+        {
+            if (player_sprint_speed <= 10) player_sprint_speed += gameTime.ElapsedGameTime.Milliseconds / 100;
 
         //            /// <summary>
         //            /// A bool that is used to check if any player is holding down the "F" button. Used to fullscreen the window when the button is pressed, and window the fullscreen when pressed again 
