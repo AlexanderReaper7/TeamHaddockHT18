@@ -54,13 +54,9 @@ namespace TeamHaddock
         //using Microsoft.Xna.Framework;
         //using Microsoft.Xna.Framework.Input;
 
-        //namespace Lbs.groupproject._2018_2019
-        //    {
-        //        /// <summary>
-        //        /// This class is used to check the player 1's keyboard input 
-        //        /// </summary>
-        //        static class PlayerControls
-        //        {
+        public static jump()
+        {
+            if (player_sprint_speed <= 10) player_sprint_speed += gameTime.ElapsedGameTime.Milliseconds / 100;
 
         //            /// <summary>
         //            /// A bool that is used to check if any player is holding down the "F" button. Used to fullscreen the window when the button is pressed, and window the fullscreen when pressed again 
