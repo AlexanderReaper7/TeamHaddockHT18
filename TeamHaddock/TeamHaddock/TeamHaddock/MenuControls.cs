@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Input;
 namespace TeamHaddock
 {
     /// <summary>
-    ///     An object used for easy control in menus using the keyboard
+    ///     An object used for easy control in menus using the keyboard as input
     /// </summary>
     internal class MenuControls
     {

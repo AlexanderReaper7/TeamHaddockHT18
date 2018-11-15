@@ -74,23 +74,6 @@ namespace TeamHaddock
         private Rectangle BoundingRectangle => CalculateBoundingRectangle(Rect, Transform);
 
         /// <summary>
-        ///     Rotates the object by the value passed in moveBy, which can be both positive or negative to rotate in different
-        ///     directions.
-        /// </summary>
-        /// <param name="rotateBy">The floating point factor to move the object by</param>
-        public void Rotate(float rotateBy)
-        {
-            if (rotateBy < 0)
-            {
-                Rotation -= rotateBy;
-            }
-            else
-            {
-                Rotation += rotateBy;
-            }
-        }
-
-        /// <summary>
         ///     Detects a pixel level collision between two CollidableObjects.
         /// </summary>
         /// <param name="collidable">The CollidableObject to check a collision against</param>
