@@ -21,21 +21,27 @@ namespace TeamHaddock
             Normal
         }
 
-        public static PlayStates PlayState;
+        public static PlayStates PlayState = PlayStates.Normal;
+
+        public static Player player;
 
         public static void LoadContent(ContentManager content)
         {
-
+            player = new Player();
+            player.LoadContent(content);
         }
 
         public static void Update(GameTime gameTime)
         {
-
+            player.Update(gameTime);
         }
 
         public static void Draw(SpriteBatch spriteBatch)
         {
-
+            // Draw background
+            // TODO: Add background
+            // Draw player
+            player.Draw(spriteBatch);
         }
     }
 }

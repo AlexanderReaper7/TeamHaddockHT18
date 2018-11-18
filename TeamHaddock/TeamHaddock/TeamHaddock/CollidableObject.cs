@@ -16,22 +16,25 @@ namespace TeamHaddock
         public Vector2 Position;
 
         /// <summary>
-        ///     Construct a new CollidableObject with a default texture and position in world space.
+        ///     Construct a new CollidableObject with a texture and position in world space.
+        ///     Uses a default source rectangle and rotation.
         /// </summary>
         /// <param name="texture">The texture associated with the object</param>
         /// <param name="position">The position of the object in world space</param>
-        public CollidableObject(Texture2D texture, Vector2 position) : this(texture, position, 0.0f)
+        public CollidableObject(Texture2D texture, Vector2 position) : this(texture, position, new Rectangle(0,0,texture.Width, texture.Height),  0.0f)
         {
         }
 
         /// <summary>
-        ///     Constructs a new CollidableObject with a default texture, position and rotation in world space.
+        ///     Constructs a new CollidableObject with a default texture, position, sourceRectangle and rotation in world space.
         /// </summary>
         /// <param name="texture">The texture associated with the object</param>
         /// <param name="position">The position of the object in world space</param>
+        /// <param name="sourceRectangle">The source rectangle of the object</param>
         /// <param name="rotation">The rotation factor</param>
-        public CollidableObject(Texture2D texture, Vector2 position, float rotation)
+        public CollidableObject(Texture2D texture, Vector2 position, Rectangle sourceRectangle, float rotation)
         {
+            SourceRectangle = sourceRectangle;
             LoadTexture(texture);
             Position = position;
             Rotation = rotation;
@@ -41,12 +44,12 @@ namespace TeamHaddock
         /// <summary>
         ///     The currently loaded texture
         /// </summary>
-        public Texture2D Texture { get; set; }
+        public Texture2D Texture { get; private set; }
 
         /// <summary>
-        ///     The pixel data of the loaded texture
+        ///     The pixel data of the loaded texture in a 2D array
         /// </summary>
-        private Color[] TextureData { get; set; }
+        private Color[,] TextureData { get; set; }
 
         /// <summary>
         ///     The rotation factor
@@ -54,14 +57,19 @@ namespace TeamHaddock
         public float Rotation { get; set; }
 
         /// <summary>
-        ///     The origin of the object, by default this is the center point of the texture.
+        ///     rectangle of the frame in the sprite sheet 
         /// </summary>
-        public Vector2 Origin { get; set; }
+        public Rectangle SourceRectangle { get; private set; }
+
+        /// <summary>
+        ///     The origin of the object, by default this is the center point of the sourceRectangle.
+        /// </summary>
+        public Vector2 Origin { get; private set; }
 
         /// <summary>
         ///     A Rectangle that holds the width and height of the texture and zero in the X and Y points.
         /// </summary>
-        private Rectangle Rect => new Rectangle(0, 0, Texture.Width, Texture.Height);
+        private Rectangle Rect => new Rectangle(SourceRectangle.X, SourceRectangle.Y, Texture.Width, Texture.Height);
 
         /// <summary>
         ///     A Matrix based on the current rotation and position.
@@ -71,7 +79,7 @@ namespace TeamHaddock
         /// <summary>
         ///     An axis aligned rectangle which fully contains an arbitrarily transformed axis aligned rectangle.
         /// </summary>
-        private Rectangle BoundingRectangle => CalculateBoundingRectangle(Rect, Transform);
+        private Rectangle BoundingRectangle => CalculateBoundingRectangle(SourceRectangle, Transform);
 
         /// <summary>
         ///     Detects a pixel level collision between two CollidableObjects.
@@ -84,8 +92,8 @@ namespace TeamHaddock
             if (BoundingRectangle.Intersects(collidable.BoundingRectangle))
             {
                 // And any of the pixels of objects intersect
-                if (IntersectPixels(Transform, Texture.Width, Texture.Height, TextureData, collidable.Transform, collidable.Texture.Width, collidable.Texture.Height, collidable.TextureData))
-                {
+                if (IntersectPixels(Transform, SourceRectangle, TextureData, collidable.Transform, collidable.SourceRectangle, collidable.TextureData))
+                { 
                     // Then return true
                     return true;
                 }
@@ -101,10 +109,28 @@ namespace TeamHaddock
         /// <param name="texture">The new texture to load</param>
         public void LoadTexture(Texture2D texture)
         {
+            // Create a temporary array to store the pixel data in
+            Color[] array = new Color[texture.Width * texture.Height];
+            
             Texture = texture;
-            Origin = new Vector2(texture.Width / 2, texture.Height / 2);
-            TextureData = new Color[texture.Width * texture.Height];
-            Texture.GetData(TextureData);
+            // Create a new origin 
+            Origin = new Vector2(SourceRectangle.Width / 2, SourceRectangle.Height / 2); // texture.X / SourceRectangle.x = number of frames
+            // Set size of TextureData
+            TextureData = new Color[texture.Width, texture.Height];
+            // get texture data 
+            Texture.GetData(array);
+
+            // Convert 1D array into 2D array
+            // For each row of pixels in this texture
+            for (int y = 0; y < texture.Height; y++)
+            {
+                // For each pixel in this row
+                for (int x = 0; x < texture.Width; x++)
+                {
+                    // Set color of this coordinate from array into TextureData
+                    TextureData[x, y] = array[x + y * texture.Width];
+                }
+            }
         }
 
         /// <summary>
@@ -116,44 +142,6 @@ namespace TeamHaddock
         {
             LoadTexture(texture);
             Origin = origin;
-        }
-
-        /// <summary>
-        ///     Determines if there is overlap of the non-transparent pixels between two sprites.
-        /// </summary>
-        /// <param name="rectangleA">Bounding rectangle of the first sprite</param>
-        /// <param name="dataA">Pixel data of the first sprite</param>
-        /// <param name="rectangleB">Bounding rectangle of the second sprite</param>
-        /// <param name="dataB">Pixel data of the second sprite</param>
-        /// <returns>True if non-transparent pixels overlap; false otherwise</returns>
-        public static bool IntersectPixels(Rectangle rectangleA, Color[] dataA, Rectangle rectangleB, Color[] dataB)
-        {
-            // Find the bounds of the rectangle intersection
-            int top = Math.Max(rectangleA.Top, rectangleB.Top);
-            int bottom = Math.Min(rectangleA.Bottom, rectangleB.Bottom);
-            int left = Math.Max(rectangleA.Left, rectangleB.Left);
-            int right = Math.Min(rectangleA.Right, rectangleB.Right);
-
-            // Check every point within the intersection bounds
-            for (int y = top; y < bottom; y++)
-            {
-                for (int x = left; x < right; x++)
-                {
-                    // Get the color of both pixels at this point
-                    Color colorA = dataA[x - rectangleA.Left + ( y - rectangleA.Top ) * rectangleA.Width];
-                    Color colorB = dataB[x - rectangleB.Left + ( y - rectangleB.Top ) * rectangleB.Width];
-
-                    // If both pixels are not completely transparent,
-                    if (colorA.A != 0 && colorB.A != 0)
-                    {
-                        // then an intersection has been found
-                        return true;
-                    }
-                }
-            }
-
-            // No intersection found
-            return false;
         }
 
         /// <summary>
@@ -169,7 +157,7 @@ namespace TeamHaddock
         /// <param name="heightB">Height of the second sprite's texture.</param>
         /// <param name="dataB">Pixel color data of the second sprite.</param>
         /// <returns>True if non-transparent pixels overlap; false otherwise</returns>
-        public static bool IntersectPixels(Matrix transformA, int widthA, int heightA, Color[] dataA, Matrix transformB, int widthB, int heightB, Color[] dataB)
+        public static bool IntersectPixels(Matrix transformA, Rectangle sourceA, Color[,] dataA, Matrix transformB, Rectangle sourceB, Color[,] dataB)
         {
             // Calculate a matrix which transforms from A's local space into
             // world space and then into B's local space
@@ -187,24 +175,24 @@ namespace TeamHaddock
             Vector2 yPosInB = Vector2.Transform(Vector2.Zero, transformAtoB);
 
             // For each row of pixels in A
-            for (int yA = 0; yA < heightA; yA++)
+            for (int yA = 0; yA < sourceA.Height; yA++)
             {
                 // Start at the beginning of the row
                 Vector2 posInB = yPosInB;
 
                 // For each pixel in this row
-                for (int xA = 0; xA < widthA; xA++)
+                for (int xA = 0; xA < sourceA.Width; xA++)
                 {
                     // Round to the nearest pixel
-                    int xB = (int) Math.Round(posInB.X);
-                    int yB = (int) Math.Round(posInB.Y);
+                    int xB = (int)Math.Round(posInB.X);
+                    int yB = (int)Math.Round(posInB.Y);
 
                     // If the pixel lies within the bounds of B
-                    if (0 <= xB && xB < widthB && 0 <= yB && yB < heightB)
+                    if (0 <= xB && xB < sourceB.Width && 0 <= yB && yB < sourceB.Height)
                     {
                         // Get the colors of the overlapping pixels
-                        Color colorA = dataA[xA + yA * widthA];
-                        Color colorB = dataB[xB + yB * widthB];
+                        Color colorA = dataA[xA + sourceA.X, yA + sourceA.Y];
+                        Color colorB = dataB[xB + sourceB.X, yB + sourceB.Y];
 
                         // If both pixels are not completely transparent,
                         if (colorA.A != 0 && colorB.A != 0)

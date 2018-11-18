@@ -40,7 +40,7 @@ namespace TeamHaddock
         public static void LoadContent(ContentManager content)
         {
 
-            Background = content.Load<Texture2D>(@"images/MainMenuBG");
+            Background = content.Load<Texture2D>(@"Textures/MainMenuBG");
         }
 
         /// <summary>

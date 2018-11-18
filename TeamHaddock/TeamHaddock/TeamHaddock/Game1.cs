@@ -35,7 +35,7 @@ namespace TeamHaddock
         /// <summary>
         /// Current GameState
         /// </summary>
-        public static GameStates GameState = GameStates.MainMenu;
+        public static GameStates GameState = GameStates.InGame;
 
         /// <summary>
         /// Size of window
@@ -100,9 +100,8 @@ namespace TeamHaddock
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
-
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || UtilityClass.SingleActivationKey(Keys.End)) this.Exit();
+                
             UtilityClass.Update();
 
             switch (GameState)
@@ -135,13 +134,18 @@ namespace TeamHaddock
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            spriteBatch.Begin();
+
             switch (GameState)
             {
                 case GameStates.MainMenu:
+                    MainMenu.Draw(spriteBatch);
                     break;
                 case GameStates.InGame:
+                    InGame.Draw(spriteBatch);
                     break;
                 case GameStates.HighScore:
+                    HighScore.Draw(spriteBatch);
                     break;
                 case GameStates.Credits:
                     break;
@@ -150,6 +154,8 @@ namespace TeamHaddock
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

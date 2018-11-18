@@ -9,16 +9,16 @@ namespace TeamHaddock
     /// <summary>
     ///     Class responsible for Player movement, drawing etc.
     /// </summary>
-    internal class Player
+    public class Player
     {
         private KeyboardState keyboard;
-        private Vector2 velocity;
         public CollidableObject CollidableObject;
 
         /// <summary>
         /// Is the player dead?
         /// </summary>
         public bool IsPlayerDead;
+
 
         /// <summary>
         ///     Called upon to load player textures etc.
@@ -41,10 +41,19 @@ namespace TeamHaddock
             {
                 // Update Player Controls
                 Controls(gameTime);                
-                // Gravity
-                velocity.Y += 0.08f;
             }
         }
+
+        //public Vector2 acceleration;
+
+        ///// <summary>
+        ///// Inflicts a force upon the object
+        ///// </summary>
+        ///// <param name="force"></param>
+        //public void AddForce(Vector2 force)
+        //{
+        //}
+
         #region PlayerControls.cs 
         //        using System;
         //using System.Collections.Generic;
@@ -54,9 +63,9 @@ namespace TeamHaddock
         //using Microsoft.Xna.Framework;
         //using Microsoft.Xna.Framework.Input;
 
-        public static jump()
-        {
-            if (player_sprint_speed <= 10) player_sprint_speed += gameTime.ElapsedGameTime.Milliseconds / 100;
+        //public static jump()
+        //{
+        //    if (player_sprint_speed <= 10) player_sprint_speed += gameTime.ElapsedGameTime.Milliseconds / 100;
 
         //            /// <summary>
         //            /// A bool that is used to check if any player is holding down the "F" button. Used to fullscreen the window when the button is pressed, and window the fullscreen when pressed again 
@@ -255,24 +264,28 @@ namespace TeamHaddock
         private void Controls(GameTime gameTime)
         {
 
-            // If W or Up arrow key is pressed down and there is fuel remaining
+            // If W or Up arrow key is pressed down 
             if (keyboard.IsKeyDown(Keys.W) || keyboard.IsKeyDown(Keys.Up))
             {
+                CollidableObject.Position.Y--;
             }
 
             // If A or Left arrow key is pressed down
             if (keyboard.IsKeyDown(Keys.A) || keyboard.IsKeyDown(Keys.Left))
             {
+                CollidableObject.Position.X--;
             }
 
             // If S or Down arrow key is pressed down
             if (keyboard.IsKeyDown(Keys.S) || keyboard.IsKeyDown(Keys.Down))
-            {                
+            {
+                CollidableObject.Position.Y++;
             }
 
             // If D or Right arrow key is pressed down
             if (keyboard.IsKeyDown(Keys.D) || keyboard.IsKeyDown(Keys.Right))
             {
+                CollidableObject.Position.X++;
             }
         }
 
@@ -283,7 +296,7 @@ namespace TeamHaddock
         public void Draw(SpriteBatch spriteBatch)
         {
             // Draw player
-            spriteBatch.Draw(CollidableObject.Texture, CollidableObject.Position, null, Color.White, CollidableObject.Rotation, CollidableObject.Origin, 1.0f, SpriteEffects.None, 0.0f);
+            spriteBatch.Draw(CollidableObject.Texture, CollidableObject.Position, CollidableObject.SourceRectangle, Color.White, CollidableObject.Rotation, CollidableObject.Origin, 1.0f, SpriteEffects.None, 0.0f);
 
         }
     }
