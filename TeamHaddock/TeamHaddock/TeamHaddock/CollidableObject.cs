@@ -81,7 +81,7 @@ namespace TeamHaddock
         private Rectangle BoundingRectangle => CalculateBoundingRectangle(new Rectangle(0,0, SourceRectangle.Width, SourceRectangle.Height), Transform);
 
         /// <summary>
-        ///     Detects a pixel level collision between two CollidableObjects.
+        ///     Detects a pixel level collision between this and an other CollidableObject.
         /// </summary>
         /// <param name="collidable">The CollidableObject to check a collision against</param>
         /// <returns>True if colliding, false if not.</returns>
@@ -144,17 +144,26 @@ namespace TeamHaddock
         }
 
         /// <summary>
-        ///     Determines if there is overlap of the non-transparent pixels between two
-        ///     sprites.
+        ///     Determines if there is a collision between two collidableobjects
         /// </summary>
         /// <param name="collidableObjectA">first colidable</param>
         /// <param name="collidableObjectB">second collidable</param>
         /// <returns>True if non-transparent pixels overlap; false otherwise</returns>
-        public static bool IntersectPixels(CollidableObject collidableObjectA, CollidableObject collidableObjectB)
+        public static bool Intersect(CollidableObject collidableObjectA, CollidableObject collidableObjectB)
         {
-            return IntersectPixels(collidableObjectA.Transform, collidableObjectA.SourceRectangle,
-                collidableObjectA.TextureData, collidableObjectB.Transform, collidableObjectB.SourceRectangle,
-                collidableObjectB.TextureData);
+            // If rectangle of objects intersects
+            if (collidableObjectA.BoundingRectangle.Intersects(collidableObjectB.BoundingRectangle))
+            {
+                // And any of the pixels of objects intersect
+                if (IntersectPixels(collidableObjectA.Transform, collidableObjectA.SourceRectangle, collidableObjectA.TextureData,
+                    collidableObjectB.Transform, collidableObjectB.SourceRectangle, collidableObjectB.TextureData))
+                {
+                    // Then return true
+                    return true;
+                }
+            }
+            // Else return false 
+            return false;
         }
 
         /// <summary>

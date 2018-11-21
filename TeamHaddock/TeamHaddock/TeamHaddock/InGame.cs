@@ -12,7 +12,7 @@ namespace TeamHaddock
     /// <summary>
     /// Class for InGame GameState
     /// </summary>
-    static class InGame
+    static class InGame 
     {
         public enum PlayStates : byte
         {
@@ -20,13 +20,21 @@ namespace TeamHaddock
             Normal
         }
 
+        public enum DamageTypes : byte
+        {
+            Pistol
+            
+        }
+
         public static PlayStates PlayState = PlayStates.Normal;
+
+        
 
         public static Player player;
 
-        private static List<Enemy> enemies = new List<Enemy>();
+        public static List<Enemy> enemies = new List<Enemy>();
 
-        private static List<Particle> particles = new List<Particle>();
+        public static List<PistolParticle> particles = new List<PistolParticle>();
 
         public static void LoadContent(ContentManager content)
         {
@@ -34,14 +42,10 @@ namespace TeamHaddock
             player.LoadContent(content);
 
             Texture2D enemyTexture2D = content.Load<Texture2D>(@"Textures/Player");
-
+            Texture2D pistolParticle = content.Load<Texture2D>(@"Textures/PistolParticle");
 
             enemies.Add(new Enemy(enemyTexture2D, new Vector2(100)));
-
-            particles.Add(new Particle(new Vector2(200), new Vector2(5, 20), Color.White, Color.Black, 700));
-            particles.Add(new Particle(new Vector2(250), new Vector2(4, 2), Color.White, Color.Black, 600));
-            particles.Add(new Particle(new Vector2(300), new Vector2(30, 20), Color.White, Color.Black, 500));
-            particles.Add(new Particle(new Vector2(350), new Vector2(34, 20), Color.White, Color.Black, 400));
+            particles.Add(new PistolParticle(pistolParticle, Vector2.One, Vector2.One));
         }
 
         public static void Update(GameTime gameTime)
@@ -53,7 +57,7 @@ namespace TeamHaddock
                 enemy.Update(gameTime);
             }
 
-            foreach (Particle particle in particles)
+            foreach (PistolParticle particle in particles)
             {
                 particle.Update(gameTime);
             }

@@ -63,8 +63,7 @@ namespace TeamHaddock
         public void LoadContent(ContentManager content)
         {
             // Create a new CollidableObject
-            collidableObject = new CollidableObject(content.Load<Texture2D>(@"Textures/Player"), new Vector2(250, 250),
-                new Rectangle(60, 0, 60, 120), 0);
+            CollidableObject = new CollidableObject(content.Load<Texture2D>(@"Textures/Player"), new Vector2(250, 250), new Rectangle(60, 0, 60, 120), 0);
             // Create a new particle for the main thruster on the player
         }
 
@@ -83,6 +82,11 @@ namespace TeamHaddock
         // Created by Noble 11-21 
         public void Attack()
         {
+
+        public void TakeDamage(InGame.DamageTypes)
+        {
+
+        }
 
         }
         // Created by Noble 11-21 
