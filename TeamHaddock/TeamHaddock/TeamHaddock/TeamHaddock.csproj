@@ -74,10 +74,12 @@
   <ItemGroup>
     <Compile Include="CollidableObject.cs" />
     <Compile Include="Credits.cs" />
+    <Compile Include="Enemy.cs" />
     <Compile Include="HighScore.cs" />
     <Compile Include="InGame.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="MenuControls.cs" />
+    <Compile Include="Particle.cs" />
     <Compile Include="SpriteAnimator.cs" />
     <Compile Include="UtilityClass.cs" />
     <Compile Include="Player.cs" />

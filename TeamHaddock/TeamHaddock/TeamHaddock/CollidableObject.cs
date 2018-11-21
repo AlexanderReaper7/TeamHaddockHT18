@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+// Created by Alexander 11-19
+// Modified by Alexander
 namespace TeamHaddock
 {
     /// <summary>
@@ -14,6 +16,12 @@ namespace TeamHaddock
         ///     The current position of the object on screen
         /// </summary>
         public Vector2 Position;
+
+        /// <summary>
+        ///     rectangle of the frame in the sprite sheet 
+        /// </summary>
+        public Rectangle SourceRectangle;
+
 
         /// <summary>
         ///     Construct a new CollidableObject with a texture and position in world space.
@@ -56,20 +64,11 @@ namespace TeamHaddock
         /// </summary>
         public float Rotation { get; set; }
 
-        /// <summary>
-        ///     rectangle of the frame in the sprite sheet 
-        /// </summary>
-        public Rectangle SourceRectangle { get; private set; }
 
         /// <summary>
         ///     The origin of the object, by default this is the center point of the sourceRectangle.
         /// </summary>
         public Vector2 Origin { get; private set; }
-
-        /// <summary>
-        ///     A Rectangle that holds the width and height of the texture and zero in the X and Y points.
-        /// </summary>
-        private Rectangle Rect => new Rectangle(SourceRectangle.X, SourceRectangle.Y, Texture.Width, Texture.Height);
 
         /// <summary>
         ///     A Matrix based on the current rotation and position.
@@ -79,7 +78,7 @@ namespace TeamHaddock
         /// <summary>
         ///     An axis aligned rectangle which fully contains an arbitrarily transformed axis aligned rectangle.
         /// </summary>
-        private Rectangle BoundingRectangle => CalculateBoundingRectangle(SourceRectangle, Transform);
+        private Rectangle BoundingRectangle => CalculateBoundingRectangle(new Rectangle(0,0, SourceRectangle.Width, SourceRectangle.Height), Transform);
 
         /// <summary>
         ///     Detects a pixel level collision between two CollidableObjects.
@@ -148,6 +147,20 @@ namespace TeamHaddock
         ///     Determines if there is overlap of the non-transparent pixels between two
         ///     sprites.
         /// </summary>
+        /// <param name="collidableObjectA">first colidable</param>
+        /// <param name="collidableObjectB">second collidable</param>
+        /// <returns>True if non-transparent pixels overlap; false otherwise</returns>
+        public static bool IntersectPixels(CollidableObject collidableObjectA, CollidableObject collidableObjectB)
+        {
+            return IntersectPixels(collidableObjectA.Transform, collidableObjectA.SourceRectangle,
+                collidableObjectA.TextureData, collidableObjectB.Transform, collidableObjectB.SourceRectangle,
+                collidableObjectB.TextureData);
+        }
+
+        /// <summary>
+        ///     Determines if there is overlap of the non-transparent pixels between two
+        ///     sprites.
+        /// </summary>
         /// <param name="transformA">World transform of the first sprite.</param>
         /// <param name="widthA">Width of the first sprite's texture.</param>
         /// <param name="heightA">Height of the first sprite's texture.</param>
@@ -175,24 +188,24 @@ namespace TeamHaddock
             Vector2 yPosInB = Vector2.Transform(Vector2.Zero, transformAtoB);
 
             // For each row of pixels in A
-            for (int yA = 0; yA < sourceA.Height; yA++)
+            for (int yA = sourceA.Y; yA < sourceA.Height + sourceA.Y; yA++)
             {
                 // Start at the beginning of the row
                 Vector2 posInB = yPosInB;
 
                 // For each pixel in this row
-                for (int xA = 0; xA < sourceA.Width; xA++)
+                for (int xA = sourceA.X; xA < sourceA.Width + sourceA.X; xA++)
                 {
                     // Round to the nearest pixel
-                    int xB = (int)Math.Round(posInB.X);
-                    int yB = (int)Math.Round(posInB.Y);
+                    int xB = (int)Math.Round(posInB.X) + sourceB.X;
+                    int yB = (int)Math.Round(posInB.Y) + sourceB.Y;
 
                     // If the pixel lies within the bounds of B
-                    if (0 <= xB && xB < sourceB.Width && 0 <= yB && yB < sourceB.Height)
+                    if (sourceB.X <= xB && xB < sourceB.Width + sourceB.X && sourceB.Y <= yB && yB < sourceB.Height + sourceB.Y)
                     {
                         // Get the colors of the overlapping pixels
-                        Color colorA = dataA[xA + sourceA.X, yA + sourceA.Y];
-                        Color colorB = dataB[xB + sourceB.X, yB + sourceB.Y];
+                        Color colorA = dataA[xA, yA];
+                        Color colorB = dataB[xB, yB];
 
                         // If both pixels are not completely transparent,
                         if (colorA.A != 0 && colorB.A != 0)

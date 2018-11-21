@@ -17,13 +17,13 @@ namespace TeamHaddock
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
+        public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         /// <summary>
         /// List of menu states
         /// </summary>
-        public enum GameStates
+        public enum GameStates : ushort
         {
             MainMenu,
             InGame,
@@ -35,7 +35,7 @@ namespace TeamHaddock
         /// <summary>
         /// Current GameState
         /// </summary>
-        public static GameStates GameState = GameStates.InGame;
+        public static GameStates GameState = GameStates.MainMenu;
 
         /// <summary>
         /// Size of window
@@ -116,8 +116,10 @@ namespace TeamHaddock
                     HighScore.Update();
                     break;
                 case GameStates.Credits:
+                    Credits.Update();
                     break;
                 case GameStates.Exit:
+                    this.Exit();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
