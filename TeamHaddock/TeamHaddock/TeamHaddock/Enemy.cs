@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TeamHaddock
 {
-    class Enemy
+    public class Enemy
     {
         public CollidableObject CollidableObject;
 
@@ -22,7 +22,7 @@ namespace TeamHaddock
 
         public void Update(GameTime gameTime)
         {
-            if (CollidableObject.IsColliding(InGame.player.CollidableObject))
+            if (CollidableObject.IsColliding(InGame.player.collidableObject))
             {
                 Color = Color.Red;
             }

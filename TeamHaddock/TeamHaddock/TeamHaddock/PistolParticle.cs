@@ -9,41 +9,52 @@ using Microsoft.Xna.Framework.Graphics;
 // Created by Alexander 11-21
 namespace TeamHaddock
 {
-    class PistolParticle
+    public class PistolParticle
     {
         public CollidableObject collidableObject;
-        private float velocity, direction;
+        private float velocity;
+        private Vector2 direction;
 
         private bool isAlive = true;
         /// <summary>
         /// Type of damage 
         /// </summary>
-        private const InGame.DamageTypes damagetype = InGame.DamageTypes.Pistol;
+        private const InGame.DamageTypes damageType = InGame.DamageTypes.Pistol;
 
-        public PistolParticle(Texture2D texture, Vector2 position, float velocity, float direction)
+        /// <summary>
+        /// Creates a new pistol bullet/particle
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <param name="position">The spawn position of the object</param>
+        /// <param name="velocity"></param>
+        /// <param name="rotation"></param>
+        public PistolParticle(Texture2D texture, Vector2 position, float velocity, float rotation)
         {
-            collidableObject = new CollidableObject(texture, position) {Rotation = direction};
-            
+            // Create a new collidableobject
+            collidableObject = new CollidableObject(texture, position) {Rotation = rotation};
+            // Set velocity
             this.velocity = velocity;
+            // Set direction
+            direction = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
         }
 
         public void Update(GameTime gameTime)
         {
-            // If particle is outside of screen
-            if (collidableObject.Position.X < 0 || collidableObject.Position.Y < 0 || collidableObject.Position.X > Game1.ScreenBounds.X)
-            {
-                
-            }
-            // Update position
-            collidableObject.Position += new Vector2( );
-
-            if (collidableObject.IsColliding(InGame.player.CollidableObject))
+            // If bullet is colliding with player
+            if (collidableObject.IsColliding(InGame.player.collidableObject))
             {
                 // Deal damage to player
-                InGame.player.TakeDamage(damagetype);
+                InGame.player.TakeDamage(damageType);
                 // Kill this particle
                 RemoveFromList();
             }
+            // If particle is outside of screen
+            if (collidableObject.Position.X < 0 || collidableObject.Position.Y < 0 || collidableObject.Position.X > Game1.ScreenBounds.X)
+            {
+                RemoveFromList();
+            }
+            // Update position
+            collidableObject.Position += new Vector2(velocity * gameTime.ElapsedGameTime.Milliseconds);
         }
 
         private void RemoveFromList()
@@ -51,7 +62,7 @@ namespace TeamHaddock
             isAlive = false;
             foreach (PistolParticle particle in InGame.particles)
             {
-                if (!isAlive)
+                if (!particle.isAlive)
                 {
                     InGame.particles.Remove(particle);
                 }

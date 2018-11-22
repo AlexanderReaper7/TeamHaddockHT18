@@ -113,7 +113,7 @@ namespace TeamHaddock
                     InGame.Update(gameTime);
                     break;
                 case GameStates.HighScore:
-                    HighScore.Update();
+                    //HighScore.Update();
                     break;
                 case GameStates.Credits:
                     Credits.Update();
@@ -147,7 +147,7 @@ namespace TeamHaddock
                     InGame.Draw(spriteBatch);
                     break;
                 case GameStates.HighScore:
-                    HighScore.Draw(spriteBatch);
+                    //HighScore.Draw(spriteBatch);
                     break;
                 case GameStates.Credits:
                     break;

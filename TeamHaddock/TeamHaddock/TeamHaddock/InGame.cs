@@ -12,7 +12,7 @@ namespace TeamHaddock
     /// <summary>
     /// Class for InGame GameState
     /// </summary>
-    static class InGame 
+    public static class InGame 
     {
         public enum PlayStates : byte
         {
@@ -26,15 +26,14 @@ namespace TeamHaddock
             
         }
 
-        public static PlayStates PlayState = PlayStates.Normal;
-
-        
+        public static PlayStates playState = PlayStates.Normal;
 
         public static Player player;
 
         public static List<Enemy> enemies = new List<Enemy>();
 
         public static List<PistolParticle> particles = new List<PistolParticle>();
+        public static Texture2D pistolParticle;
 
         public static void LoadContent(ContentManager content)
         {
@@ -42,10 +41,9 @@ namespace TeamHaddock
             player.LoadContent(content);
 
             Texture2D enemyTexture2D = content.Load<Texture2D>(@"Textures/Player");
-            Texture2D pistolParticle = content.Load<Texture2D>(@"Textures/PistolParticle");
+            pistolParticle = content.Load<Texture2D>(@"Textures/PistolParticle");
 
             enemies.Add(new Enemy(enemyTexture2D, new Vector2(100)));
-            particles.Add(new PistolParticle(pistolParticle, Vector2.One, Vector2.One));
         }
 
         public static void Update(GameTime gameTime)
@@ -75,7 +73,7 @@ namespace TeamHaddock
                 enemy.Draw(spriteBatch);
             }
 
-            foreach (var particle in particles)
+            foreach (PistolParticle particle in particles)
             {
                 particle.Draw(spriteBatch);
             }
