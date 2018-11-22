@@ -23,7 +23,7 @@ namespace TeamHaddock
         /// <summary>
         /// List of menu states
         /// </summary>
-        public enum GameStates : ushort
+        public enum GameStates : byte
         {
             MainMenu,
             InGame,
@@ -37,14 +37,13 @@ namespace TeamHaddock
         /// </summary>
         public static GameStates GameState = GameStates.MainMenu;
 
-        /// <summary>
-        /// Size of window
-        /// </summary>
-        public static readonly Point ScreenBounds = new Point(1280, 720);
-
-        // TODO : Add these fonts
         public static SpriteFont NormalMenuFont;
         public static SpriteFont BoldMenuFont;
+
+        /// <summary>
+        /// Size of game window
+        /// </summary>
+        public static Point ScreenBounds { get; } = new Point(1280, 720);
 
         public Game1()
         {
