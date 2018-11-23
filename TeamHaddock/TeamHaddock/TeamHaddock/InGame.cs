@@ -31,12 +31,13 @@ namespace TeamHaddock
         public static Player player;
 
         public static List<Enemy> enemies = new List<Enemy>();
-
         public static List<PistolParticle> particles = new List<PistolParticle>();
+        // Temporary location for pistolparticle location
         public static Texture2D pistolParticle;
 
         public static void LoadContent(ContentManager content)
         {
+
             player = new Player();
             player.LoadContent(content);
 
@@ -48,17 +49,21 @@ namespace TeamHaddock
 
         public static void Update(GameTime gameTime)
         {
+            // Update player logic
             player.Update(gameTime);
-
+            // Update enemy logic
             foreach (Enemy enemy in enemies)
             {
                 enemy.Update(gameTime);
             }
 
+            // Update the particles logic
             foreach (PistolParticle particle in particles)
             {
                 particle.Update(gameTime);
             }
+
+            Console.WriteLine($"Amount of particles in array {particles.Count}");
         }
 
         public static void Draw(SpriteBatch spriteBatch)
@@ -67,12 +72,12 @@ namespace TeamHaddock
             // TODO: Add background
             // Draw player
             player.Draw(spriteBatch);
-
-            foreach (var enemy in enemies)
+            // Draw the enemies
+            foreach (Enemy enemy in enemies)
             {
                 enemy.Draw(spriteBatch);
             }
-
+            // Draw the particles
             foreach (PistolParticle particle in particles)
             {
                 particle.Draw(spriteBatch);

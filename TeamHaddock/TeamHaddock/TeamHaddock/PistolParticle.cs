@@ -57,16 +57,13 @@ namespace TeamHaddock
             collidableObject.Position += new Vector2(velocity * gameTime.ElapsedGameTime.Milliseconds);
         }
 
+        /// <summary>
+        /// Removes this object from the 
+        /// </summary>
         private void RemoveFromList()
         {
-            isAlive = false;
-            foreach (PistolParticle particle in InGame.particles)
-            {
-                if (!particle.isAlive)
-                {
-                    InGame.particles.Remove(particle);
-                }
-            }
+            Game1.FinalActionsDelegate newDelegate = () => { InGame.particles.Remove(this); };
+            Game1.finalActionsDelegate += newDelegate;
         }
 
         public void Draw(SpriteBatch spriteBatch)

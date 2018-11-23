@@ -12,6 +12,8 @@ using Microsoft.Xna.Framework.Media;
 // Class created by Alexander 11-07
 namespace TeamHaddock
 {
+
+
     /// <summary>
     /// This is the main type for your game
     /// </summary>
@@ -28,10 +30,12 @@ namespace TeamHaddock
             MainMenu,
             InGame,
             HighScore,
+
             // Options, // Might add later
             Credits,
             Exit
         }
+
         /// <summary>
         /// Current GameState
         /// </summary>
@@ -44,6 +48,10 @@ namespace TeamHaddock
         /// Size of game window
         /// </summary>
         public static Point ScreenBounds { get; } = new Point(1280, 720);
+
+        public delegate void FinalActionsDelegate();
+
+        public static FinalActionsDelegate finalActionsDelegate = () => { Console.WriteLine("Started Delegate");};
 
         public Game1()
         {
@@ -158,6 +166,14 @@ namespace TeamHaddock
 
             spriteBatch.End();
 
+            // Run final actions
+            if (!finalActionsDelegate.Equals(new FinalActionsDelegate(() => { })))
+            {
+                // Run delegate
+                finalActionsDelegate();
+                // Clear delegate
+                finalActionsDelegate = () => { };
+            }
             base.Draw(gameTime);
         }
     }

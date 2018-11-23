@@ -85,6 +85,10 @@ namespace TeamHaddock
         }
 
         // Created by Alexander 11-22
+        /// <summary>
+        /// Updates position while keeping player within the screen bounds.
+        /// </summary>
+        /// <param name="gameTime"></param>
         private void UpdatePosition(GameTime gameTime)
         {
             // Clamp X position + velocity
@@ -172,37 +176,37 @@ namespace TeamHaddock
             // fire a bullet with space
             if (UtilityClass.SingleActivationKey(Keys.Space))
             {
-                InGame.particles.Add(new PistolParticle(InGame.pistolParticle, collidableObject.Position + new Vector2(20f), 4, 0.2f));
+                InGame.particles.Add(new PistolParticle(InGame.pistolParticle, collidableObject.Position + new Vector2(20f), 0.4f, 0.2f));
             }
             #endregion
 
             // Edited by Noble 11-07, 11-21, 
-            #region Controls
-            if (keyboard.IsKeyDown(Keys.Left))
-            {
-                MoveLeft(gameTime);
-            }
+            //#region Controls
+            //if (keyboard.IsKeyDown(Keys.Left))
+            //{
+            //    MoveLeft(gameTime);
+            //}
 
-            if (keyboard.IsKeyDown(Keys.Right))
-            {
-                MoveRight(gameTime);
-            }
+            //if (keyboard.IsKeyDown(Keys.Right))
+            //{
+            //    MoveRight(gameTime);
+            //}
 
-            if (UtilityClass.SingleActivationKey(Keys.Z))
-            {
-                Attack(); 
-            }
+            //if (UtilityClass.SingleActivationKey(Keys.Z))
+            //{
+            //    Attack(); 
+            //}
 
-            if (UtilityClass.SingleActivationKey(Keys.Up))
-            {
-                //Jump(gameTime);
-            }
+            //if (UtilityClass.SingleActivationKey(Keys.Up))
+            //{
+            //    //Jump(gameTime);
+            //}
 
-            if (UtilityClass.SingleActivationKey(Keys.Down) && grounded)
-            {
-                DropDown(); 
-            }
-            #endregion
+            //if (UtilityClass.SingleActivationKey(Keys.Down) && grounded)
+            //{
+            //    DropDown(); 
+            //}
+            //#endregion
         }
 
         //  #region Jump
