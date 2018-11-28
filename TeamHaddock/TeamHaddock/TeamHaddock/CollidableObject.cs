@@ -88,7 +88,7 @@ namespace TeamHaddock
         public bool IsColliding(CollidableObject collidable)
         {
             // If rectangle of objects intersects
-            if (BoundingRectangle.Intersects(collidable.BoundingRectangle))
+             if (BoundingRectangle.Intersects(collidable.BoundingRectangle))
             {
                 // And any of the pixels of objects intersect
                 if (IntersectPixels(Transform, SourceRectangle, TextureData, collidable.Transform, collidable.SourceRectangle, collidable.TextureData))

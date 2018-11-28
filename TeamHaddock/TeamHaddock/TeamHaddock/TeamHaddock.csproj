@@ -76,6 +76,7 @@
     <Compile Include="Credits.cs" />
     <Compile Include="Enemy.cs" />
     <None Include="HighScore.cs" />
+    <Compile Include="GameObject.cs" />
     <Compile Include="InGame.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="MenuControls.cs" />

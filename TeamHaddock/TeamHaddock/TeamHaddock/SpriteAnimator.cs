@@ -11,8 +11,7 @@ namespace TeamHaddock
     class SpriteAnimator
     {
 
-        #region Sprite tool klassen 
-        
+      
                    public Texture2D Texture;
                    
 
@@ -142,6 +141,6 @@ namespace TeamHaddock
         }
     }
 }
-        #endregion
+     
     
 
