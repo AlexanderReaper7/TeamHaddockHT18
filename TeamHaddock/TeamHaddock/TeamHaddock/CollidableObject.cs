@@ -22,6 +22,11 @@ namespace TeamHaddock
         /// </summary>
         public Rectangle SourceRectangle;
 
+        /// <summary>
+        ///     The rotation factor
+        /// </summary>
+        private float rotation;
+
 
         /// <summary>
         ///     Construct a new CollidableObject with a texture and position in world space.
@@ -42,10 +47,10 @@ namespace TeamHaddock
         /// <param name="rotation">The rotation factor</param>
         public CollidableObject(Texture2D texture, Vector2 position, Rectangle sourceRectangle, float rotation)
         {
-            SourceRectangle = sourceRectangle;
-            LoadTexture(texture);
             Position = position;
             Rotation = rotation;
+            LoadTexture(texture, new Vector2(sourceRectangle.Width / 2, sourceRectangle.Height / 2));
+            SourceRectangle = sourceRectangle;
         }
 
 
@@ -55,20 +60,23 @@ namespace TeamHaddock
         public Texture2D Texture { get; private set; }
 
         /// <summary>
-        ///     The pixel data of the loaded texture in a 2D array
-        /// </summary>
-        private Color[,] TextureData { get; set; }
-
-        /// <summary>
         ///     The rotation factor
         /// </summary>
-        public float Rotation { get; set; }
-
+        public float Rotation
+        {
+            get { return rotation; }
+            set { rotation = value % MathHelper.TwoPi; }
+        }
 
         /// <summary>
         ///     The origin of the object, by default this is the center point of the sourceRectangle.
         /// </summary>
         public Vector2 Origin { get; private set; }
+
+        /// <summary>
+        ///     The pixel data of the loaded texture in a 2D array
+        /// </summary>
+        private Color[,] TextureData { get; set; }
 
         /// <summary>
         ///     A Matrix based on the current rotation and position.
@@ -116,7 +124,7 @@ namespace TeamHaddock
             Origin = new Vector2(SourceRectangle.Width / 2, SourceRectangle.Height / 2); // texture.X / SourceRectangle.x = number of frames
             // Set size of TextureData
             TextureData = new Color[texture.Width, texture.Height];
-            // get texture data 
+            // Get texture data 
             Texture.GetData(array);
 
             // Convert 1D array into 2D array

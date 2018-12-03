@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -82,6 +83,9 @@ namespace TeamHaddock
         /// </summary>
         public int Health { get; private set; } = 100;
 
+        private Animation movingRightAnimation;
+        private Animation movingLeftAnimation;
+
         /// <summary>
         /// The base damage for the enemies pistol 
         /// </summary>
@@ -99,7 +103,23 @@ namespace TeamHaddock
         public void LoadContent(ContentManager content)
         {
             // Create a new collidableObject
-            collidableObject = new CollidableObject(content.Load<Texture2D>(@"Textures/Player"), new Vector2(250, 200), new Rectangle(60, 0, 60, 120), 0);
+            collidableObject = new CollidableObject(
+                content.Load<Texture2D>(@"Textures/Player"), // The texture
+                new Vector2(250, 250), // The spawning position
+                new Rectangle(0, 0, 60, 120), // Initial size and position of source rectangle
+                0f // The rotation
+                );
+
+            // Load all frames into movingRightAnimation
+            movingRightAnimation = new Animation
+            {
+                frames = new List<Frame>
+                {
+                    new Frame(new Rectangle(0, 0, 60, 120), 100f),
+                    new Frame(new Rectangle(60, 0, 60, 120), 100f),
+                    new Frame(new Rectangle(120, 0, 60, 120), 100f)
+                }
+            };
         }
 
         public void Update(GameTime gameTime)
@@ -110,11 +130,11 @@ namespace TeamHaddock
             if (!IsPlayerDead)
             {
                 // Update Player Controls
-                Controls(gameTime);                
+                Controls(gameTime);
             }
-
             UpdatePosition(gameTime);
         }
+
         // Created by Noble 11-21 
         public void Attack()
         {
@@ -155,20 +175,20 @@ namespace TeamHaddock
 
         // Created by Noble 11-21 
         // Edited by Alexander 11-22
-        public void MoveLeft(GameTime gameTime)
+        private void MoveLeft()
         {
             //leftKey = true;
-            collidableObject.Position.X -= baseWalkingSpeed; //+ movementSpeedUpgrade;
+            velocity.X -= baseMovementSpeed + movementSpeedUpgrade;
         }
 
         // Created by Noble 11-21 
         // Edited by Alexander 11-22
-        public void MoveRight(GameTime gameTime)
+        private void MoveRight()
         {
             //leftKey = true;
-            collidableObject.Position.X += baseWalkingSpeed; // + movementSpeedUpgrade;
+            velocity.X += baseMovementSpeed + movementSpeedUpgrade;
         }
-
+        
         // Created by Noble 11-21 
         public void DropDown()
         {
@@ -190,14 +210,56 @@ namespace TeamHaddock
         }
 
         // Created by Noble 11-07
-        /// <summary>
-        ///     Debugging keyboard controls for InGame !!!ONLY USED EXPERIMENTALLY!!!
         private void Controls(GameTime gameTime)
         {
             // Edited by Alexander 11-21,  
             #region Alexanders debug controls
-            //// If W or Up arrow key is pressed down 
-            //if (keyboard.IsKeyDown(Keys.W) || keyboard.IsKeyDown(Keys.Up))
+            //     Debugging keyboard controls for InGame
+
+            // If W or Up arrow key is pressed down 
+            if (keyboard.IsKeyDown(Keys.W) || keyboard.IsKeyDown(Keys.Up))
+            {
+                collidableObject.Position.Y--;
+            }
+
+            // If A or Left arrow key is pressed down
+            if (keyboard.IsKeyDown(Keys.A) || keyboard.IsKeyDown(Keys.Left))
+            {
+                collidableObject.Position.X--;
+            }
+
+            // If S or Down arrow key is pressed down
+            if (keyboard.IsKeyDown(Keys.S) || keyboard.IsKeyDown(Keys.Down))
+            {
+                collidableObject.Position.Y++;
+            }
+
+            // If D or Right arrow key is pressed down
+            if (keyboard.IsKeyDown(Keys.D) || keyboard.IsKeyDown(Keys.Right))
+            {
+                collidableObject.Position.X++;
+                movingRightAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
+            }
+            // If Q key is pressed down then rotate counter-clockwise
+            if (keyboard.IsKeyDown(Keys.Q))
+            {
+                collidableObject.Rotation -= MathHelper.TwoPi / 72;
+            }
+            // If E key is pressed down then rotate clockwise
+            if (keyboard.IsKeyDown(Keys.E))
+            {
+                collidableObject.Rotation += MathHelper.TwoPi / 72;
+            }
+            // fire a bullet with space
+            if (UtilityClass.SingleActivationKey(Keys.Space))
+            {
+                InGame.particles.Add(new PistolParticle(InGame.pistolParticle, collidableObject.Position + new Vector2(30f), 0.4f, collidableObject.Rotation));
+            }
+            #endregion
+
+            // Edited by Noble 11-07, 11-21, 
+            #region Controls
+            //if (keyboard.IsKeyDown(Keys.Left))
             //{
             //    collidableObject.Position.Y--;
             //}
@@ -224,17 +286,8 @@ namespace TeamHaddock
             //{
             //    collidableObject.Rotation -= MathHelper.TwoPi / 72;
             //}
-            //// If E key is pressed down then rotate clockwise
-            //if (keyboard.IsKeyDown(Keys.E))
-            //{
-            //    collidableObject.Rotation += MathHelper.TwoPi / 72;
-            //}
-            //// fire a bullet with space
-            //if (UtilityClass.SingleActivationKey(Keys.Space))
-            //{
-            //    InGame.particles.Add(new PistolParticle(InGame.pistolParticle, collidableObject.Position + new Vector2(20f), 0.4f, 0.2f));
-            //}
             #endregion
+        }
 
             // Edited by Noble 11-07, 11-21, 
             #region Controls
@@ -354,7 +407,6 @@ namespace TeamHaddock
         {
             // Draw player
             spriteBatch.Draw(collidableObject.Texture, collidableObject.Position, collidableObject.SourceRectangle, Color.White, collidableObject.Rotation, collidableObject.Origin, 1.0f, SpriteEffects.None, 0.0f);
-
         }
     }
 }

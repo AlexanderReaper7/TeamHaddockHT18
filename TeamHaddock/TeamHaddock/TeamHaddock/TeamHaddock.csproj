@@ -81,7 +81,7 @@
     <Compile Include="MainMenu.cs" />
     <Compile Include="MenuControls.cs" />
     <Compile Include="PistolParticle.cs" />
-    <Compile Include="SpriteAnimator.cs" />
+    <Compile Include="Animation.cs" />
     <Compile Include="UtilityClass.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -47,23 +47,24 @@ namespace TeamHaddock
                 InGame.player.TakeDamage(damageType);
                 // Kill this particle
                 RemoveFromList();
+                return;
             }
             // If particle is outside of screen
             if (collidableObject.Position.X < 0 || collidableObject.Position.Y < 0 || collidableObject.Position.X > Game1.ScreenBounds.X)
             {
                 RemoveFromList();
+                return;
             }
             // Update position
-            collidableObject.Position += new Vector2(velocity * gameTime.ElapsedGameTime.Milliseconds);
+            collidableObject.Position += direction * velocity * gameTime.ElapsedGameTime.Milliseconds;
         }
 
         /// <summary>
-        /// Removes this object from the 
+        /// Removes this object from the particles list
         /// </summary>
         private void RemoveFromList()
         {
-            Game1.FinalActionsDelegate newDelegate = () => { InGame.particles.Remove(this); };
-            Game1.finalActionsDelegate += newDelegate;
+            Game1.finalActionsDelegate += () => { InGame.particles.Remove(this); };
         }
 
         public void Draw(SpriteBatch spriteBatch)

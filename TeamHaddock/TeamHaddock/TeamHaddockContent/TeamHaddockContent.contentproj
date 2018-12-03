@@ -58,7 +58,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\PistolParticle.bmp">
+    <Compile Include="Textures\PistolParticle.png">
       <Name>PistolParticle</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
