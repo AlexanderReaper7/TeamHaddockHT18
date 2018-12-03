@@ -30,7 +30,7 @@ namespace TeamHaddock
 
         public static Player player;
 
-        public static List<Enemy> enemies = new List<Enemy>();
+        public static List<MeleeEnemy> enemies = new List<MeleeEnemy>();
         public static List<PistolParticle> particles = new List<PistolParticle>();
         // Temporary location for pistolparticle location
         public static Texture2D pistolParticle;
@@ -44,7 +44,7 @@ namespace TeamHaddock
             Texture2D enemyTexture2D = content.Load<Texture2D>(@"Textures/Player");
             pistolParticle = content.Load<Texture2D>(@"Textures/PistolParticle");
 
-            enemies.Add(new Enemy(enemyTexture2D, new Vector2(100)));
+            enemies.Add(new MeleeEnemy(enemyTexture2D, new Vector2(100)));
         }
 
         public static void Update(GameTime gameTime)
@@ -52,7 +52,7 @@ namespace TeamHaddock
             // Update player logic
             player.Update(gameTime);
             // Update enemy logic
-            foreach (Enemy enemy in enemies)
+            foreach (MeleeEnemy enemy in enemies)
             {
                 enemy.Update(gameTime);
             }
@@ -62,8 +62,6 @@ namespace TeamHaddock
             {
                 particle.Update(gameTime);
             }
-
-            Console.WriteLine($"Amount of particles in array {particles.Count}");
         }
 
         public static void Draw(SpriteBatch spriteBatch)
@@ -73,7 +71,7 @@ namespace TeamHaddock
             // Draw player
             player.Draw(spriteBatch);
             // Draw the enemies
-            foreach (Enemy enemy in enemies)
+            foreach (MeleeEnemy enemy in enemies)
             {
                 enemy.Draw(spriteBatch);
             }
