@@ -74,9 +74,10 @@
   <ItemGroup>
     <Compile Include="CollidableObject.cs" />
     <Compile Include="Credits.cs" />
+    <Compile Include="IEnemy.cs" />
     <Compile Include="MeleeEnemy.cs" />
     <None Include="HighScore.cs" />
-    <Compile Include="GameObject.cs" />
+    <Compile Include="GameObjectManager.cs" />
     <Compile Include="InGame.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="MenuControls.cs" />

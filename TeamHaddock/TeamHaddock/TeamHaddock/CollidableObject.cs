@@ -86,7 +86,7 @@ namespace TeamHaddock
         /// <summary>
         ///     An axis aligned rectangle which fully contains an arbitrarily transformed axis aligned rectangle.
         /// </summary>
-        private Rectangle BoundingRectangle => CalculateBoundingRectangle(new Rectangle(0,0, SourceRectangle.Width, SourceRectangle.Height), Transform);
+        public Rectangle BoundingRectangle => CalculateBoundingRectangle(new Rectangle(0,0, SourceRectangle.Width, SourceRectangle.Height), Transform);
 
         /// <summary>
         ///     Detects a pixel level collision between this and an other CollidableObject.
@@ -187,7 +187,7 @@ namespace TeamHaddock
         /// <param name="heightB">Height of the second sprite's texture.</param>
         /// <param name="dataB">Pixel color data of the second sprite.</param>
         /// <returns>True if non-transparent pixels overlap; false otherwise</returns>
-        public static bool IntersectPixels(Matrix transformA, Rectangle sourceA, Color[,] dataA, Matrix transformB, Rectangle sourceB, Color[,] dataB)
+        private static bool IntersectPixels(Matrix transformA, Rectangle sourceA, Color[,] dataA, Matrix transformB, Rectangle sourceB, Color[,] dataB)
         {
             // Calculate a matrix which transforms from A's local space into
             // world space and then into B's local space

@@ -22,37 +22,40 @@ namespace TeamHaddock
 
         public enum DamageTypes : byte
         {
-            Pistol
-            
+            Pistol,
+            Melee
         }
 
         public static PlayStates playState = PlayStates.Normal;
 
         public static Player player;
 
-        public static List<MeleeEnemy> enemies = new List<MeleeEnemy>();
+        public static List<IEnemy> enemies = new List<IEnemy>();
         public static List<PistolParticle> particles = new List<PistolParticle>();
-        // Temporary location for pistolparticle location
+        // Temporary location for pistolParticle location
         public static Texture2D pistolParticle;
+        private static GameObjectManager gameObjectManager;
 
         public static void LoadContent(ContentManager content)
         {
 
             player = new Player();
             player.LoadContent(content);
-
+            Texture2D platformTexture = content.Load<Texture2D>(@"Textures/Ground");
+            gameObjectManager = new GameObjectManager(platformTexture, new Vector2(200));
             Texture2D enemyTexture2D = content.Load<Texture2D>(@"Textures/Player");
             pistolParticle = content.Load<Texture2D>(@"Textures/PistolParticle");
 
-            enemies.Add(new MeleeEnemy(enemyTexture2D, new Vector2(100)));
+            enemies.Add(new MeleeEnemy(enemyTexture2D, new Vector2(100), enemyTexture2D));
         }
 
         public static void Update(GameTime gameTime)
         {
             // Update player logic
             player.Update(gameTime);
+
             // Update enemy logic
-            foreach (MeleeEnemy enemy in enemies)
+            foreach (IEnemy enemy in enemies)
             {
                 enemy.Update(gameTime);
             }
@@ -71,7 +74,7 @@ namespace TeamHaddock
             // Draw player
             player.Draw(spriteBatch);
             // Draw the enemies
-            foreach (MeleeEnemy enemy in enemies)
+            foreach (IEnemy enemy in enemies)
             {
                 enemy.Draw(spriteBatch);
             }

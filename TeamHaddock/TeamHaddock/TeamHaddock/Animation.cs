@@ -12,14 +12,14 @@ namespace TeamHaddock
     public struct Frame
     {
         public readonly Rectangle sourceRectangle;
-        public readonly float frameTime;
+        public readonly int frameTime;
 
         /// <summary>
         /// Creates a new frame with a source rectangle and frame time
         /// </summary>
         /// <param name="sourceRectangle">Position of frame in texture</param>
         /// <param name="frameTime">Time between this and next frame in milliseconds</param>
-        public Frame(Rectangle sourceRectangle, float frameTime)
+        public Frame(Rectangle sourceRectangle, int frameTime)
         {
             this.sourceRectangle = sourceRectangle;
             this.frameTime = frameTime;
@@ -29,8 +29,31 @@ namespace TeamHaddock
     public class Animation
     {
         public List<Frame> frames;
-        private float timeForCurrentFrame;
+        private int timeForCurrentFrame;
         private int currentFrame;
+
+        /// <summary>
+        /// Total time for animation
+        /// </summary>
+        public int TotalFrameTime
+        {
+            get
+            {
+                int output = 0;
+
+                for (int frame = 0; frame < frames.Count; frame++)
+                {
+                    output += frames[frame].frameTime;
+                }
+
+                return output;
+            }
+        }
+
+        public Animation(List<Frame> frames)
+        {
+            this.frames = frames;
+        }
 
         /// <summary>
         /// Animates through the list of frames
@@ -39,13 +62,28 @@ namespace TeamHaddock
         /// <param name="gameTime"></param>
         public void Animate(ref Rectangle sourceRectangle, GameTime gameTime)
         {
+            // Update time elapsed for this frame
             timeForCurrentFrame += gameTime.ElapsedGameTime.Milliseconds;
+            // If time has passed longer for this frame than this frame´s frameTime
             if (timeForCurrentFrame >= frames[currentFrame].frameTime)
             {
+                // Go to next frame in frames
                 currentFrame = (currentFrame + 1) % frames.Count;
+                // Set sourceRectangle to this frame
                 sourceRectangle = frames[currentFrame].sourceRectangle;
-                timeForCurrentFrame = 0.0f;
+                // Reset time elapsed
+                timeForCurrentFrame = 0;
             }
+        }
+
+        public void SetToFrame(ref Rectangle sourceRectangle, int FrameToSet)
+        {
+            // Set animation to first frame
+            currentFrame = FrameToSet;
+            // Set sourceRectangle to the first frame
+            sourceRectangle = frames[currentFrame].sourceRectangle;
+            // Reset time elapsed
+            timeForCurrentFrame = 0;
         }
     }
 }    

@@ -11,11 +11,10 @@ namespace TeamHaddock
 {
     public class PistolParticle
     {
-        public CollidableObject collidableObject;
+        private CollidableObject collidableObject;
         private float velocity;
         private Vector2 direction;
 
-        private bool isAlive = true;
         /// <summary>
         /// Type of damage 
         /// </summary>

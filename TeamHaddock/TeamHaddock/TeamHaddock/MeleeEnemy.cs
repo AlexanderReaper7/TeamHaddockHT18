@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -9,63 +10,175 @@ using Microsoft.Xna.Framework.Graphics;
 // Created by Alexander 11-28
 namespace TeamHaddock
 {
-    public class MeleeEnemy
+    public class MeleeEnemy : IEnemy
     {
-        public CollidableObject collidableObject;
+        private CollidableObject collidableObject;
+        private Animation moveLeftAnimation;
+        private Animation moveRightAnimation;
         private Vector2 velocity;
+        private Vector2 direction;
 
-        private Color Color { get; set; } = Color.White;
+        private int Health { get; set; } = 100;
+        private Color color = Color.White;
+
+        private CollidableObject attackCollidableObject;
+        private Animation attackLeftAnimation;
+        private Animation attackRightAnimation;
+        private int attackOffSet;
+        private bool attacking;
 
         public MeleeEnemy(Texture2D texture, Vector2 position, Texture2D attackTexture2D) // TODO: Add Animation attackAnimation
         {
             collidableObject = new CollidableObject(texture, position, new Rectangle(120, 0, 60, 120), 0);
+            attackCollidableObject = new CollidableObject(attackTexture2D, Vector2.Zero);
 
+            // Load all frames into Animation
+            moveRightAnimation = new Animation(new List<Frame>
+                {
+                    new Frame(new Rectangle(0, 0, 60, 120), 100),
+                    new Frame(new Rectangle(60, 0, 60, 120), 100),
+                    new Frame(new Rectangle(120, 0, 60, 120), 100)
+                }
+            );
+
+            moveLeftAnimation = new Animation(new List<Frame>
+                {
+                    new Frame(new Rectangle(120, 0, 60, 120), 100),
+                    new Frame(new Rectangle(60, 0, 60, 120), 100),
+                    new Frame(new Rectangle(0, 0, 60, 120), 100)
+                }
+            );
+
+            attackLeftAnimation = new Animation(new List<Frame>()
+            {
+                new Frame(Rectangle.Empty, 1)
+            });
+            attackRightAnimation = new Animation(new List<Frame>()
+            {
+                new Frame(Rectangle.Empty, 1)
+            });
+
+            attackOffSet = 8;
         }
-
 
         public void Update(GameTime gameTime)
         {
-            UpdateMovement();
+            UpdateAI(gameTime);
             UpdatePosition(gameTime);
-            TestCollisionWithPlayer();
-
+            if (attacking)
+            {
+                UpdateAttack(gameTime);
+            }
+            
         }
+
         /// <summary>
         /// Moves enemy closer to the player depending their position
         /// </summary>
         /// <param name="gameTime"></param>
-        private void UpdateMovement()
+        private void UpdateAI(GameTime gameTime)
         {
-            // TODO: Add animation and acceleration
-            // Move Enemy left when player is to the left
+            // Move left when player is to the left
             if (collidableObject.Position.X > InGame.player.collidableObject.Position.X - (InGame.player.collidableObject.Origin.X + collidableObject.Origin.X))
             {
-                velocity.X = -0.3f;
+                MoveLeft(gameTime);
             }
-            // Move Enemy right when player is to the right
+            // Move right when player is to the right
             if (collidableObject.Position.X < InGame.player.collidableObject.Position.X + (InGame.player.collidableObject.Origin.X + collidableObject.Origin.X))
             {
-                velocity.X = 0.3f;
+                MoveRight(gameTime);
             }
-            // Stop Enemy when enemy is near the player 
+            // Stop when enemy is near the player 
             if (collidableObject.Position.X > InGame.player.collidableObject.Position.X - (InGame.player.collidableObject.Origin.X + collidableObject.Origin.X) && collidableObject.Position.X < InGame.player.collidableObject.Position.X + (InGame.player.collidableObject.Origin.X + collidableObject.Origin.X))
             {
-                velocity.X = 0f;
+                StopMoving();
+                if (!attacking)
+                {
+                    StartAttack();
+                }
             }
         }
 
-        private void TestCollisionWithPlayer()
+        private void MoveLeft(GameTime gameTime)
         {
-            Color = collidableObject.IsColliding(InGame.player.collidableObject) ? Color.Red : Color.White;
+            // Animate left
+            moveLeftAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
+            // Set direction to left
+            direction = -Vector2.UnitX;
+            // Set velocity
+            velocity.X = -0.3f; // TODO: Add acceleration
         }
 
-        private void Attack()
+        private void MoveRight(GameTime gameTime)
         {
-            // Set atttacking to active
-            // Play attack animation
-            // Check attack collision with player
-            // Damage player
-            // 
+            // Animate right
+            moveRightAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
+            // Set direction to right
+            direction = Vector2.UnitX;
+            // Set velocity
+            velocity.X = 0.3f; // TODO: Add acceleration
+        } 
+
+        private void StopMoving()
+        {
+            // Set velocity to 0
+            velocity.X = 0f;
+            // If direction is right
+            if (direction.X > 0)
+            {
+                // Set to idle frame of right animation
+                moveRightAnimation.SetToFrame(ref collidableObject.SourceRectangle, 0);
+            }
+            // Else direction is left
+            else
+            {
+                // Set to idle frame of left animation
+                moveLeftAnimation.SetToFrame(ref collidableObject.SourceRectangle, 0);
+            }
+        }
+
+        private void StartAttack()
+        {
+            // Set attacking to active
+            attacking = true;
+        }
+
+        private void UpdateAttack(GameTime gameTime)
+        {
+            // If direction is right
+            if (direction.X > 0)
+            {
+                attackRightAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
+                attackCollidableObject.Position.X = collidableObject.Position.X + attackOffSet;
+                attackCollidableObject.Position.Y = collidableObject.Position.Y;
+            }
+            // Else direction is left
+            else
+            {
+                attackLeftAnimation.Animate(ref attackCollidableObject.SourceRectangle, gameTime);
+                attackCollidableObject.Position.X = collidableObject.Position.X - attackOffSet;
+                attackCollidableObject.Position.Y = collidableObject.Position.Y;
+            }
+            // If attack is colliding with player
+            if (attackCollidableObject.IsColliding(InGame.player.collidableObject))
+            {
+                // Deal damage to player
+                InGame.player.TakeDamage(InGame.DamageTypes.Melee);
+            }
+
+        }
+
+        private void EndAttack()
+        {
+            attacking = false;
+        }
+
+        public void TakeDamage(int damageTaken)
+        {
+            // Give invincibility frames
+
+            // Deal damage
+            Health -= damageTaken;
         }
 
         // Created by Alexander 11-22
@@ -75,13 +188,13 @@ namespace TeamHaddock
         /// <param name="gameTime"></param>
         private void UpdatePosition(GameTime gameTime)
         {
-            // Clamp X position + velocity to net go beyondthe window + texture
+            // Clamp X position + velocity to not go beyond the window + texture
             collidableObject.Position.X = MathHelper.Clamp(
                 collidableObject.Position.X + (velocity.X * gameTime.ElapsedGameTime.Milliseconds),
                 0 - collidableObject.Origin.X,
                 Game1.ScreenBounds.X + collidableObject.Origin.X);
 
-            // Clamp Y position + velocity
+            // Clamp Y position + velocity to not go beyond the window - texture
             collidableObject.Position.Y = MathHelper.Clamp(
                 collidableObject.Position.Y + (velocity.Y * gameTime.ElapsedGameTime.Milliseconds),
                 0 + collidableObject.Origin.Y,
@@ -90,8 +203,14 @@ namespace TeamHaddock
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(collidableObject.Texture, collidableObject.Position, collidableObject.SourceRectangle, Color, collidableObject.Rotation, collidableObject.Origin, 1.0f, SpriteEffects.None, 0.0f);
-            // TODO: Add drawing of attack // If attack is active: Draw attack
+            // Draw enemy
+            spriteBatch.Draw(collidableObject.Texture, collidableObject.Position, collidableObject.SourceRectangle, color, collidableObject.Rotation, collidableObject.Origin, 1.0f, SpriteEffects.None, 0.0f);
+            // If this enemy is attacking
+            if (attacking)
+            {
+                // Draw attack
+                spriteBatch.Draw(attackCollidableObject.Texture, attackCollidableObject.Position, attackCollidableObject.SourceRectangle, Color.White, attackCollidableObject.Rotation, attackCollidableObject.Origin, 1.0f, SpriteEffects.None, 0.0f);
+            }
         } 
     }
 }

@@ -11,8 +11,24 @@ namespace TeamHaddock
         public static int CurrentWave { get; private set; }
 
 
+
         public static void Update()
         {
+            // If there are no more enemies
+            if (InGame.enemies.Count == 0)
+            {
+                // Start the next wave
+                NextWave();   
+
+            }
+        }
+
+        /// <summary>
+        /// Starts the next wave
+        /// </summary>
+        private static void NextWave()
+        {
+            CurrentWave++;
 
         }
     }
