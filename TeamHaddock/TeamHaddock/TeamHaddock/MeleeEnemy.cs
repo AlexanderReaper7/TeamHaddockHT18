@@ -41,7 +41,6 @@ namespace TeamHaddock
                     new Frame(new Rectangle(120, 0, 60, 120), 100)
                 }
             );
-
             moveLeftAnimation = new Animation(new List<Frame>
                 {
                     new Frame(new Rectangle(120, 0, 60, 120), 100),
@@ -49,12 +48,11 @@ namespace TeamHaddock
                     new Frame(new Rectangle(0, 0, 60, 120), 100)
                 }
             );
-
-            attackLeftAnimation = new Animation(new List<Frame>()
+            attackLeftAnimation = new Animation(new List<Frame>
             {
-                new Frame(Rectangle.Empty, 1000)
+                new Frame(new Rectangle(), 1000)
             });
-            attackRightAnimation = new Animation(new List<Frame>()
+            attackRightAnimation = new Animation(new List<Frame>
             {
                 new Frame(Rectangle.Empty, 1000)
             });
@@ -178,7 +176,14 @@ namespace TeamHaddock
         private void EndAttack()
         {
             attacking = false;
-            
+            if (direction.X > 0)
+            {
+                attackRightAnimation.SetToFrame(ref collidableObject.SourceRectangle, 0);
+            }
+            else
+            {
+                attackLeftAnimation.SetToFrame(ref collidableObject.SourceRectangle, 0);
+            }
         }
 
         public void TakeDamage(int damageTaken)

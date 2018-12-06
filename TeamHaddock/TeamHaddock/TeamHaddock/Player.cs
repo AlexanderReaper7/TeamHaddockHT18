@@ -151,6 +151,9 @@ namespace TeamHaddock
                 case InGame.DamageTypes.Pistol:
                     Health -= basePistolDamage + pistolDamageModifier * WaveManager.CurrentWave; // TODO: REDO
                     break;
+                case InGame.DamageTypes.Melee:
+                    Health -= 100; // TODO: Change this
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(damageType), damageType, null);
             }
@@ -177,8 +180,6 @@ namespace TeamHaddock
 
             velocity *= new Vector2(0.8f);
         }
-
-
 
         // Created by Noble 11-07
         private void Controls(GameTime gameTime)
@@ -253,40 +254,47 @@ namespace TeamHaddock
         }
 
 
-        // Created by Noble 11-21, Edited by Noble 11-28 
+        // Created by Noble 11-21, Edited by Noble 11-28 , Edited by Alexander 12-06
         private void Jump(GameTime gameTime)
         {
-            // The gravity
-            if (isFalling && jumpAndFallSpeed <= 0)
+            // If not in air
+            if (collidableObject.Position)
             {
-                velocity.Y -= jumpAndFallSpeed / jumpAndFallSpeedModifier;
-            }
-            
-            // If the speed of the player is less than or equal to zero, the player is falling 
-            if (jumpAndFallSpeed <= 0)
-            {
-                isFalling = true;
+                // jump upwards
+                velocity.Y -= 50f;
             }
 
-            // 
-            if (isJumping && jumpAndFallSpeed > 0)
-            {
-                velocity.Y -= jumpAndFallSpeed / jumpAndFallSpeedModifier;
-            }
+            //// The gravity
+            //if (isFalling && jumpAndFallSpeed <= 0)
+            //{
+            //    velocity.Y -= jumpAndFallSpeed / jumpAndFallSpeedModifier;
+            //}
 
-            if (grounded || dropDownGrounded)
-            {
-                isFalling = false;
-                isJumping = false;
-                jumpAndFallSpeed = originalJumpAndFallSpeed;
-            }
+            //// If the speed of the player is less than or equal to zero, the player is falling 
+            //if (jumpAndFallSpeed <= 0)
+            //{
+            //    isFalling = true;
+            //}
 
-            // If the player is jumping or falling then reduce jumpAndFallSpeed  
-            if (isJumping || isFalling)
-            {
-                jumpAndFallSpeed -= gameTime.ElapsedGameTime.Milliseconds;
-            }
-                
+            //// 
+            //if (isJumping && jumpAndFallSpeed > 0)
+            //{
+            //    velocity.Y -= jumpAndFallSpeed / jumpAndFallSpeedModifier;
+            //}
+
+            //if (grounded || dropDownGrounded)
+            //{
+            //    isFalling = false;
+            //    isJumping = false;
+            //    jumpAndFallSpeed = originalJumpAndFallSpeed;
+            //}
+
+            //// If the player is jumping or falling then reduce jumpAndFallSpeed  
+            //if (isJumping || isFalling)
+            //{
+            //    jumpAndFallSpeed -= gameTime.ElapsedGameTime.Milliseconds;
+            //}
+
 
         }
 
