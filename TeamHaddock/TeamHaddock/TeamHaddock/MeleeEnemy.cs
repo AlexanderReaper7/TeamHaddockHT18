@@ -25,6 +25,7 @@ namespace TeamHaddock
         private Animation attackLeftAnimation;
         private Animation attackRightAnimation;
         private int attackOffSet;
+        private int timeAttacking;
         private bool attacking;
 
         public MeleeEnemy(Texture2D texture, Vector2 position, Texture2D attackTexture2D) // TODO: Add Animation attackAnimation
@@ -51,11 +52,11 @@ namespace TeamHaddock
 
             attackLeftAnimation = new Animation(new List<Frame>()
             {
-                new Frame(Rectangle.Empty, 1)
+                new Frame(Rectangle.Empty, 1000)
             });
             attackRightAnimation = new Animation(new List<Frame>()
             {
-                new Frame(Rectangle.Empty, 1)
+                new Frame(Rectangle.Empty, 1000)
             });
 
             attackOffSet = 8;
@@ -151,6 +152,11 @@ namespace TeamHaddock
                 attackRightAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
                 attackCollidableObject.Position.X = collidableObject.Position.X + attackOffSet;
                 attackCollidableObject.Position.Y = collidableObject.Position.Y;
+
+                if (timeAttacking >= attackRightAnimation.TotalFrameTime)
+                {
+                   EndAttack();
+                }
             }
             // Else direction is left
             else
@@ -164,13 +170,15 @@ namespace TeamHaddock
             {
                 // Deal damage to player
                 InGame.player.TakeDamage(InGame.DamageTypes.Melee);
+                // Deactivate attack
+                EndAttack();
             }
-
         }
 
         private void EndAttack()
         {
             attacking = false;
+            
         }
 
         public void TakeDamage(int damageTaken)

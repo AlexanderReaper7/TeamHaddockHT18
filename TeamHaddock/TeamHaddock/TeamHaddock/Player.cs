@@ -62,13 +62,6 @@ namespace TeamHaddock
         private bool grounded; 
        
         /// <summary>
-        /// Used to stop the player from walking/falling/jumping out of the window 
-        /// </summary>
-        private bool wallCollisionUp, wallCollisionDown, wallCollisionLeft, wallCollisionRight;
-
-        private bool rightKey, leftKey;
-
-        /// <summary>
         /// Used to check if the player is colliding with drop-down platforms only when using the DropDown method 
         /// </summary>
         private bool collidingWithDroppablePlatforms; 
@@ -314,6 +307,7 @@ namespace TeamHaddock
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
+            
             // Draw player
             spriteBatch.Draw(collidableObject.Texture, collidableObject.Position, collidableObject.SourceRectangle, Color.White, collidableObject.Rotation, collidableObject.Origin, 1.0f, SpriteEffects.None, 0.0f);
         }
