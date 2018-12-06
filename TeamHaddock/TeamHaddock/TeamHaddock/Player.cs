@@ -25,7 +25,9 @@ namespace TeamHaddock
         /// <summary>
         /// The base walking speed for the player 
         /// </summary>
-        private const float baseWalkingSpeed = 5f;
+        private const float baseWalkingSpeed = 0.1f;
+
+        private float maxMovementSpeed = 0.5f;
 
         /// <summary>
         /// Used to determine which direction the player is falling, and how fast they are falling 
@@ -172,6 +174,8 @@ namespace TeamHaddock
                 collidableObject.Position.Y + (velocity.Y * gameTime.ElapsedGameTime.Milliseconds),
                 0 + collidableObject.Origin.Y,
                 Game1.ScreenBounds.Y - collidableObject.Origin.Y);
+
+            velocity *= new Vector2(0.8f);
         }
 
 
@@ -184,7 +188,7 @@ namespace TeamHaddock
             // If W or Up arrow key is pressed down 
             if (keyboard.IsKeyDown(Keys.W) || keyboard.IsKeyDown(Keys.Up))
             {
-                collidableObject.Position.Y--;
+                Jump(gameTime);
             }
 
             // If A or Left arrow key is pressed down
@@ -196,7 +200,7 @@ namespace TeamHaddock
             // If S or Down arrow key is pressed down
             if (keyboard.IsKeyDown(Keys.S) || keyboard.IsKeyDown(Keys.Down))
             {
-                collidableObject.Position.Y++;
+                DropDown();
             }
 
             // If D or Right arrow key is pressed down
@@ -237,7 +241,7 @@ namespace TeamHaddock
         private void MoveLeft(GameTime gameTime)
         {
             moveLeftAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
-            velocity.X -= baseWalkingSpeed + movementSpeedUpgrade;
+            velocity.X -= MathHelper.Clamp(baseWalkingSpeed + movementSpeedUpgrade, -maxMovementSpeed, maxMovementSpeed) ;
         }
 
         // Created by Noble 11-21 
@@ -245,16 +249,13 @@ namespace TeamHaddock
         private void MoveRight(GameTime gameTime)
         {
             moveRightAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
-            velocity.X += baseWalkingSpeed + movementSpeedUpgrade;
+            velocity.X += MathHelper.Clamp(baseWalkingSpeed + movementSpeedUpgrade, -maxMovementSpeed, maxMovementSpeed);
         }
 
 
         // Created by Noble 11-21, Edited by Noble 11-28 
         private void Jump(GameTime gameTime)
         {
-
-            //grounded = collidableObject.IsColliding();
-
             // The gravity
             if (isFalling && jumpAndFallSpeed <= 0)
             {
