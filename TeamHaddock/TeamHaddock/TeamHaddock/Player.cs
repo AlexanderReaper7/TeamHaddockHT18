@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -104,21 +104,34 @@ namespace TeamHaddock
                 new Rectangle(0, 0, 60, 120), // Initial size and position of source rectangle
                 0f // The rotation
                 );
+
+            int walkingFrameTime = 200;
             
             // Load all frames into movingRightAnimation
             moveRightAnimation = new Animation(new List<Frame>
                 {
-                    new Frame(new Rectangle(0, 0, 60, 120), 100),
-                    new Frame(new Rectangle(60, 0, 60, 120), 100),
-                    new Frame(new Rectangle(120, 0, 60, 120), 100)
+                    
+                    new Frame(new Rectangle(0, 0, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(100, 0, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(200, 0, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(100, 0, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(0, 0, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(400, 0, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(500, 0, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(400, 0, 100, 105), walkingFrameTime),
                 }
             );
 
             moveLeftAnimation = new Animation(new List<Frame>
                 {
-                    new Frame(new Rectangle(120, 0, 60, 120), 100),
-                    new Frame(new Rectangle(60, 0, 60, 120), 100),
-                    new Frame(new Rectangle(0, 0, 60, 120), 100)
+                    new Frame(new Rectangle(0, 105, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(100, 105, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(200, 105, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(100, 105, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(0, 105, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(400, 105, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(500, 105, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(400, 105, 100, 105), walkingFrameTime),
                 }
             );
         }
