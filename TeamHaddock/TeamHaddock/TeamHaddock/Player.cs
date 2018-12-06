@@ -116,22 +116,22 @@ namespace TeamHaddock
                     new Frame(new Rectangle(200, 0, 100, 105), walkingFrameTime),
                     new Frame(new Rectangle(100, 0, 100, 105), walkingFrameTime),
                     new Frame(new Rectangle(0, 0, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(300, 0, 100, 105), walkingFrameTime),
                     new Frame(new Rectangle(400, 0, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(500, 0, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(400, 0, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(300, 0, 100, 105), walkingFrameTime),
                 }
             );
 
             moveLeftAnimation = new Animation(new List<Frame>
                 {
-                    new Frame(new Rectangle(0, 105, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(100, 105, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(200, 105, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(100, 105, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(0, 105, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(400, 105, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(500, 105, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(400, 105, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(0, 106, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(100, 106, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(200, 106, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(100, 106, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(0, 106, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(300, 106, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(400, 106, 100, 105), walkingFrameTime),
+                    new Frame(new Rectangle(300, 106, 100, 105), walkingFrameTime),
                 }
             );
         }
