@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -179,6 +179,9 @@ namespace TeamHaddock
         /// <param name="gameTime"></param>
         private void UpdatePosition(GameTime gameTime)
         {
+            // Gravity
+            velocity.Y += 0.4f;
+
             // Clamp X position + velocity
             collidableObject.Position.X = MathHelper.Clamp(
                 collidableObject.Position.X + (velocity.X * gameTime.ElapsedGameTime.Milliseconds),
@@ -248,6 +251,11 @@ namespace TeamHaddock
             {
                 DropDown();
             }
+
+            if (UtilityClass.SingleActivationKey(Keys.V))
+            {
+                moveLeftAnimation.SetToFrame(ref collidableObject.SourceRectangle, moveLeftAnimation.CurrentFrame + 1);
+            }
         }
 
         // Created by Noble 11-21 
@@ -271,7 +279,7 @@ namespace TeamHaddock
         private void Jump(GameTime gameTime)
         {
             // If not in air
-            if (collidableObject.Position)
+            if (collidableObject.Position.Y <= Game1.ScreenBounds.Y - 20)
             {
                 // jump upwards
                 velocity.Y -= 50f;

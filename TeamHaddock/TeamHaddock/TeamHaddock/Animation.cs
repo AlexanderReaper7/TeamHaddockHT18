@@ -30,7 +30,6 @@ namespace TeamHaddock
     {
         public List<Frame> frames;
         private int timeForCurrentFrame;
-        private int currentFrame;
 
         /// <summary>
         /// Total time for animation
@@ -50,6 +49,8 @@ namespace TeamHaddock
             }
         }
 
+        public int CurrentFrame { get; private set; }
+
         public Animation(List<Frame> frames)
         {
             this.frames = frames;
@@ -65,12 +66,12 @@ namespace TeamHaddock
             // Update time elapsed for this frame
             timeForCurrentFrame += gameTime.ElapsedGameTime.Milliseconds;
             // If time has passed longer for this frame than this frame´s frameTime
-            if (timeForCurrentFrame >= frames[currentFrame].frameTime)
+            if (timeForCurrentFrame >= frames[CurrentFrame].frameTime)
             {
                 // Go to next frame in frames
-                currentFrame = (currentFrame + 1) % frames.Count;
+                CurrentFrame = (CurrentFrame + 1) % frames.Count;
                 // Set sourceRectangle to this frame
-                sourceRectangle = frames[currentFrame].sourceRectangle;
+                sourceRectangle = frames[CurrentFrame].sourceRectangle;
                 // Reset time elapsed
                 timeForCurrentFrame = 0;
             }
@@ -79,9 +80,9 @@ namespace TeamHaddock
         public void SetToFrame(ref Rectangle sourceRectangle, int FrameToSet)
         {
             // Set animation to first frame
-            currentFrame = FrameToSet;
+            CurrentFrame = FrameToSet % frames.Count;
             // Set sourceRectangle to the first frame
-            sourceRectangle = frames[currentFrame].sourceRectangle;
+            sourceRectangle = frames[CurrentFrame].sourceRectangle;
             // Reset time elapsed
             timeForCurrentFrame = 0;
         }
