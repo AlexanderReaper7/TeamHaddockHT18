@@ -14,7 +14,7 @@ namespace TeamHaddock
         private RenderTarget2D normalMapRenderTarget;
         private RenderTarget2D shadowMapRenderTarget;
 
-        private Color ambientLight = new Color(.1f, .1f, .1f, 1);
+        private Color ambientLight = new Color(0.6f, 0.6f, 0.6f, 1);
 
         private Effect lightEffect;
         private Effect lightCombinedEffect;

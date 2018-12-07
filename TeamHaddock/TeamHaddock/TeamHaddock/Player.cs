@@ -321,7 +321,7 @@ namespace TeamHaddock
 
         public void DrawNormalMap(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(NormalMap, collidableObject.Position, collidableObject.SourceRectangle, Color.White);
+            spriteBatch.Draw(NormalMap, collidableObject.Position, collidableObject.SourceRectangle, Color.White, collidableObject.Rotation, collidableObject.Origin, 1.0f, SpriteEffects.None, 0.0f);
         }
     }
 }
