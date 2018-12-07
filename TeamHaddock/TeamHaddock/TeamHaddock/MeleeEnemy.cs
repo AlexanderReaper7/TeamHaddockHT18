@@ -27,6 +27,9 @@ namespace TeamHaddock
         private int attackOffSet;
         private int timeAttacking;
         private bool attacking;
+        private const int maxJumpTime = 200;
+        private int jumpTime;
+        private bool jumpComplete, onGround;
 
         public MeleeEnemy(Texture2D texture, Vector2 position, Texture2D attackTexture2D) // TODO: Add Animation attackAnimation
         {
@@ -77,6 +80,42 @@ namespace TeamHaddock
         /// <param name="gameTime"></param>
         private void UpdateAI(GameTime gameTime)
         {
+            // Update ground
+            onGround = collidableObject.Position.Y >= Game1.ScreenBounds.Y - collidableObject.SourceRectangle.Y - 3;
+
+            //  and jump is not complete
+            if (!jumpComplete)
+            {
+                // Start jump
+                // If jumpTime is reset and is on ground
+                if (jumpTime == 0 && onGround)
+                {
+                    Jump(gameTime);
+                    return;
+                }
+                // Continue jump
+                // Jump has already started
+                if (jumpTime > 0)
+                {
+                    Jump(gameTime);
+                }
+            }
+            else
+            {
+                // A key was released, therefore set jump to complete
+                jumpComplete = true;
+                // if both keys are up and player is on ground
+                if (onGround)
+                {
+                    // Reset jump
+                    jumpTime = 0;
+                    jumpComplete = false;
+                }
+
+                Fall(gameTime);
+            }
+
+
             // Move left when player is to the left
             if (collidableObject.Position.X > InGame.player.collidableObject.Position.X - (InGame.player.collidableObject.Origin.X + collidableObject.Origin.X))
             {
@@ -97,6 +136,32 @@ namespace TeamHaddock
                 }
             }
         }
+
+        // Created by Noble 11-21, Edited by Noble 11-28 , Edited by Alexander 12-06
+        private void Jump(GameTime gameTime)
+        {
+            // Add elapsed time to timer
+            jumpTime += gameTime.ElapsedGameTime.Milliseconds;
+            if (jumpTime < maxJumpTime)
+            {
+                // set jump force
+                velocity.Y = baseJumpStrength * gameTime.ElapsedGameTime.Milliseconds;
+            }
+            else
+            {
+                jumpComplete = true;
+            }
+        }
+
+        private void Fall(GameTime gameTime)
+        {
+            if (!onGround)
+            {
+                // Add gravity
+                AddForce(new Vector2(0, 0.04f * gameTime.ElapsedGameTime.Milliseconds));
+            }
+        }
+
 
         private void MoveLeft(GameTime gameTime)
         {
@@ -144,9 +209,11 @@ namespace TeamHaddock
 
         private void UpdateAttack(GameTime gameTime)
         {
+            timeAttacking += gameTime.ElapsedGameTime.Milliseconds
             // If direction is right
             if (direction.X > 0)
             {
+                // Animate right
                 attackRightAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
                 attackCollidableObject.Position.X = collidableObject.Position.X + attackOffSet;
                 attackCollidableObject.Position.Y = collidableObject.Position.Y;
@@ -159,6 +226,7 @@ namespace TeamHaddock
             // Else direction is left
             else
             {
+                // Animate Left
                 attackLeftAnimation.Animate(ref attackCollidableObject.SourceRectangle, gameTime);
                 attackCollidableObject.Position.X = collidableObject.Position.X - attackOffSet;
                 attackCollidableObject.Position.Y = collidableObject.Position.Y;
@@ -224,6 +292,6 @@ namespace TeamHaddock
                 // Draw attack
                 spriteBatch.Draw(attackCollidableObject.Texture, attackCollidableObject.Position, attackCollidableObject.SourceRectangle, Color.White, attackCollidableObject.Rotation, attackCollidableObject.Origin, 1.0f, SpriteEffects.None, 0.0f);
             }
-        } 
+        }
     }
 }

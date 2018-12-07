@@ -37,6 +37,10 @@ namespace TeamHaddock
             direction = new Vector2((float)Math.Cos(rotation), (float)Math.Sin(rotation));
         }
 
+        /// <summary>
+        /// Updates particle logic
+        /// </summary>
+        /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
             // If bullet is colliding with player
