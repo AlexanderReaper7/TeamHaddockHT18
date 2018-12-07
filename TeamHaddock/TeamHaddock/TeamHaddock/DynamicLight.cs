@@ -87,16 +87,6 @@ namespace TeamHaddock
             lightCombinedEffectParamColorMap = lightCombinedEffect.Parameters["ColorMap"];
             lightCombinedEffectParamNormalMap = lightCombinedEffect.Parameters["NormalMap"];
             lightCombinedEffectParamShadowMap = lightCombinedEffect.Parameters["ShadingMap"];
-
-            lights.Add(new PointLight()
-            {
-                IsEnabled = true,
-                Color = new Vector4(1f, 1f, 1f, 1f),
-                Power = .7f,
-                LightDecay = 200,
-                Position = new Vector3(500, 400, 80)
-            });
-
         }
 
         public void DrawCombinedMaps(SpriteBatch spriteBatch)

@@ -33,6 +33,7 @@ namespace TeamHaddock
         public static Player player;
 
         public static List<IEnemy> enemies = new List<IEnemy>();
+        private static List<LampPost> lampPosts = new List<LampPost>();
         public static List<PistolParticle> particles = new List<PistolParticle>();
         // Temporary location for pistolParticle location
         public static Texture2D pistolParticle;
@@ -46,10 +47,14 @@ namespace TeamHaddock
             player = new Player();
             player.LoadContent(content);
 
+            LampPost.LoadContent(content);
+
             Texture2D enemyTexture2D = content.Load<Texture2D>(@"Textures/Player");
             pistolParticle = content.Load<Texture2D>(@"Textures/PistolParticle");
 
             enemies.Add(new MeleeEnemy(enemyTexture2D, new Vector2(100), enemyTexture2D));
+
+            lampPosts.Add(new LampPost(new Vector2(Game1.ScreenBounds.X - 60, Game1.ScreenBounds.Y / 2)));
         }
 
         public static void Update(GameTime gameTime)
@@ -97,6 +102,13 @@ namespace TeamHaddock
         private static void DrawColorMap(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
+            // Draw Background
+            // Draw Platforms
+            // Draw LampPosts
+            foreach (LampPost lampPost in lampPosts)
+            {
+                lampPost.DrawColorMap(spriteBatch);
+            }
 
             // Draw the enemies
             foreach (IEnemy enemy in enemies)
@@ -117,6 +129,14 @@ namespace TeamHaddock
         private static void DrawNormalMap(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
+
+            // Draw Background
+            // Draw Platforms
+            // Draw LampPosts
+            foreach (LampPost lampPost in lampPosts)
+            {
+                lampPost.DrawNormalMap(spriteBatch);
+            }
 
             // Draw the enemies
             //foreach (IEnemy enemy in enemies)

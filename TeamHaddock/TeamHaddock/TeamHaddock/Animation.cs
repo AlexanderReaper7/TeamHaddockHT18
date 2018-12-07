@@ -77,10 +77,10 @@ namespace TeamHaddock
             }
         }
 
-        public void SetToFrame(ref Rectangle sourceRectangle, int FrameToSet)
+        public void SetToFrame(ref Rectangle sourceRectangle, int frameToSet)
         {
             // Set animation to first frame
-            CurrentFrame = FrameToSet % frames.Count;
+            CurrentFrame = frameToSet % frames.Count;
             // Set sourceRectangle to the first frame
             sourceRectangle = frames[CurrentFrame].sourceRectangle;
             // Reset time elapsed

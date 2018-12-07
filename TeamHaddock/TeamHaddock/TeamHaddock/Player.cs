@@ -314,6 +314,7 @@ namespace TeamHaddock
         {
             // Draw player
             spriteBatch.Draw(collidableObject.Texture, collidableObject.Position, collidableObject.SourceRectangle, Color.White, collidableObject.Rotation, collidableObject.Origin, 1.0f, SpriteEffects.None, 0.0f);
+            // Debug info
             #if DEBUG
                 spriteBatch.DrawString(Game1.NormalMenuFont, $" {velocity}\n {collidableObject.Position}\n {jumpComplete}\n {jumpTime}\n {onGround}", Vector2.One, Color.Green);
             #endif
