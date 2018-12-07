@@ -12,16 +12,14 @@ using Microsoft.Xna.Framework.Media;
 // Class created by Alexander 11-07
 namespace TeamHaddock
 {
-
-
     /// <summary>
     /// This is the main type for your game
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        public static GraphicsDeviceManager graphics;
+        GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
+        
         /// <summary>
         /// List of menu states
         /// </summary>
@@ -30,7 +28,6 @@ namespace TeamHaddock
             MainMenu,
             InGame,
             HighScore,
-
             // Options, // Might add later
             Credits,
             Exit
@@ -84,11 +81,12 @@ namespace TeamHaddock
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+
             NormalMenuFont = Content.Load<SpriteFont>(@"Fonts/NormalMenuFont");
             BoldMenuFont = Content.Load<SpriteFont>(@"Fonts/BoldMenuFont");
 
             MainMenu.LoadContent(Content);
-            InGame.LoadContent(Content);
+            InGame.LoadContent(Content, GraphicsDevice);
         }
 
         /// <summary>
@@ -107,7 +105,7 @@ namespace TeamHaddock
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || UtilityClass.SingleActivationKey(Keys.End)) this.Exit();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || UtilityClass.SingleActivationKey(Keys.End)) { this.Exit(); }
                 
             UtilityClass.Update();
 
@@ -120,10 +118,8 @@ namespace TeamHaddock
                     InGame.Update(gameTime);
                     break;
                 case GameStates.HighScore:
-                    //HighScore.Update();
                     break;
                 case GameStates.Credits:
-                    Credits.Update();
                     break;
                 case GameStates.Exit:
                     this.Exit();
@@ -143,18 +139,15 @@ namespace TeamHaddock
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin();
-
             switch (GameState)
             {
                 case GameStates.MainMenu:
                     MainMenu.Draw(spriteBatch);
                     break;
                 case GameStates.InGame:
-                    InGame.Draw(spriteBatch);
+                    InGame.Draw(spriteBatch, GraphicsDevice);
                     break;
                 case GameStates.HighScore:
-                    //HighScore.Draw(spriteBatch);
                     break;
                 case GameStates.Credits:
                     break;
@@ -163,8 +156,6 @@ namespace TeamHaddock
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
-            spriteBatch.End();
 
             // Run final actions
             if (!finalActionsDelegate.Equals(new FinalActionsDelegate(() => { })))

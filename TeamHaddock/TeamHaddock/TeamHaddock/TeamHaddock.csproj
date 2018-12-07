@@ -13,11 +13,12 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
-    <XnaProfile>Reach</XnaProfile>
+    <XnaProfile>HiDef</XnaProfile>
     <XnaCrossPlatformGroupID>c444bc7b-3ebb-4a51-b1cb-0d2e9fe31f1c</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
     <ApplicationIcon>Game.ico</ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -30,7 +31,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -74,7 +74,9 @@
   <ItemGroup>
     <Compile Include="CollidableObject.cs" />
     <Compile Include="Credits.cs" />
+    <Compile Include="DynamicLight.cs" />
     <Compile Include="IEnemy.cs" />
+    <Compile Include="Light.cs" />
     <Compile Include="MeleeEnemy.cs" />
     <None Include="HighScore.cs" />
     <Compile Include="GameObjectManager.cs" />
@@ -83,6 +85,7 @@
     <Compile Include="MenuControls.cs" />
     <Compile Include="PistolParticle.cs" />
     <Compile Include="Animation.cs" />
+    <Compile Include="PointLight.cs" />
     <Compile Include="UtilityClass.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

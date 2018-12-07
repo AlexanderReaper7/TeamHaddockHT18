@@ -50,12 +50,9 @@ namespace TeamHaddock
         {
             MenuControl.UpdateSelected(ref selected); // Updates selected menu option
 
-            // If enter is not pressed
-            if (!MenuControl.IsEnterDown)
-            {
-                // Then return
-                return;
-            }
+            // If enter is not pressed Then return
+            if (!MenuControl.IsEnterDown) return;
+      
             // Else (enter is pressed) Then change gamestate and playstate
             switch ((int) selected.Y)
             {
@@ -95,6 +92,8 @@ namespace TeamHaddock
         /// <param name="spriteBatch">Enables a group of sprites to be drawn using the same settings.</param>
         public static void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Begin();
+
             // Draw background in whole window
             spriteBatch.Draw(Background, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
 
@@ -104,6 +103,8 @@ namespace TeamHaddock
                 // If selected menu option is int i have bold font else normal font
                 spriteBatch.DrawString((int)selected.Y == i ? Game1.BoldMenuFont : Game1.NormalMenuFont, MenuOptionsStr[i], new Vector2(10, 40 * i), Color.Black);
             }
+
+            spriteBatch.End();
         }
     }
 }

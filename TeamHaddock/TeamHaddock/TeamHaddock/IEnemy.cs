@@ -5,7 +5,8 @@ namespace TeamHaddock
 {
     public interface IEnemy
     {
-        void Draw(SpriteBatch spriteBatch);
+        void DrawColorMap(SpriteBatch spriteBatch);
+        void DrawNormalMap(SpriteBatch spriteBatch);
         void TakeDamage(int damageTaken);
         void Update(GameTime gameTime);
     }

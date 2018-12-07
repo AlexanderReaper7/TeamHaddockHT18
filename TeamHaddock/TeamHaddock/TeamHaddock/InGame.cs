@@ -14,6 +14,8 @@ namespace TeamHaddock
     /// </summary>
     public static class InGame 
     {
+        public static DynamicLight dynamicLight;
+
         public enum PlayStates : byte
         {
             Tutorial,
@@ -34,15 +36,16 @@ namespace TeamHaddock
         public static List<PistolParticle> particles = new List<PistolParticle>();
         // Temporary location for pistolParticle location
         public static Texture2D pistolParticle;
-        private static GameObjectManager gameObjectManager;
 
-        public static void LoadContent(ContentManager content)
+        public static void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
+
+            dynamicLight = new DynamicLight();
+            dynamicLight.LoadContent(content, graphicsDevice);
 
             player = new Player();
             player.LoadContent(content);
-            Texture2D platformTexture = content.Load<Texture2D>(@"Textures/Ground");
-            gameObjectManager = new GameObjectManager(platformTexture, new Vector2(200));
+
             Texture2D enemyTexture2D = content.Load<Texture2D>(@"Textures/Player");
             pistolParticle = content.Load<Texture2D>(@"Textures/PistolParticle");
 
@@ -67,14 +70,38 @@ namespace TeamHaddock
             }
         }
 
-        public static void Draw(SpriteBatch spriteBatch)
+        public static void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)
         {
-            // Draw background
-            // TODO: Add background
+            // Set the render targets
+            dynamicLight.DrawColorMap(graphicsDevice);
+            DrawColorMap(spriteBatch);
+
+            // Clear all render targets
+            graphicsDevice.SetRenderTarget(null);
+
+            // Set the render targets
+            dynamicLight.DrawNormalMap(graphicsDevice);
+            DrawNormalMap(spriteBatch);
+
+            // Clear all render targets
+            graphicsDevice.SetRenderTarget(null);
+
+            dynamicLight.GenerateShadowMap(graphicsDevice);
+
+            graphicsDevice.Clear(Color.Black);
+
+            dynamicLight.DrawCombinedMaps(spriteBatch);
+
+        }
+
+        private static void DrawColorMap(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Begin();
+
             // Draw the enemies
             foreach (IEnemy enemy in enemies)
             {
-                enemy.Draw(spriteBatch);
+                enemy.DrawColorMap(spriteBatch);
             }
             // Draw the particles
             foreach (PistolParticle particle in particles)
@@ -82,7 +109,24 @@ namespace TeamHaddock
                 particle.Draw(spriteBatch);
             }
             // Draw player
-            player.Draw(spriteBatch);
+            player.DrawColorMap(spriteBatch);
+
+            spriteBatch.End();
+        }
+
+        private static void DrawNormalMap(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Begin();
+
+            // Draw the enemies
+            //foreach (IEnemy enemy in enemies)
+            //{
+            //    enemy.DrawNormalMap(spriteBatch);
+            //}
+            // Draw player
+            player.DrawNormalMap(spriteBatch);
+
+            spriteBatch.End();
         }
     }
 }

@@ -8,7 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Xml.Serialization;
 using System.IO;
 
-// Class created by Alexander 11-07
 namespace TeamHaddock
 {
     public class HighScore

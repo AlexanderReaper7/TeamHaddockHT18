@@ -14,7 +14,7 @@ namespace TeamHaddock
     {
         public CollidableObject collidableObject;
         private KeyboardState keyboard;
-
+        private Texture2D NormalMap;
         private Vector2 velocity;
 
         /// <summary>
@@ -50,6 +50,8 @@ namespace TeamHaddock
                 new Rectangle(0, 0, 60, 120), // Initial size and position of source rectangle
                 0f // The rotation
                 );
+
+            NormalMap = content.Load<Texture2D>(@"Textures/NormalMapHydeWalkingAnimation");
 
             int walkingFrameTime = 125;
             
@@ -308,13 +310,18 @@ namespace TeamHaddock
         ///     Draw Player
         /// </summary>
         /// <param name="spriteBatch"></param>
-        public void Draw(SpriteBatch spriteBatch)
+        public void DrawColorMap(SpriteBatch spriteBatch)
         {
             // Draw player
             spriteBatch.Draw(collidableObject.Texture, collidableObject.Position, collidableObject.SourceRectangle, Color.White, collidableObject.Rotation, collidableObject.Origin, 1.0f, SpriteEffects.None, 0.0f);
             #if DEBUG
                 spriteBatch.DrawString(Game1.NormalMenuFont, $" {velocity}\n {collidableObject.Position}\n {jumpComplete}\n {jumpTime}\n {onGround}", Vector2.One, Color.Green);
             #endif
+        }
+
+        public void DrawNormalMap(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(NormalMap, collidableObject.Position, collidableObject.SourceRectangle, Color.White);
         }
     }
 }

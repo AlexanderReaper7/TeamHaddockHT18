@@ -13,8 +13,10 @@ namespace TeamHaddock
     public class MeleeEnemy : IEnemy
     {
         private CollidableObject collidableObject;
+
         private Animation moveLeftAnimation;
         private Animation moveRightAnimation;
+
         private Vector2 velocity;
         private Vector2 direction;
 
@@ -27,6 +29,9 @@ namespace TeamHaddock
         private int attackOffSet;
         private int timeAttacking;
         private bool attacking;
+
+        private const float baseWalkingSpeed = 0.1f, baseJumpStrength = -0.08f;
+        private readonly Vector2 maxMovementSpeed = new Vector2(0.5f, 100f);
         private const int maxJumpTime = 200;
         private int jumpTime;
         private bool jumpComplete, onGround;
@@ -67,10 +72,7 @@ namespace TeamHaddock
         {
             UpdateAI(gameTime);
             UpdatePosition(gameTime);
-            if (attacking)
-            {
-                //UpdateAttack(gameTime);
-            }
+            if (attacking) UpdateAttack(gameTime);
             
         }
 
@@ -201,6 +203,12 @@ namespace TeamHaddock
             }
         }
 
+        private void AddForce(Vector2 force)
+        {
+            velocity.X = MathHelper.Clamp(velocity.X + force.X, -maxMovementSpeed.X, maxMovementSpeed.X);
+            velocity.Y = MathHelper.Clamp(velocity.Y + force.Y, -maxMovementSpeed.Y, maxMovementSpeed.Y);
+        }
+
         private void StartAttack()
         {
             // Set attacking to active
@@ -209,7 +217,7 @@ namespace TeamHaddock
 
         private void UpdateAttack(GameTime gameTime)
         {
-            timeAttacking += gameTime.ElapsedGameTime.Milliseconds
+            timeAttacking += gameTime.ElapsedGameTime.Milliseconds;
             // If direction is right
             if (direction.X > 0)
             {
@@ -282,7 +290,7 @@ namespace TeamHaddock
                 Game1.ScreenBounds.Y - collidableObject.Origin.Y);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void DrawColorMap(SpriteBatch spriteBatch)
         {
             // Draw enemy
             spriteBatch.Draw(collidableObject.Texture, collidableObject.Position, collidableObject.SourceRectangle, color, collidableObject.Rotation, collidableObject.Origin, 1.0f, SpriteEffects.None, 0.0f);
@@ -292,6 +300,10 @@ namespace TeamHaddock
                 // Draw attack
                 spriteBatch.Draw(attackCollidableObject.Texture, attackCollidableObject.Position, attackCollidableObject.SourceRectangle, Color.White, attackCollidableObject.Rotation, attackCollidableObject.Origin, 1.0f, SpriteEffects.None, 0.0f);
             }
+        }
+
+        public void DrawNormalMap(SpriteBatch spriteBatch)
+        {
         }
     }
 }
