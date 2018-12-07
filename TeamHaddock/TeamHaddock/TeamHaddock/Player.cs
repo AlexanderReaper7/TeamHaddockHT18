@@ -51,32 +51,33 @@ namespace TeamHaddock
                 0f // The rotation
                 );
 
-            int walkingFrameTime = 200;
+            int walkingFrameTime = 125;
             
             // Load all frames into movingRightAnimation
             moveRightAnimation = new Animation(new List<Frame>
                 {
-                    new Frame(new Rectangle(0, 0, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(100, 0, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(200, 0, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(100, 0, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(0, 0, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(300, 0, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(400, 0, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(300, 0, 100, 105), walkingFrameTime),
+                    
+                    //new Frame(new Rectangle(0, 0, 79, 104), walkingFrameTime),
+                    new Frame(new Rectangle(80, 0, 75, 104), walkingFrameTime),
+                    new Frame(new Rectangle(156, 0, 74, 104), walkingFrameTime),
+                    new Frame(new Rectangle(80, 0, 75, 104), walkingFrameTime),
+                    //new Frame(new Rectangle(0, 0, 79, 104), walkingFrameTime),
+                    new Frame(new Rectangle(231, 0, 80, 104), walkingFrameTime),
+                    new Frame(new Rectangle(311, 0, 78, 104), walkingFrameTime),
+                    new Frame(new Rectangle(231, 0, 80, 104), walkingFrameTime),
                 }
             );
 
             moveLeftAnimation = new Animation(new List<Frame>
                 {
-                    new Frame(new Rectangle(0, 106, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(100, 106, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(200, 106, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(100, 106, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(0, 106, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(300, 106, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(400, 106, 100, 105), walkingFrameTime),
-                    new Frame(new Rectangle(300, 106, 100, 105), walkingFrameTime),
+                    //new Frame(new Rectangle(0, 104, 79, 104), walkingFrameTime),
+                    new Frame(new Rectangle(80, 104, 75, 104), walkingFrameTime),
+                    new Frame(new Rectangle(156, 104, 74, 104), walkingFrameTime),
+                    new Frame(new Rectangle(80, 104, 75, 104), walkingFrameTime),
+                    //new Frame(new Rectangle(0, 104, 100, 104), walkingFrameTime),
+                    new Frame(new Rectangle(231, 104, 80, 104), walkingFrameTime),
+                    new Frame(new Rectangle(311, 104, 78, 104), walkingFrameTime),
+                    new Frame(new Rectangle(231, 104, 80, 104), walkingFrameTime),
                 }
             );
         }
