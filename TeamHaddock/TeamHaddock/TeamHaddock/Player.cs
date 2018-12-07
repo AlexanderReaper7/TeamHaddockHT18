@@ -27,7 +27,7 @@ namespace TeamHaddock
         private int jumpTime;
         private bool jumpComplete, onGround;
 
-        private int Health { get; set; } = 100;
+        public int Health { get; private set; } = 1000000;
 
         private Animation moveRightAnimation;
         private Animation moveLeftAnimation;
@@ -90,6 +90,8 @@ namespace TeamHaddock
             UpdateControls(gameTime);
             UpdatePosition(gameTime);
             UpdateVelocity(gameTime);
+
+            HealthDepletion(gameTime);
         }
 
         // Created by Noble 11-07, edited by Alexander 12-06
@@ -248,6 +250,11 @@ namespace TeamHaddock
         private void Attack()
         {
             InGame.particles.Add(new PistolParticle(InGame.pistolParticle, collidableObject.Position + new Vector2(30f), 0.4f, collidableObject.Rotation));
+        }
+
+        private void HealthDepletion(GameTime gameTime)
+        {
+            Health -= gameTime.ElapsedGameTime.Milliseconds;
         }
 
         // Created by Alexander 11-22

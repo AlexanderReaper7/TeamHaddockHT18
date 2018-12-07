@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace TeamHaddock
 {
     /// <summary>
-    ///     Draws and does logic for the gamestate mainMenu
+    ///     Draws and does logic for the gameState mainMenu
     /// </summary>
     internal static class MainMenu
     {

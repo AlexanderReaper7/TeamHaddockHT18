@@ -32,20 +32,20 @@ namespace TeamHaddock
         private int timeForCurrentFrame;
 
         /// <summary>
-        /// Total time for animation
+        /// Total time for a single loop in milliseconds
         /// </summary>
         public int TotalFrameTime
         {
             get
             {
-                int output = 0;
+                int totalFrameTime = 0;
 
                 for (int frame = 0; frame < frames.Count; frame++)
                 {
-                    output += frames[frame].frameTime;
+                    totalFrameTime += frames[frame].frameTime;
                 }
 
-                return output;
+                return totalFrameTime;
             }
         }
 
