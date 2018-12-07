@@ -13,70 +13,21 @@ namespace TeamHaddock
     public class Player
     {
         public CollidableObject collidableObject;
-        private KeyboardState keyboard;    
+        private KeyboardState keyboard;
 
         private Vector2 velocity;
 
         /// <summary>
-        /// Is the player dead?
-        /// </summary>
-        public bool IsPlayerDead;
-
-        /// <summary>
         /// The base walking speed for the player 
         /// </summary>
-        private const float baseWalkingSpeed = 0.1f;
+        private const float baseWalkingSpeed = 0.1f, baseJumpStrength = -0.08f;
 
-        private float maxMovementSpeed = 0.5f;
+        private readonly Vector2 maxMovementSpeed = new Vector2(0.5f, 100f);
+        private const int maxJumpTime = 200;
+        private int jumpTime;
+        private bool jumpComplete, onGround;
 
-        /// <summary>
-        /// Used to determine which direction the player is falling, and how fast they are falling 
-        /// </summary>
-        private float jumpAndFallSpeed = 750f;
-
-        /// <summary>
-        /// Used to modify JumpAndFallSpeed 
-        /// </summary>
-        private float jumpAndFallSpeedModifier = 28f; 
-        /// <summary>
-        /// Used to reset jumpAndFallSpeed to its original value 
-        /// </summary>
-        private const float originalJumpAndFallSpeed = 750f;
-        
-        /// <summary>
-        /// Used to check if the player is currently jumping
-        /// </summary>                    
-        private bool isJumping;
-
-        /// <summary>
-        /// Used to check if the player is currently falling 
-        /// </summary>
-        private bool isFalling;
-
-        /// <summary>
-        /// Used to determine if the player is standing on a drop-down platform
-        /// </summary>
-        private bool dropDownGrounded;
-
-        /// <summary>
-        /// Used to determine if the player is standing on a non-drop down platform 
-        /// </summary>
-        private bool grounded; 
-       
-        /// <summary>
-        /// Used to check if the player is colliding with drop-down platforms only when using the DropDown method 
-        /// </summary>
-        private bool collidingWithDroppablePlatforms; 
-      
-        /// <summary>
-        /// Used to increase the players movement speed 
-        /// </summary>
-        private float movementSpeedUpgrade;
-
-        /// <summary>
-        /// The health for the player 
-        /// </summary>
-        public int Health { get; private set; } = 100;
+        private int Health { get; set; } = 100;
 
         private Animation moveRightAnimation;
         private Animation moveLeftAnimation;
@@ -85,11 +36,6 @@ namespace TeamHaddock
         /// The base damage for the enemies pistol 
         /// </summary>
         private const int basePistolDamage = 8;
-
-        /// <summary>
-        /// How much additional damage the pistol enemies will deal based on this modifier 
-        /// </summary>
-        public int pistolDamageModifier = 2;
 
         /// <summary>
         /// Called upon to load player textures etc.
@@ -110,7 +56,6 @@ namespace TeamHaddock
             // Load all frames into movingRightAnimation
             moveRightAnimation = new Animation(new List<Frame>
                 {
-                    
                     new Frame(new Rectangle(0, 0, 100, 105), walkingFrameTime),
                     new Frame(new Rectangle(100, 0, 100, 105), walkingFrameTime),
                     new Frame(new Rectangle(200, 0, 100, 105), walkingFrameTime),
@@ -136,17 +81,166 @@ namespace TeamHaddock
             );
         }
 
+        /// <summary>
+        /// Updates player logic
+        /// </summary>
+        /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
-            // Get keyboard state
-            keyboard = Keyboard.GetState();
-            // If player is not dead
-            if (!IsPlayerDead)
-            {
-                // Update Player Controls
-                Controls(gameTime);
-            }
+            UpdateControls(gameTime);
             UpdatePosition(gameTime);
+            UpdateVelocity(gameTime);
+        }
+
+        // Created by Noble 11-07, edited by Alexander 12-06
+        private void UpdateControls(GameTime gameTime)
+        {
+            // Update keyboards
+            KeyboardState previousKeyboard = keyboard;
+            keyboard = Keyboard.GetState();
+            // Update ground
+            onGround = collidableObject.Position.Y >= Game1.ScreenBounds.Y - collidableObject.SourceRectangle.Y - 3;
+
+            // If W or Up arrow key is pressed down and jump is not complete
+            if ((keyboard.IsKeyDown(Keys.W) || keyboard.IsKeyDown(Keys.Up)) && !jumpComplete)
+            {
+                // Start jump
+                // If jumpTime is reset and is on ground
+                if (jumpTime == 0 && onGround)
+                {
+                    Jump(gameTime);
+                    return;
+                }
+                // Continue jump
+                // Jump has already started
+                if (jumpTime > 0)
+                {
+                    Jump(gameTime);
+                }
+            }
+            else
+            {
+                // A key was released, therefore set jump to complete
+                jumpComplete = true;
+                // if both keys are up and player is on ground
+                if (keyboard.IsKeyUp(Keys.W) && keyboard.IsKeyUp(Keys.Up) && onGround)
+                {
+                    // Reset jump
+                    jumpTime = 0;
+                    jumpComplete = false;
+                }
+                
+                Fall(gameTime);
+            }
+
+            // If A or Left arrow key is pressed down
+            if (keyboard.IsKeyDown(Keys.A) || keyboard.IsKeyDown(Keys.Left))
+            {
+                MoveLeft(gameTime);
+            }
+            // A or Left is not down
+            else
+            {
+                // A or left was previously down but are now both up
+                if ((previousKeyboard.IsKeyDown(Keys.A) || previousKeyboard.IsKeyDown(Keys.Left)) && keyboard.IsKeyUp(Keys.A) && keyboard.IsKeyUp(Keys.Left))
+                {
+                    // Reset animation
+                    moveLeftAnimation.SetToFrame(ref collidableObject.SourceRectangle, 0);
+                }
+            }
+
+            // If D or Right arrow key is pressed down
+            if (keyboard.IsKeyDown(Keys.D) || keyboard.IsKeyDown(Keys.Right))
+            {
+                MoveRight(gameTime);
+            }
+            // D or Right is not down
+            else
+            {
+                // D or Right was previously down but are now both up
+                if ((previousKeyboard.IsKeyDown(Keys.D) || previousKeyboard.IsKeyDown(Keys.Right)) && keyboard.IsKeyUp(Keys.D) && keyboard.IsKeyUp(Keys.Right))
+                {
+                    // Reset animation
+                    moveRightAnimation.SetToFrame(ref collidableObject.SourceRectangle, 0);
+                }
+            }
+
+            // Debug controls
+            #if DEBUG
+                // If Q key is pressed down then rotate counter-clockwise
+                if (keyboard.IsKeyDown(Keys.Q))
+                {
+                    collidableObject.Rotation -= MathHelper.TwoPi / 1000 * gameTime.ElapsedGameTime.Milliseconds;
+                }
+                // If E key is pressed down then rotate clockwise
+                if (keyboard.IsKeyDown(Keys.E))
+                {
+                    collidableObject.Rotation += MathHelper.TwoPi / 1000 * gameTime.ElapsedGameTime.Milliseconds;
+                }
+                // fire a bullet with space
+                if (UtilityClass.SingleActivationKey(Keys.Space) || UtilityClass.SingleActivationKey(Keys.Z))
+                {
+                    Attack();
+                }
+                // Go to next frame in moveLeftAnimation with V
+                if (UtilityClass.SingleActivationKey(Keys.V))
+                {
+                    moveLeftAnimation.SetToFrame(ref collidableObject.SourceRectangle, moveLeftAnimation.CurrentFrame + 1);
+                }
+                // Go to next frame in moveRightAnimation with B
+                if (UtilityClass.SingleActivationKey(Keys.B))
+                {
+                    moveRightAnimation.SetToFrame(ref collidableObject.SourceRectangle, moveRightAnimation.CurrentFrame + 1);
+                }
+            #endif
+        }
+
+        // Created by Noble 11-21 
+        // Edited by Alexander 11-22
+        private void MoveLeft(GameTime gameTime)
+        {
+            moveLeftAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
+            AddForce(new Vector2(-baseWalkingSpeed, 0));
+        }
+
+        // Created by Noble 11-21 
+        // Edited by Alexander 11-22
+        private void MoveRight(GameTime gameTime)
+        {
+            moveRightAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
+            AddForce(new Vector2(baseWalkingSpeed, 0));
+        }
+
+
+        // Created by Noble 11-21, Edited by Noble 11-28 , Edited by Alexander 12-06
+        private void Jump(GameTime gameTime)
+        {
+            // Add elapsed time to timer
+            jumpTime += gameTime.ElapsedGameTime.Milliseconds;
+            if (jumpTime < maxJumpTime)
+            {
+                // set jump force
+                velocity.Y = baseJumpStrength * gameTime.ElapsedGameTime.Milliseconds;
+            }
+            else
+            {
+                jumpComplete = true;
+            }
+        }
+
+        private void Fall(GameTime gameTime)
+        {
+            if (!onGround)
+            {
+                // Add gravity
+                AddForce(new Vector2(0, 0.04f * gameTime.ElapsedGameTime.Milliseconds));
+            }
+        }
+
+        private void AddForce(Vector2 force)
+        {
+            velocity.X = MathHelper.Clamp(velocity.X + force.X, -maxMovementSpeed.X, maxMovementSpeed.X);
+            velocity.Y = MathHelper.Clamp(velocity.Y + force.Y, -maxMovementSpeed.Y, maxMovementSpeed.Y);
         }
 
         // Created by Noble 11-21 
@@ -162,7 +256,7 @@ namespace TeamHaddock
             switch (damageType)
             {
                 case InGame.DamageTypes.Pistol:
-                    Health -= basePistolDamage + pistolDamageModifier * WaveManager.CurrentWave; // TODO: REDO
+                    Health -= basePistolDamage * WaveManager.CurrentWave; // TODO: REDO
                     break;
                 case InGame.DamageTypes.Melee:
                     Health -= 100; // TODO: Change this
@@ -179,9 +273,6 @@ namespace TeamHaddock
         /// <param name="gameTime"></param>
         private void UpdatePosition(GameTime gameTime)
         {
-            // Gravity
-            velocity.Y += 0.4f;
-
             // Clamp X position + velocity
             collidableObject.Position.X = MathHelper.Clamp(
                 collidableObject.Position.X + (velocity.X * gameTime.ElapsedGameTime.Milliseconds),
@@ -193,142 +284,16 @@ namespace TeamHaddock
                 collidableObject.Position.Y + (velocity.Y * gameTime.ElapsedGameTime.Milliseconds),
                 0 + collidableObject.Origin.Y,
                 Game1.ScreenBounds.Y - collidableObject.Origin.Y);
-
-            velocity *= new Vector2(0.8f);
         }
 
-        // Created by Noble 11-07
-        private void Controls(GameTime gameTime)
+        private void UpdateVelocity(GameTime gameTime)
         {
-            // Edited by Alexander 11-21,  
+            // Reduce velocity
+            velocity *= 0.055f * gameTime.ElapsedGameTime.Milliseconds;
+            // Truncate velocity
+            velocity.X = velocity.X.Truncate(3);
+            velocity.Y = velocity.Y.Truncate(3);
 
-            // If W or Up arrow key is pressed down 
-            if (keyboard.IsKeyDown(Keys.W) || keyboard.IsKeyDown(Keys.Up))
-            {
-                Jump(gameTime);
-            }
-
-            // If A or Left arrow key is pressed down
-            if (keyboard.IsKeyDown(Keys.A) || keyboard.IsKeyDown(Keys.Left))
-            {
-                MoveLeft(gameTime);
-            }
-
-            // If S or Down arrow key is pressed down
-            if (keyboard.IsKeyDown(Keys.S) || keyboard.IsKeyDown(Keys.Down))
-            {
-                DropDown();
-            }
-
-            // If D or Right arrow key is pressed down
-            if (keyboard.IsKeyDown(Keys.D) || keyboard.IsKeyDown(Keys.Right))
-            {
-                MoveRight(gameTime);
-            }
-            // If Q key is pressed down then rotate counter-clockwise
-            if (keyboard.IsKeyDown(Keys.Q))
-            {
-                collidableObject.Rotation -= MathHelper.TwoPi / 1000 * gameTime.ElapsedGameTime.Milliseconds;
-            }
-            // If E key is pressed down then rotate clockwise
-            if (keyboard.IsKeyDown(Keys.E))
-            {
-                collidableObject.Rotation += MathHelper.TwoPi / 1000 * gameTime.ElapsedGameTime.Milliseconds;
-            }
-            // fire a bullet with space
-            if (UtilityClass.SingleActivationKey(Keys.Space) || UtilityClass.SingleActivationKey(Keys.Z))
-            {
-                Attack();
-            }
-
-            if (keyboard.IsKeyDown(Keys.Space))
-            {
-                Jump(gameTime);
-            }
-
-
-            if (UtilityClass.SingleActivationKey(Keys.Down) && grounded)
-            {
-                DropDown();
-            }
-
-            if (UtilityClass.SingleActivationKey(Keys.V))
-            {
-                moveLeftAnimation.SetToFrame(ref collidableObject.SourceRectangle, moveLeftAnimation.CurrentFrame + 1);
-            }
-        }
-
-        // Created by Noble 11-21 
-        // Edited by Alexander 11-22
-        private void MoveLeft(GameTime gameTime)
-        {
-            moveLeftAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
-            velocity.X -= MathHelper.Clamp(baseWalkingSpeed + movementSpeedUpgrade, -maxMovementSpeed, maxMovementSpeed) ;
-        }
-
-        // Created by Noble 11-21 
-        // Edited by Alexander 11-22
-        private void MoveRight(GameTime gameTime)
-        {
-            moveRightAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
-            velocity.X += MathHelper.Clamp(baseWalkingSpeed + movementSpeedUpgrade, -maxMovementSpeed, maxMovementSpeed);
-        }
-
-
-        // Created by Noble 11-21, Edited by Noble 11-28 , Edited by Alexander 12-06
-        private void Jump(GameTime gameTime)
-        {
-            // If not in air
-            if (collidableObject.Position.Y <= Game1.ScreenBounds.Y - 20)
-            {
-                // jump upwards
-                velocity.Y -= 50f;
-            }
-
-            //// The gravity
-            //if (isFalling && jumpAndFallSpeed <= 0)
-            //{
-            //    velocity.Y -= jumpAndFallSpeed / jumpAndFallSpeedModifier;
-            //}
-
-            //// If the speed of the player is less than or equal to zero, the player is falling 
-            //if (jumpAndFallSpeed <= 0)
-            //{
-            //    isFalling = true;
-            //}
-
-            //// 
-            //if (isJumping && jumpAndFallSpeed > 0)
-            //{
-            //    velocity.Y -= jumpAndFallSpeed / jumpAndFallSpeedModifier;
-            //}
-
-            //if (grounded || dropDownGrounded)
-            //{
-            //    isFalling = false;
-            //    isJumping = false;
-            //    jumpAndFallSpeed = originalJumpAndFallSpeed;
-            //}
-
-            //// If the player is jumping or falling then reduce jumpAndFallSpeed  
-            //if (isJumping || isFalling)
-            //{
-            //    jumpAndFallSpeed -= gameTime.ElapsedGameTime.Milliseconds;
-            //}
-
-
-        }
-
-        // Created by Noble 11-21 
-        private void DropDown()
-        {
-            // If the player is standing fully on a drop-down platform, and is not currently jumping nor falling...
-            if (dropDownGrounded && !grounded && !isFalling && !isJumping)
-            {
-                isFalling = true;
-                // Fall through the platform by turning off the collision for all of the platforms on the screen...                   
-                //collidingWithDroppablePlatforms = collidableObject.IsColliding(theDropDownPlatforms);
-            }
         }
 
         /// <summary>
@@ -337,9 +302,11 @@ namespace TeamHaddock
         /// <param name="spriteBatch"></param>
         public void Draw(SpriteBatch spriteBatch)
         {
-            
             // Draw player
             spriteBatch.Draw(collidableObject.Texture, collidableObject.Position, collidableObject.SourceRectangle, Color.White, collidableObject.Rotation, collidableObject.Origin, 1.0f, SpriteEffects.None, 0.0f);
+            #if DEBUG
+                spriteBatch.DrawString(Game1.NormalMenuFont, $" {velocity}\n {collidableObject.Position}\n {jumpComplete}\n {jumpTime}\n {onGround}", Vector2.One, Color.Green);
+            #endif
         }
     }
 }

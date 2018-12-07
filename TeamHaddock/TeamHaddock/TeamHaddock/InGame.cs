@@ -71,8 +71,6 @@ namespace TeamHaddock
         {
             // Draw background
             // TODO: Add background
-            // Draw player
-            player.Draw(spriteBatch);
             // Draw the enemies
             foreach (IEnemy enemy in enemies)
             {
@@ -83,6 +81,8 @@ namespace TeamHaddock
             {
                 particle.Draw(spriteBatch);
             }
+            // Draw player
+            player.Draw(spriteBatch);
         }
     }
 }
