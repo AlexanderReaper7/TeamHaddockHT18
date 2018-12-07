@@ -72,13 +72,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\HydeWalkingAnimation.png">
-      <Name>Player</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="DeferredCombined.fx">
       <Name>DeferredCombined</Name>
       <Importer>EffectImporter</Importer>
@@ -91,13 +84,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\NormalMapHydeWalkingAnimation.png">
-      <Name>NormalMapHydeWalkingAnimation</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Textures\LampPost.png">
       <Name>LampPost</Name>
       <Importer>TextureImporter</Importer>
@@ -107,6 +93,20 @@
   <ItemGroup>
     <Compile Include="Textures\LampPostNormalMap.png">
       <Name>LampPostNormalMap</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\NormalMapCharacterSpriteSheet.png">
+      <Name>NormalMapCharacterSpriteSheet</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\CharacterSpriteSheet.png">
+      <Name>Player</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

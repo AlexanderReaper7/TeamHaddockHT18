@@ -29,8 +29,23 @@ namespace TeamHaddock
 
         public int Health { get; private set; } = 1000000;
 
+        private Animation idleAnimation;
+
         private Animation moveRightAnimation;
         private Animation moveLeftAnimation;
+
+        private Animation jumpingRightAnimation;
+        private Animation jumpingLeftAnimation;
+        private Animation fallingRightAnimation;
+        private Animation fallingLeftAnimation;
+
+        private Animation attackJumpingRightAnimation;
+        private Animation attackJumpingLeftAnimation;
+        private Animation attackFallingRightAnimation;
+        private Animation attackFallingLeftAnimation;
+        
+
+
 
         /// <summary>
         /// The base damage for the enemies pistol 
@@ -51,10 +66,16 @@ namespace TeamHaddock
                 0f // The rotation
                 );
 
-            NormalMap = content.Load<Texture2D>(@"Textures/NormalMapHydeWalkingAnimation");
+            NormalMap = content.Load<Texture2D>(@"Textures/NormalMapCharacterSpriteSheet");
 
             int walkingFrameTime = 125;
             
+            idleAnimation = new Animation(new List<Frame>
+                {
+                    new Frame(new Rectangle(0, 0, 79, 104), walkingFrameTime),
+                }
+            );
+
             // Load all frames into movingRightAnimation
             moveRightAnimation = new Animation(new List<Frame>
                 {
@@ -82,6 +103,63 @@ namespace TeamHaddock
                     new Frame(new Rectangle(231, 104, 80, 104), walkingFrameTime),
                 }
             );
+
+            jumpingRightAnimation = new Animation(new List<Frame>
+                {
+                    new Frame(new Rectangle(0, 209, 72, 105), walkingFrameTime)
+                }
+            );
+
+            jumpingLeftAnimation = new Animation(new List<Frame>
+                {
+                    new Frame(new Rectangle(0, 324, 72, 105), walkingFrameTime)
+                }
+            );
+
+            fallingRightAnimation = new Animation(new List<Frame>
+                {
+                    new Frame(new Rectangle(0, 440, 68, 107), walkingFrameTime)
+                }
+            );
+
+            //
+            fallingLeftAnimation = new Animation(new List<Frame>
+                {
+                    new Frame(new Rectangle(0, 547, 68, 107), walkingFrameTime)
+                }
+            );
+
+            // 
+            attackJumpingRightAnimation = new Animation(new List<Frame>
+                {
+                    new Frame(new Rectangle(72, 209, 62, 113), walkingFrameTime),
+                    new Frame(new Rectangle(135, 209, 62, 113), walkingFrameTime)
+                }
+            );
+
+            attackJumpingLeftAnimation = new Animation(new List<Frame>
+                {
+                    new Frame(new Rectangle(72, 324, 62, 113), walkingFrameTime),
+                    new Frame(new Rectangle(135, 324, 62, 113), walkingFrameTime)
+                }
+            );
+
+            attackFallingRightAnimation = new Animation(new List<Frame>
+                {
+                    new Frame(new Rectangle(70, 440, 61, 108), walkingFrameTime),
+                    new Frame(new Rectangle(133, 440, 146, 108), walkingFrameTime)
+                }
+            );
+            
+
+            attackFallingLeftAnimation = new Animation(new List<Frame>
+                {
+                    new Frame(new Rectangle(70, 546, 61, 108), walkingFrameTime),
+                    new Frame(new Rectangle(132, 546, 146, 108), walkingFrameTime)
+                }
+            );
+
+           
         }
 
         /// <summary>
