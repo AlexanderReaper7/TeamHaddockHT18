@@ -14,6 +14,8 @@ namespace TeamHaddock
     {
         private CollidableObject collidableObject;
 
+        public CollidableObject CollidableObject => collidableObject;
+
         private Animation moveLeftAnimation;
         private Animation moveRightAnimation;
 

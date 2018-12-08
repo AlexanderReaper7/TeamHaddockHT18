@@ -86,5 +86,17 @@ namespace TeamHaddock
             // Reset time elapsed
             timeForCurrentFrame = 0;
         }
+
+        /// <summary>
+        /// Resets animation
+        /// </summary>
+        public void Reset()
+        {
+            // Set animation to  frame
+            CurrentFrame = 0;
+            // Reset time elapsed
+            timeForCurrentFrame = 0;
+
+        }
     }
 }    

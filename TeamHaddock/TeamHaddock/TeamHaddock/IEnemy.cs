@@ -5,6 +5,7 @@ namespace TeamHaddock
 {
     public interface IEnemy
     {
+        CollidableObject CollidableObject { get; }
         void DrawColorMap(SpriteBatch spriteBatch);
         void DrawNormalMap(SpriteBatch spriteBatch);
         void TakeDamage(int damageTaken);
