@@ -30,11 +30,13 @@ namespace TeamHaddock
 
         public static PlayStates playState = PlayStates.Normal;
 
+        private static Texture2D Background;
+
         public static Player player;
 
         public static List<IEnemy> enemies = new List<IEnemy>();
-        private static List<LampPost> lampPosts = new List<LampPost>();
         public static List<PistolParticle> particles = new List<PistolParticle>();
+        private static List<LampPost> lampPosts = new List<LampPost>();
         // Temporary location for pistolParticle location
         public static Texture2D pistolParticle;
 
@@ -43,6 +45,8 @@ namespace TeamHaddock
 
             dynamicLight = new DynamicLight();
             dynamicLight.LoadContent(content, graphicsDevice);
+
+            Background = content.Load<Texture2D>(@"Textures/InGameBackground");
 
             player = new Player();
             player.LoadContent(content);
@@ -54,7 +58,8 @@ namespace TeamHaddock
 
             enemies.Add(new MeleeEnemy(enemyTexture2D, new Vector2(100), enemyTexture2D));
 
-            lampPosts.Add(new LampPost(new Vector2(Game1.ScreenBounds.X - 60, Game1.ScreenBounds.Y / 2)));
+            lampPosts.Add(new LampPost(new Vector2(Game1.ScreenBounds.X - 60, Game1.ScreenBounds.Y)));
+            lampPosts.Add(new LampPost(new Vector2(60, Game1.ScreenBounds.Y)));
         }
 
         public static void Update(GameTime gameTime)
@@ -77,14 +82,14 @@ namespace TeamHaddock
 
         public static void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)
         {
-            // Set the render targets
+            // Draw color map
             dynamicLight.DrawColorMap(graphicsDevice);
             DrawColorMap(spriteBatch);
 
             // Clear all render targets
             graphicsDevice.SetRenderTarget(null);
 
-            // Set the render targets
+            // Draw normals
             dynamicLight.DrawNormalMap(graphicsDevice);
             DrawNormalMap(spriteBatch);
 
@@ -96,13 +101,15 @@ namespace TeamHaddock
             graphicsDevice.Clear(Color.Black);
 
             dynamicLight.DrawCombinedMaps(spriteBatch);
-
+            // Draw UI
+            UserInterface.Draw();
         }
 
         private static void DrawColorMap(SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
             // Draw Background
+            spriteBatch.Draw(Background, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
             // Draw Platforms
             // Draw LampPosts
             foreach (LampPost lampPost in lampPosts)
@@ -145,6 +152,7 @@ namespace TeamHaddock
             //}
             // Draw player
             player.DrawNormalMap(spriteBatch);
+
 
             spriteBatch.End();
         }

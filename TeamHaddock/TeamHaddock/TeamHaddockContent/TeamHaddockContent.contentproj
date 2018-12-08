@@ -52,7 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Textures\Player.png">
-      <Name>Player1</Name>
+      <Name>Player</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -98,15 +98,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\NormalMapCharacterSpriteSheet.png">
-      <Name>NormalMapCharacterSpriteSheet</Name>
+    <Compile Include="Textures\PlayerNormalMap.png">
+      <Name>PlayerNormalMap</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\CharacterSpriteSheet.png">
-      <Name>Player</Name>
+    <Compile Include="Textures\InGameBackground.png">
+      <Name>InGameBackground</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

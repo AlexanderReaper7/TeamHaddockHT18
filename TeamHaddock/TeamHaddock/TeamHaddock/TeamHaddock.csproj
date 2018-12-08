@@ -87,6 +87,7 @@
     <Compile Include="PistolParticle.cs" />
     <Compile Include="Animation.cs" />
     <Compile Include="PointLight.cs" />
+    <Compile Include="UserInterface.cs" />
     <Compile Include="UtilityClass.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

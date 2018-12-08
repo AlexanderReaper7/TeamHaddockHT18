@@ -39,12 +39,15 @@ namespace TeamHaddock
         private Animation fallingRightAnimation;
         private Animation fallingLeftAnimation;
 
+
+        public CollidableObject attackCollidableObject;
+
         private Animation attackJumpingRightAnimation;
         private Animation attackJumpingLeftAnimation;
         private Animation attackFallingRightAnimation;
         private Animation attackFallingLeftAnimation;
-        
 
+        private bool attacking;
 
 
         /// <summary>
@@ -62,21 +65,22 @@ namespace TeamHaddock
             collidableObject = new CollidableObject(
                 content.Load<Texture2D>(@"Textures/Player"), // The texture
                 new Vector2(250, 250), // The spawning position
-                new Rectangle(0, 0, 60, 120), // Initial size and position of source rectangle
+                new Rectangle(0, 0, 79, 104), // Initial size and position of source rectangle
                 0f // The rotation
                 );
 
-            NormalMap = content.Load<Texture2D>(@"Textures/NormalMapCharacterSpriteSheet");
+            NormalMap = content.Load<Texture2D>(@"Textures/PlayerNormalMap");
 
+            // The constant animation time
             int walkingFrameTime = 125;
             
+            // Load all frames into their animations
             idleAnimation = new Animation(new List<Frame>
                 {
                     new Frame(new Rectangle(0, 0, 79, 104), walkingFrameTime),
                 }
             );
 
-            // Load all frames into movingRightAnimation
             moveRightAnimation = new Animation(new List<Frame>
                 {
                     
@@ -248,6 +252,12 @@ namespace TeamHaddock
                 }
             }
 
+            // If Space or Z key are pressed down
+            if (UtilityClass.SingleActivationKey(Keys.Space) || UtilityClass.SingleActivationKey(Keys.Z))
+            {
+                Attack();
+            }
+
             // Debug controls
             #if DEBUG
                 // If Q key is pressed down then rotate counter-clockwise
@@ -259,11 +269,6 @@ namespace TeamHaddock
                 if (keyboard.IsKeyDown(Keys.E))
                 {
                     collidableObject.Rotation += MathHelper.TwoPi / 1000 * gameTime.ElapsedGameTime.Milliseconds;
-                }
-                // fire a bullet with space
-                if (UtilityClass.SingleActivationKey(Keys.Space) || UtilityClass.SingleActivationKey(Keys.Z))
-                {
-                    Attack();
                 }
                 // Go to next frame in moveLeftAnimation with V
                 if (UtilityClass.SingleActivationKey(Keys.V))
@@ -330,7 +335,7 @@ namespace TeamHaddock
         // Edited by Alexander 12-05
         private void Attack()
         {
-            InGame.particles.Add(new PistolParticle(InGame.pistolParticle, collidableObject.Position + new Vector2(30f), 0.4f, collidableObject.Rotation));
+
         }
 
         private void HealthDepletion(GameTime gameTime)

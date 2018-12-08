@@ -72,7 +72,7 @@ namespace TeamHaddock
         {
             UpdateAI(gameTime);
             UpdatePosition(gameTime);
-            if (attacking) UpdateAttack(gameTime);
+            if (attacking) { UpdateAttack(gameTime);}
             
         }
 
@@ -183,7 +183,7 @@ namespace TeamHaddock
             direction = Vector2.UnitX;
             // Set velocity
             velocity.X = 0.3f; // TODO: Add acceleration
-        } 
+        }
 
         private void StopMoving()
         {
@@ -238,6 +238,11 @@ namespace TeamHaddock
                 attackLeftAnimation.Animate(ref attackCollidableObject.SourceRectangle, gameTime);
                 attackCollidableObject.Position.X = collidableObject.Position.X - attackOffSet;
                 attackCollidableObject.Position.Y = collidableObject.Position.Y;
+
+                if (timeAttacking >= attackLeftAnimation.TotalFrameTime)
+                {
+                    EndAttack();
+                }
             }
             // If attack is colliding with player
             if (attackCollidableObject.IsColliding(InGame.player.collidableObject))
@@ -265,7 +270,7 @@ namespace TeamHaddock
         public void TakeDamage(int damageTaken)
         {
             // Give invincibility frames
-
+            
             // Deal damage
             Health -= damageTaken;
         }

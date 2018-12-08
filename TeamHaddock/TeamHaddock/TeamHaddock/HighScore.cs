@@ -12,20 +12,12 @@ namespace TeamHaddock
 {
     public class HighScore
     {
-
         // file variable
         public readonly string Filename = "saveFile.dat";
 
         int playerScore = 0;
 
         string playerName = "Player1";
-
-        
-
-
-
-
-
 
         //parts that is going te used in SaveHighScore
         [Serializable]
@@ -40,18 +32,14 @@ namespace TeamHaddock
             {
                 Playername = new string[count];
                 Score = new int[count];
-
                 Count = count;
             }
-
         }
-
 
         private void SaveHighScore()
         {
             // create the data to save
             SaveData data = LoadData(Filename);
-
             int ScoreIndex = -1;
             for (int i = 0; i < data.Count; i++)
             {
@@ -69,18 +57,11 @@ namespace TeamHaddock
                 {
                     data.Score[i] = data.Score[i - 1];
                 }
-
-
-                
-
                 data.Score[ScoreIndex] = playerScore;
                 data.Playername[ScoreIndex] = playerName;
                 DoSave(data, Filename);
             }
         }
-
-
-
 
         public static SaveData LoadData(string Filename)
         {
@@ -93,7 +74,6 @@ namespace TeamHaddock
             FileStream stream = File.Open(fullpath, FileMode.OpenOrCreate, FileAccess.Read);
             try
             {
-
                 // read the data from the file
                 XmlSerializer serializer = new XmlSerializer(typeof(SaveData));
                 data = (SaveData)serializer.Deserialize(stream);
@@ -105,9 +85,6 @@ namespace TeamHaddock
             }
             return (data);
         }
-
-
-
 
         public static void LoadContent(ContentManager content)
         {
@@ -123,6 +100,5 @@ namespace TeamHaddock
         {
 
         }
-
     }
 }

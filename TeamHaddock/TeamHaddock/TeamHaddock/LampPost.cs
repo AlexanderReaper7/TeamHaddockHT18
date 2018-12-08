@@ -24,7 +24,7 @@ namespace TeamHaddock
         {
             this.position = position;
 
-            InGame.dynamicLight.lights.Add(new PointLight()
+            InGame.dynamicLight.lights.Add(new PointLight
             {
                 IsEnabled = true,
                 Color = new Vector4(1f, 1f, 1f, 1f),
@@ -36,12 +36,12 @@ namespace TeamHaddock
 
         public void DrawColorMap(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, Color.White);
+            spriteBatch.Draw(texture, position, null, Color.White, 0f, new Vector2(texture.Width / 2, texture.Height), Vector2.One, SpriteEffects.None, 0);
         }
 
         public void DrawNormalMap(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(normalMap, position,  Color.White);
+            spriteBatch.Draw(normalMap, position, null, Color.White, 0f, new Vector2(texture.Width / 2, texture.Height), Vector2.One, SpriteEffects.None, 0);
         }
     }
 }
