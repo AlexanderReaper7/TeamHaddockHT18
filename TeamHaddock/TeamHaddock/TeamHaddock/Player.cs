@@ -45,7 +45,7 @@ namespace TeamHaddock
                             {
                                 // Jumping
                                 case -1:
-                                    foreach (Animation animation in animations) {if (animation.name == "attackJumpingLeft") { return animation; } } 
+                                    foreach (Animation animation in animations) {if (animation.name == "attackFallingLeft") { return animation; } } 
                                     throw new ArgumentOutOfRangeException();
                                 // On ground
                                 case 0:
@@ -65,7 +65,7 @@ namespace TeamHaddock
                             {
                                 // Jumping
                                 case -1:
-                                    foreach (Animation animation in animations) { if (animation.name == "attackJumpingRight") { return animation; } }
+                                    foreach (Animation animation in animations) { if (animation.name == "attackFallingRight") { return animation; } }
                                     throw new ArgumentOutOfRangeException();
                                 // On ground
                                 case 0:
@@ -96,7 +96,7 @@ namespace TeamHaddock
                             {
                                 // Jumping
                                 case -1:
-                                    foreach (Animation animation in animations) { if (animation.name == "jumpingLeft") { return animation; } }
+                                    foreach (Animation animation in animations) { if (animation.name == "fallingLeft") { return animation; } }
                                     throw new ArgumentOutOfRangeException();
                                 // On ground
                                 case 0:
@@ -123,7 +123,7 @@ namespace TeamHaddock
                             {
                                 // Jumping
                                 case -1:
-                                    foreach (Animation animation in animations) { if (animation.name == "jumpingRight") { return animation; } }
+                                    foreach (Animation animation in animations) { if (animation.name == "fallingRight") { return animation; } }
                                     throw new ArgumentOutOfRangeException();
                                 // On ground
                                 case 0:
@@ -244,14 +244,14 @@ namespace TeamHaddock
 
             animations.Add(new Animation("attackGroundedRight", new List<Frame>
             {
-                new Frame(new Rectangle(0, 423, 150, 103), attackAnimationFrameTime), 
-                new Frame(new Rectangle(165, 423, 61, 103), preparationAnimationFrameTime), 
+                new Frame(new Rectangle(165, 423, 61, 103), preparationAnimationFrameTime),
+                new Frame(new Rectangle(0, 423, 150, 103), attackAnimationFrameTime),                
             }));
 
             animations.Add(new Animation("attackGroundedLeft", new List<Frame>
             {
-                new Frame(new Rectangle(15, 533, 150, 103), attackAnimationFrameTime),
                 new Frame(new Rectangle(165, 533, 59, 103), preparationAnimationFrameTime),
+                new Frame(new Rectangle(15, 533, 150, 103), attackAnimationFrameTime),                
             }));
 
             animations.Add( new Animation("fallingRight", new List<Frame>
@@ -265,19 +265,20 @@ namespace TeamHaddock
                 new Frame(new Rectangle(0, 1020, 69, 107), walkingFrameTime)
             }));
 
-            //            
-            
             animations.Add(new Animation("attackFallingRight",
                 new List<Frame>
                 {
+                    new Frame(new Rectangle(231, 896, 61, 108), preparationAnimationFrameTime),
                     new Frame(new Rectangle(70, 896, 146, 108), attackAnimationFrameTime),
-                    new Frame(new Rectangle(231, 896, 61, 108), preparationAnimationFrameTime)
+                    
                 }));
             animations.Add(new Animation("attackFallingLeft",
                 new List<Frame>
                 {
-                    new Frame(new Rectangle(85, 1019, 146, 108), walkingFrameTime),
-                    new Frame(new Rectangle(232, 1019, 61, 108), preparationAnimationFrameTime)
+
+                    new Frame(new Rectangle(232, 1019, 61, 108), preparationAnimationFrameTime),
+                    new Frame(new Rectangle(85, 1019, 146, 108), attackAnimationFrameTime),
+                    
                 }));
         }
 
