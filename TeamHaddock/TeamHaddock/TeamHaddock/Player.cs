@@ -198,7 +198,9 @@ namespace TeamHaddock
 
             int idleAnimationFrameTime = 200;
 
-            int attackAnimationFrameTime = 300; 
+            int attackAnimationFrameTime = 500;
+
+            int preparationAnimationFrameTime = 150;     
 
             // Load all frames into their animations            
 
@@ -243,23 +245,13 @@ namespace TeamHaddock
             animations.Add(new Animation("attackGroundedRight", new List<Frame>
             {
                 new Frame(new Rectangle(0, 423, 150, 103), attackAnimationFrameTime), 
-                new Frame(new Rectangle(165, 423, 61, 103), attackAnimationFrameTime), 
+                new Frame(new Rectangle(165, 423, 61, 103), preparationAnimationFrameTime), 
             }));
 
             animations.Add(new Animation("attackGroundedLeft", new List<Frame>
             {
                 new Frame(new Rectangle(15, 533, 150, 103), attackAnimationFrameTime),
-                new Frame(new Rectangle(165, 533, 59, 103), attackAnimationFrameTime),
-            }));
-
-            animations.Add( new Animation("jumpingRight", new List<Frame>
-            {
-                new Frame(new Rectangle(0, 644, 72, 115), walkingFrameTime)
-            }));
-
-            animations.Add( new Animation("jumpingLeft", new List<Frame>
-            {
-                new Frame(new Rectangle(0, 767, 72, 115), walkingFrameTime)
+                new Frame(new Rectangle(165, 533, 59, 103), preparationAnimationFrameTime),
             }));
 
             animations.Add( new Animation("fallingRight", new List<Frame>
@@ -273,30 +265,19 @@ namespace TeamHaddock
                 new Frame(new Rectangle(0, 1020, 69, 107), walkingFrameTime)
             }));
 
-            // 
-            animations.Add( new Animation("attackJumpingRight", new List<Frame>
-            {
-                new Frame(new Rectangle(73, 646, 150, 113), attackAnimationFrameTime),
-                new Frame(new Rectangle(135, 646, 61, 113), attackAnimationFrameTime)
-            }));
-
-            animations.Add(new Animation("attackJumpingLeft", new List<Frame>
-            {
-                new Frame(new Rectangle(86, 769, 150, 113), walkingFrameTime),
-                new Frame(new Rectangle(135, 769, 61, 113), walkingFrameTime)
-            }));
+            //            
             
             animations.Add(new Animation("attackFallingRight",
                 new List<Frame>
                 {
-                    new Frame(new Rectangle(70, 896, 146, 108), walkingFrameTime),
-                    new Frame(new Rectangle(231, 896, 61, 108), walkingFrameTime)
+                    new Frame(new Rectangle(70, 896, 146, 108), attackAnimationFrameTime),
+                    new Frame(new Rectangle(231, 896, 61, 108), preparationAnimationFrameTime)
                 }));
             animations.Add(new Animation("attackFallingLeft",
                 new List<Frame>
                 {
                     new Frame(new Rectangle(85, 1019, 146, 108), walkingFrameTime),
-                    new Frame(new Rectangle(232, 1019, 61, 108), walkingFrameTime)
+                    new Frame(new Rectangle(232, 1019, 61, 108), preparationAnimationFrameTime)
                 }));
         }
 
