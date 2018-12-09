@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -196,95 +196,107 @@ namespace TeamHaddock
             // The constant animation time
             int walkingFrameTime = 125;
 
-            // Load all frames into their animations
+            int idleAnimationFrameTime = 200;
+
+            int attackAnimationFrameTime = 300; 
+
+            // Load all frames into their animations            
 
             animations.Add(new Animation("idleRight", new List<Frame>
             {
-                new Frame(new Rectangle(80, 0, 75, 104), walkingFrameTime), // TODO
+                new Frame(new Rectangle(0, 0, 79, 104), idleAnimationFrameTime),
+                new Frame(new Rectangle(81, 0, 79, 104), idleAnimationFrameTime),
+                new Frame(new Rectangle(161, 0, 79, 104), idleAnimationFrameTime),
+                new Frame(new Rectangle(81, 0, 79, 104), idleAnimationFrameTime),
+                new Frame(new Rectangle(0, 0, 79, 104), idleAnimationFrameTime),
             }));
             
             animations.Add( new Animation("idleLeft", new List<Frame>
             {
-                new Frame(new Rectangle(80, 0, 75, 104), walkingFrameTime), // TODO
+                new Frame(new Rectangle(0, 104, 79, 104), idleAnimationFrameTime),
+                new Frame(new Rectangle(81, 104, 79, 104), idleAnimationFrameTime),
+                new Frame(new Rectangle(161, 104, 79, 104), idleAnimationFrameTime),
+                new Frame(new Rectangle(81, 104, 79, 104), idleAnimationFrameTime),
+                new Frame(new Rectangle(0, 104, 79, 104), idleAnimationFrameTime),
             }));
 
             animations.Add( new Animation("walkRight", new List<Frame>
-            {
-                //new Frame(new Rectangle(0, 0, 79, 104), walkingFrameTime),
-                new Frame(new Rectangle(80, 0, 75, 104), walkingFrameTime),
-                new Frame(new Rectangle(156, 0, 74, 104), walkingFrameTime),
-                new Frame(new Rectangle(80, 0, 75, 104), walkingFrameTime),
-                //new Frame(new Rectangle(0, 0, 79, 104), walkingFrameTime),
-                new Frame(new Rectangle(231, 0, 80, 104), walkingFrameTime),
-                new Frame(new Rectangle(311, 0, 78, 104), walkingFrameTime),
-                new Frame(new Rectangle(231, 0, 80, 104), walkingFrameTime),
+            {        
+                new Frame(new Rectangle(0, 208, 75, 102), walkingFrameTime),
+                new Frame(new Rectangle(76, 208, 75, 104), walkingFrameTime),
+                new Frame(new Rectangle(0, 208, 75, 102), walkingFrameTime),
+                new Frame(new Rectangle(151, 208, 80, 104), walkingFrameTime),
+                new Frame(new Rectangle(232, 208, 78, 104), walkingFrameTime),
+                new Frame(new Rectangle(151, 208, 80, 104), walkingFrameTime),
             }));
 
             animations.Add( new Animation("walkLeft", new List<Frame>
             {
-                //new Frame(new Rectangle(0, 104, 79, 104), walkingFrameTime),
-                new Frame(new Rectangle(80, 104, 75, 104), walkingFrameTime),
-                new Frame(new Rectangle(156, 104, 74, 104), walkingFrameTime),
-                new Frame(new Rectangle(80, 104, 75, 104), walkingFrameTime),
-                //new Frame(new Rectangle(0, 104, 100, 104), walkingFrameTime),
-                new Frame(new Rectangle(231, 104, 80, 104), walkingFrameTime),
-                new Frame(new Rectangle(311, 104, 78, 104), walkingFrameTime),
-                new Frame(new Rectangle(231, 104, 80, 104), walkingFrameTime),
+                new Frame(new Rectangle(0, 312, 75, 102), walkingFrameTime),
+                new Frame(new Rectangle(76, 312, 75, 104), walkingFrameTime),
+                new Frame(new Rectangle(0, 312, 75, 102), walkingFrameTime),
+                new Frame(new Rectangle(151, 312, 80, 104), walkingFrameTime),
+                new Frame(new Rectangle(232, 312, 78, 104), walkingFrameTime),
+                new Frame(new Rectangle(151, 312, 80, 104), walkingFrameTime),
+            }));
+
+            animations.Add(new Animation("attackGroundedRight", new List<Frame>
+            {
+                new Frame(new Rectangle(0, 423, 150, 103), attackAnimationFrameTime), 
+                new Frame(new Rectangle(165, 423, 61, 103), attackAnimationFrameTime), 
+            }));
+
+            animations.Add(new Animation("attackGroundedLeft", new List<Frame>
+            {
+                new Frame(new Rectangle(15, 533, 150, 103), attackAnimationFrameTime),
+                new Frame(new Rectangle(165, 533, 59, 103), attackAnimationFrameTime),
             }));
 
             animations.Add( new Animation("jumpingRight", new List<Frame>
             {
-                new Frame(new Rectangle(0, 209, 72, 105), walkingFrameTime)
+                new Frame(new Rectangle(0, 644, 72, 115), walkingFrameTime)
             }));
 
             animations.Add( new Animation("jumpingLeft", new List<Frame>
             {
-                new Frame(new Rectangle(0, 324, 72, 105), walkingFrameTime)
+                new Frame(new Rectangle(0, 767, 72, 115), walkingFrameTime)
             }));
 
             animations.Add( new Animation("fallingRight", new List<Frame>
             {
-                new Frame(new Rectangle(0, 440, 68, 107), walkingFrameTime)
+                new Frame(new Rectangle(0, 897, 69, 107), walkingFrameTime)
             }));
 
             //
             animations.Add( new Animation("fallingLeft", new List<Frame>
             {
-                new Frame(new Rectangle(0, 547, 68, 107), walkingFrameTime)
+                new Frame(new Rectangle(0, 1020, 69, 107), walkingFrameTime)
             }));
 
             // 
             animations.Add( new Animation("attackJumpingRight", new List<Frame>
             {
-                new Frame(new Rectangle(72, 209, 62, 113), walkingFrameTime),
-                new Frame(new Rectangle(135, 209, 62, 113), walkingFrameTime)
+                new Frame(new Rectangle(73, 646, 150, 113), attackAnimationFrameTime),
+                new Frame(new Rectangle(135, 646, 61, 113), attackAnimationFrameTime)
             }));
 
             animations.Add(new Animation("attackJumpingLeft", new List<Frame>
             {
-                new Frame(new Rectangle(72, 324, 62, 113), walkingFrameTime),
-                new Frame(new Rectangle(135, 324, 62, 113), walkingFrameTime)
+                new Frame(new Rectangle(86, 769, 150, 113), walkingFrameTime),
+                new Frame(new Rectangle(135, 769, 61, 113), walkingFrameTime)
             }));
-
-            animations.Add( new Animation("attackGroundedRight", new List<Frame>
-            {
-                new Frame(new Rectangle(80, 0, 75, 104), walkingFrameTime), // TODO
-            }));
-            animations.Add(new Animation("attackGroundedLeft", new List<Frame>
-            {
-                new Frame(new Rectangle(80, 0, 75, 104), walkingFrameTime), // TODO
-            }));
+            
             animations.Add(new Animation("attackFallingRight",
                 new List<Frame>
                 {
-                    new Frame(new Rectangle(70, 440, 61, 108), walkingFrameTime),
-                    new Frame(new Rectangle(133, 440, 146, 108), walkingFrameTime)
+                    new Frame(new Rectangle(70, 896, 146, 108), walkingFrameTime),
+                    new Frame(new Rectangle(231, 896, 61, 108), walkingFrameTime)
                 }));
             animations.Add(new Animation("attackFallingLeft",
                 new List<Frame>
                 {
-                    new Frame(new Rectangle(70, 546, 61, 108), walkingFrameTime),
-                    new Frame(new Rectangle(132, 546, 146, 108), walkingFrameTime)
+                    new Frame(new Rectangle(85, 1019, 146, 108), walkingFrameTime),
+                    new Frame(new Rectangle(232, 1019, 61, 108), walkingFrameTime)
                 }));
         }
 
