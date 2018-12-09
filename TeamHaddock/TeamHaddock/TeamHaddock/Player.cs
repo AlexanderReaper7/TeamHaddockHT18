@@ -28,6 +28,7 @@ namespace TeamHaddock
 
         List<Animation> animations = new List<Animation>();
 
+        // Edited by Noble 12-09
         private Animation CurrentAnimation
         {
             get
@@ -190,7 +191,7 @@ namespace TeamHaddock
 
             LoadAnimations();
         }
-
+        // Edited by Noble 12-07, 12-08, 12-09, 
         private void LoadAnimations()
         {
             // The constant animation time

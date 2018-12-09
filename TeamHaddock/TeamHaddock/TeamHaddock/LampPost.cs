@@ -19,7 +19,7 @@ namespace TeamHaddock
             texture = content.Load<Texture2D>(@"Textures/LampPost");
             normalMap = content.Load<Texture2D>(@"Textures/LampPostNormalMap");
         }
-
+        // Edited by Noble 12-09 
         public LampPost(Vector2 position)
         {
             this.position = position;
@@ -27,9 +27,9 @@ namespace TeamHaddock
             InGame.dynamicLight.lights.Add(new PointLight
             {
                 IsEnabled = true,
-                Color = new Vector4(0.88f, 0.345f, 0.134f, 1f),
-                Power = .9f,
-                LightDecay = 200,
+                Color = new Vector4(0.1f, 0.2f, 0.8f, 1f),
+                Power = 2.0f,
+                LightDecay = 500,
                 Position = new Vector3(position.X, position.Y - texture.Height + 38, 20)
             });
         }
