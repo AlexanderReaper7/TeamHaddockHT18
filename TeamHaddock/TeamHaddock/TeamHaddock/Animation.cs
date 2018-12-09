@@ -28,6 +28,7 @@ namespace TeamHaddock
 
     public class Animation
     {
+        public string name;
         public List<Frame> frames;
         private int timeForCurrentFrame;
 
@@ -51,8 +52,20 @@ namespace TeamHaddock
 
         public int CurrentFrame { get; private set; }
 
+        /// <summary>
+        /// Initializes a new animation with a name and list of frames
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="frames"></param>
+        public Animation(string name, List<Frame> frames)
+        {
+            this.name = name;
+            this.frames = frames;
+        }
+
         public Animation(List<Frame> frames)
         {
+            name = "";
             this.frames = frames;
         }
 

@@ -12,22 +12,21 @@ namespace TeamHaddock
     /// </summary>
     public class Player
     {
-        public CollidableObject collidableObject;
         private KeyboardState keyboard;
+        public CollidableObject collidableObject;
         private Texture2D NormalMap;
 
-        /// <summary>
-        /// The base walking speed for the player 
-        /// </summary>
         private const float baseWalkingSpeed = 0.1f, baseJumpStrength = -0.08f;
-        private readonly Vector2 maxMovementSpeed = new Vector2(0.5f, 100f);
-        private Vector2 velocity;
+        private readonly Vector2 maxMovementSpeed = new Vector2(0.5f, 10f);
+        public Vector2 velocity;
         private Point direction = new Point(1, 1);
         private const int maxJumpTime = 200;
         private int jumpTime;
-        private bool jumpComplete, onGround;
+        private bool jumpComplete, onGround, walking;
 
         private int Health { get; set; } = 1000000;
+
+        List<Animation> animations = new List<Animation>();
 
         private Animation CurrentAnimation
         {
@@ -46,13 +45,16 @@ namespace TeamHaddock
                             {
                                 // Jumping
                                 case -1:
-                                    return attackJumpingLeftAnimation;
+                                    foreach (Animation animation in animations) {if (animation.name == "attackJumpingLeft") { return animation; } } 
+                                    throw new ArgumentOutOfRangeException();
                                 // On ground
                                 case 0:
-                                    return attackGroundedLeftAnimation;
+                                    foreach (Animation animation in animations) { if (animation.name == "attackGroundedLeft") { return animation; } }
+                                    throw new ArgumentOutOfRangeException();
                                 // Falling
                                 case 1:
-                                    return attackFallingLeftAnimation;
+                                    foreach (Animation animation in animations) { if (animation.name == "attackFallingLeft") { return animation; } }
+                                    throw new ArgumentOutOfRangeException();
                                 // Error
                                 default: throw new ArgumentOutOfRangeException();
                             }
@@ -63,13 +65,16 @@ namespace TeamHaddock
                             {
                                 // Jumping
                                 case -1:
-                                    return attackJumpingRightAnimation;
+                                    foreach (Animation animation in animations) { if (animation.name == "attackJumpingRight") { return animation; } }
+                                    throw new ArgumentOutOfRangeException();
                                 // On ground
                                 case 0:
-                                    return attackGroundedRightAnimation;
+                                    foreach (Animation animation in animations) { if (animation.name == "attackGroundedRight") { return animation; } }
+                                    throw new ArgumentOutOfRangeException();
                                 // Falling
                                 case 1:
-                                    return attackFallingRightAnimation;
+                                    foreach (Animation animation in animations) { if (animation.name == "attackFallingRight") { return animation; } }
+                                    throw new ArgumentOutOfRangeException();
                                 // Error
                                 default: throw new ArgumentOutOfRangeException();
                             }
@@ -91,13 +96,23 @@ namespace TeamHaddock
                             {
                                 // Jumping
                                 case -1:
-                                    return jumpingLeftAnimation;
+                                    foreach (Animation animation in animations) { if (animation.name == "jumpingLeft") { return animation; } }
+                                    throw new ArgumentOutOfRangeException();
                                 // On ground
                                 case 0:
-                                    return idleLeftAnimation;
+                                    if (walking)
+                                    {
+                                        foreach (Animation animation in animations) { if (animation.name == "walkLeft") { return animation; } }
+                                    }
+                                    else
+                                    {
+                                        foreach (Animation animation in animations) { if (animation.name == "idleLeft") { return animation; } }
+                                    }
+                                    throw new ArgumentOutOfRangeException();
                                 // Falling
                                 case 1:
-                                    return fallingLeftAnimation;
+                                    foreach (Animation animation in animations) { if (animation.name == "fallingLeft") { return animation; } }
+                                    throw new ArgumentOutOfRangeException();
                                 // Error
                                 default: throw new ArgumentOutOfRangeException();
                             }
@@ -108,127 +123,26 @@ namespace TeamHaddock
                             {
                                 // Jumping
                                 case -1:
-                                    return jumpingRightAnimation;
+                                    foreach (Animation animation in animations) { if (animation.name == "jumpingRight") { return animation; } }
+                                    throw new ArgumentOutOfRangeException();
                                 // On ground
                                 case 0:
-                                    return idleRightAnimation;
+                                    if (walking)
+                                    {
+                                        foreach (Animation animation in animations) { if (animation.name == "walkRight") { return animation; } }
+                                    }
+                                    else
+                                    {
+                                        foreach (Animation animation in animations) { if (animation.name == "idleRight") { return animation; } }
+                                    }
+                                    throw new ArgumentOutOfRangeException();
                                 // Falling
                                 case 1:
-                                    return fallingRightAnimation;
+                                    foreach (Animation animation in animations) { if (animation.name == "fallingRight") { return animation; } }
+                                    throw new ArgumentOutOfRangeException();
                                 // Error
                                 default: throw new ArgumentOutOfRangeException();
                             }
-                        // Error
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-            }
-
-            set
-            {
-                // Attacking
-                if (attacking)
-                {
-                    // X
-                    switch (attackDirection.X)
-                    {
-                        // Left
-                        case -1:
-                            // Y
-                            switch (attackDirection.Y)
-                            {
-                                // Jumping
-                                case -1:
-                                    attackJumpingLeftAnimation = value;
-                                    break;
-                                // On ground
-                                case 0:
-                                    attackGroundedLeftAnimation = value;
-                                    break;
-                                // Falling
-                                case 1:
-                                    attackFallingLeftAnimation = value;
-                                    break;
-                                // Error
-                                default: throw new ArgumentOutOfRangeException();
-                            }
-                            break;
-                        // Right
-                        case 1:
-                            // Y
-                            switch (attackDirection.Y)
-                            {
-                                // Jumping
-                                case -1:
-                                    attackJumpingRightAnimation = value;
-                                break;
-                                // On ground
-                                case 0:
-                                    attackGroundedRightAnimation = value;
-                                    break;
-                                // Falling
-                                case 1:
-                                    attackFallingRightAnimation = value;
-                                    break;
-                                // Error
-                                default: throw new ArgumentOutOfRangeException();
-                            }
-
-                            break;
-                        // Error
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-                }
-                // Not attacking
-                else
-                {
-                    // X
-                    switch (direction.X)
-                    {
-                        // Left
-                        case -1:
-                            // Y
-                            switch (direction.Y)
-                            {
-                                // Jumping
-                                case -1:
-                                    jumpingLeftAnimation = value;
-                                    break;
-                                // On ground
-                                case 0:
-                                    idleLeftAnimation = value;
-                                    break;
-                                // Falling
-                                case 1:
-                                    fallingLeftAnimation = value;
-                                    break;
-                                // Error
-                                default: throw new ArgumentOutOfRangeException();
-                            }
-                            break;
-                        // Right
-                        case 1:
-                            // Y
-                            switch (direction.Y)
-                            {
-                                // Jumping
-                                case -1:
-                                    jumpingRightAnimation = value;
-                                    break;
-                                // On ground
-                                case 0:
-                                    idleRightAnimation = value;
-                                    break;
-                                // Falling
-                                case 1:
-                                    fallingRightAnimation = value;
-                                    break;
-                                // Error
-                                default: throw new ArgumentOutOfRangeException();
-                            }
-                            break;
                         // Error
                         default:
                             throw new ArgumentOutOfRangeException();
@@ -237,33 +151,13 @@ namespace TeamHaddock
             }
         }
 
-        private Animation idleRightAnimation;
-        private Animation idleLeftAnimation;
-        private Animation moveRightAnimation;
-        private Animation moveLeftAnimation;
-        private Animation jumpingRightAnimation;
-        private Animation jumpingLeftAnimation;
-        private Animation fallingRightAnimation;
-        private Animation fallingLeftAnimation;
 
         private CollidableObject attackCollidableObject;
-        private Animation attackJumpingRightAnimation;
-        private Animation attackJumpingLeftAnimation;
-        private Animation attackFallingRightAnimation;
-        private Animation attackFallingLeftAnimation;
-        private Animation attackGroundedRightAnimation;
-        private Animation attackGroundedLeftAnimation;
         private bool attacking;
         private int timeAttacking;
-        private int attackDamage = 10;
+        private const int attackDamage = 10;
         private Point attackDirection;
 
-        private class Ref<T> where T : Animation 
-        {
-            public T Value { get; set; }
-        }
-
-        List<Ref<Animation>> animations = new List<Ref<Animation>>();
         
 
         /// <summary>
@@ -304,19 +198,17 @@ namespace TeamHaddock
 
             // Load all frames into their animations
 
-            idleRightAnimation = new Animation(new List<Frame>
+            animations.Add(new Animation("idleRight", new List<Frame>
             {
                 new Frame(new Rectangle(80, 0, 75, 104), walkingFrameTime), // TODO
-            });
-            animations.Add(new Ref<Animation> { Value = idleRightAnimation });
-
-            idleLeftAnimation = new Animation(new List<Frame>
+            }));
+            
+            animations.Add( new Animation("idleLeft", new List<Frame>
             {
                 new Frame(new Rectangle(80, 0, 75, 104), walkingFrameTime), // TODO
-            });
-            animations.Add(new Ref<Animation> { Value = idleLeftAnimation });
+            }));
 
-            moveRightAnimation = new Animation(new List<Frame>
+            animations.Add( new Animation("walkRight", new List<Frame>
             {
                 //new Frame(new Rectangle(0, 0, 79, 104), walkingFrameTime),
                 new Frame(new Rectangle(80, 0, 75, 104), walkingFrameTime),
@@ -326,10 +218,9 @@ namespace TeamHaddock
                 new Frame(new Rectangle(231, 0, 80, 104), walkingFrameTime),
                 new Frame(new Rectangle(311, 0, 78, 104), walkingFrameTime),
                 new Frame(new Rectangle(231, 0, 80, 104), walkingFrameTime),
-            });
-            animations.Add(new Ref<Animation> {Value = moveRightAnimation});
+            }));
 
-            moveLeftAnimation = new Animation(new List<Frame>
+            animations.Add( new Animation("walkLeft", new List<Frame>
             {
                 //new Frame(new Rectangle(0, 104, 79, 104), walkingFrameTime),
                 new Frame(new Rectangle(80, 104, 75, 104), walkingFrameTime),
@@ -339,74 +230,62 @@ namespace TeamHaddock
                 new Frame(new Rectangle(231, 104, 80, 104), walkingFrameTime),
                 new Frame(new Rectangle(311, 104, 78, 104), walkingFrameTime),
                 new Frame(new Rectangle(231, 104, 80, 104), walkingFrameTime),
-            });
-            animations.Add(new Ref<Animation> {Value = moveLeftAnimation});
+            }));
 
-            jumpingRightAnimation = new Animation(new List<Frame>
+            animations.Add( new Animation("jumpingRight", new List<Frame>
             {
                 new Frame(new Rectangle(0, 209, 72, 105), walkingFrameTime)
-            });
-            animations.Add(new Ref<Animation> { Value = jumpingRightAnimation });
+            }));
 
-            jumpingLeftAnimation = new Animation(new List<Frame>
+            animations.Add( new Animation("jumpingLeft", new List<Frame>
             {
                 new Frame(new Rectangle(0, 324, 72, 105), walkingFrameTime)
-            });
-            animations.Add(new Ref<Animation> { Value = jumpingLeftAnimation });
+            }));
 
-            fallingRightAnimation = new Animation(new List<Frame>
+            animations.Add( new Animation("fallingRight", new List<Frame>
             {
                 new Frame(new Rectangle(0, 440, 68, 107), walkingFrameTime)
-            });
-            animations.Add(new Ref<Animation> { Value = fallingRightAnimation });
+            }));
 
             //
-            fallingLeftAnimation = new Animation(new List<Frame>
+            animations.Add( new Animation("fallingLeft", new List<Frame>
             {
                 new Frame(new Rectangle(0, 547, 68, 107), walkingFrameTime)
-            });
-            animations.Add(new Ref<Animation> { Value = fallingLeftAnimation });
+            }));
 
             // 
-            attackJumpingRightAnimation = new Animation(new List<Frame>
+            animations.Add( new Animation("attackJumpingRight", new List<Frame>
             {
                 new Frame(new Rectangle(72, 209, 62, 113), walkingFrameTime),
                 new Frame(new Rectangle(135, 209, 62, 113), walkingFrameTime)
-            });
-            animations.Add(new Ref<Animation> { Value = attackJumpingRightAnimation });
+            }));
 
-            attackJumpingLeftAnimation = new Animation(new List<Frame>
+            animations.Add(new Animation("attackJumpingLeft", new List<Frame>
             {
                 new Frame(new Rectangle(72, 324, 62, 113), walkingFrameTime),
                 new Frame(new Rectangle(135, 324, 62, 113), walkingFrameTime)
-            });
-            animations.Add(new Ref<Animation> { Value = attackJumpingLeftAnimation });
+            }));
 
-            attackGroundedRightAnimation = new Animation(new List<Frame>
+            animations.Add( new Animation("attackGroundedRight", new List<Frame>
             {
                 new Frame(new Rectangle(80, 0, 75, 104), walkingFrameTime), // TODO
-            });
-            animations.Add(new Ref<Animation> { Value = attackGroundedRightAnimation });
-
-            attackGroundedLeftAnimation = new Animation(new List<Frame>
+            }));
+            animations.Add(new Animation("attackGroundedLeft", new List<Frame>
             {
                 new Frame(new Rectangle(80, 0, 75, 104), walkingFrameTime), // TODO
-            });
-            animations.Add(new Ref<Animation> { Value = attackGroundedLeftAnimation });
-
-            attackFallingRightAnimation = new Animation(new List<Frame>
-            {
-                new Frame(new Rectangle(70, 440, 61, 108), walkingFrameTime),
-                new Frame(new Rectangle(133, 440, 146, 108), walkingFrameTime)
-            });
-            animations.Add(new Ref<Animation> { Value = attackFallingRightAnimation });
-
-            attackFallingLeftAnimation = new Animation(new List<Frame>
-            {
-                new Frame(new Rectangle(70, 546, 61, 108), walkingFrameTime),
-                new Frame(new Rectangle(132, 546, 146, 108), walkingFrameTime)
-            });
-            animations.Add(new Ref<Animation> { Value = attackFallingLeftAnimation });
+            }));
+            animations.Add(new Animation("attackFallingRight",
+                new List<Frame>
+                {
+                    new Frame(new Rectangle(70, 440, 61, 108), walkingFrameTime),
+                    new Frame(new Rectangle(133, 440, 146, 108), walkingFrameTime)
+                }));
+            animations.Add(new Animation("attackFallingLeft",
+                new List<Frame>
+                {
+                    new Frame(new Rectangle(70, 546, 61, 108), walkingFrameTime),
+                    new Frame(new Rectangle(132, 546, 146, 108), walkingFrameTime)
+                }));
         }
 
         /// <summary>
@@ -430,11 +309,20 @@ namespace TeamHaddock
             // Update keyboard
             keyboard = Keyboard.GetState();
 
-            // Reset direction Y-Axis
-            direction.Y = Point.Zero.Y;
+            // Reset walking
+            walking = false;
 
             // if player hits the ground //or the top of a platform
-            onGround = collidableObject.Position.Y >= Game1.ScreenBounds.Y - collidableObject.SourceRectangle.Y;
+            if (collidableObject.Position.Y >= Game1.ScreenBounds.Y - collidableObject.Origin.Y)
+            {
+                onGround = true;
+                direction.Y = 0;
+            }
+            else
+            {
+                onGround = false;
+            }
+            
             
             // If W or Up arrow key is pressed down And jump is not complete TODO: Fix jumping
             if ((keyboard.IsKeyDown(Keys.W) || keyboard.IsKeyDown(Keys.Up)) && !jumpComplete)
@@ -495,8 +383,8 @@ namespace TeamHaddock
 
             #region Debug controls
             #if DEBUG
-            // If Q key is pressed down then rotate counter-clockwise
-            if (keyboard.IsKeyDown(Keys.Q))
+                // If Q key is pressed down then rotate counter-clockwise
+                if (keyboard.IsKeyDown(Keys.Q))
                 {
                     collidableObject.Rotation -= MathHelper.TwoPi / 1000 * gameTime.ElapsedGameTime.Milliseconds;
                 }
@@ -504,16 +392,6 @@ namespace TeamHaddock
                 if (keyboard.IsKeyDown(Keys.E))
                 {
                     collidableObject.Rotation += MathHelper.TwoPi / 1000 * gameTime.ElapsedGameTime.Milliseconds;
-                }
-                // Go to next frame in moveLeftAnimation with V
-                if (UtilityClass.SingleActivationKey(Keys.V))
-                {
-                    moveLeftAnimation.SetToFrame(ref collidableObject.SourceRectangle, moveLeftAnimation.CurrentFrame + 1);
-                }
-                // Go to next frame in moveRightAnimation with B
-                if (UtilityClass.SingleActivationKey(Keys.B))
-                {
-                    moveRightAnimation.SetToFrame(ref collidableObject.SourceRectangle, moveRightAnimation.CurrentFrame + 1);
                 }
             #endif
             #endregion 
@@ -526,6 +404,7 @@ namespace TeamHaddock
         {
             // Set direction to left
             direction.X = -1;
+            walking = true;
             AddForce(new Vector2(-baseWalkingSpeed, 0));
         }
 
@@ -535,6 +414,7 @@ namespace TeamHaddock
         {
             // Set direction to Right
             direction.X = 1;
+            walking = true;
             AddForce(new Vector2(baseWalkingSpeed, 0));
         }
 
@@ -568,8 +448,9 @@ namespace TeamHaddock
         {
             if (!onGround)
             {
+                direction.Y = 1;
                 // Add gravity
-                AddForce(new Vector2(0, 0.04f * gameTime.ElapsedGameTime.Milliseconds));
+                AddForce(new Vector2(0, 0.04f));
             }
         }
 
@@ -656,10 +537,12 @@ namespace TeamHaddock
             CurrentAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
 
             // Reset all other animations except from the CurrentAnimation
-            foreach (var @ref in animations)
+            foreach (Animation animation in animations)
             {
-                if (ReferenceEquals(@ref.Value, CurrentAnimation)) { return;}
-                @ref.Value.Reset();
+                if (ReferenceEquals(animation, CurrentAnimation)) {
+                    Console.WriteLine("CURRENT ANIMATION IS TRUE");
+                    return;}
+                animation.Reset();
             }
         }
 
@@ -689,9 +572,9 @@ namespace TeamHaddock
         private void UpdateVelocity(GameTime gameTime)
         {
             // Reduce velocity when player is not doing anything
-            if (direction == Point.Zero)
+            if (direction.Y == 0)
             {
-                velocity *= 0.055f * gameTime.ElapsedGameTime.Milliseconds;               
+                velocity.X *= 0.055f * gameTime.ElapsedGameTime.Milliseconds;               
             }
 
             // Truncate velocity

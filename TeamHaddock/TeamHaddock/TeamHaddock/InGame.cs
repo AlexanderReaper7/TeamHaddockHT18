@@ -102,7 +102,7 @@ namespace TeamHaddock
 
             dynamicLight.DrawCombinedMaps(spriteBatch);
             // Draw UI
-            UserInterface.Draw();
+            UserInterface.Draw(spriteBatch);
         }
 
         private static void DrawColorMap(SpriteBatch spriteBatch)
