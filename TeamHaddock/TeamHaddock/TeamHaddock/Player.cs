@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -16,11 +16,11 @@ namespace TeamHaddock
         public CollidableObject collidableObject;
         private Texture2D NormalMap;
 
-        private const float baseWalkingSpeed = 0.1f, baseJumpStrength = -0.08f;
+        private const float baseWalkingSpeed = 0.1f, baseJumpStrength = -0.06f;
         private readonly Vector2 maxMovementSpeed = new Vector2(0.5f, 10f);
         private Vector2 velocity;
         private Point direction = new Point(1, 1);
-        private const int maxJumpTime = 200;
+        private const int maxJumpTime = 130;
         private int jumpTime;
         private bool jumpComplete, onGround, walking;
         public const int maxHealth = 1000000;
@@ -513,6 +513,7 @@ namespace TeamHaddock
         {
             // End attack
             attacking = false;
+            timeAttacking = 0;
         }
 
         /// <summary>
@@ -607,6 +608,13 @@ namespace TeamHaddock
                 1.0f,
                 SpriteEffects.None,
                 0.0f);
+
+            Game1.finalActionsDelegate += () =>
+            {
+                spriteBatch.Begin();
+                spriteBatch.DrawString(Game1.NormalMenuFont, $" {attacking}\n {velocity}\n {CurrentAnimation.name}", Vector2.One, Color.White);
+                spriteBatch.End();
+            };
         }
 
 
@@ -623,5 +631,6 @@ namespace TeamHaddock
                 SpriteEffects.None,
                 0.0f);
         }
+
     }
 }
