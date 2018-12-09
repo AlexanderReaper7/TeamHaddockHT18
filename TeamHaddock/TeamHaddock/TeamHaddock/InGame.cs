@@ -48,6 +48,8 @@ namespace TeamHaddock
 
             Background = content.Load<Texture2D>(@"Textures/InGameBackground");
 
+            UserInterface.LoadContent(content);
+
             player = new Player();
             player.LoadContent(content);
 

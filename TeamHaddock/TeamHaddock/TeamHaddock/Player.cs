@@ -18,13 +18,13 @@ namespace TeamHaddock
 
         private const float baseWalkingSpeed = 0.1f, baseJumpStrength = -0.08f;
         private readonly Vector2 maxMovementSpeed = new Vector2(0.5f, 10f);
-        public Vector2 velocity;
+        private Vector2 velocity;
         private Point direction = new Point(1, 1);
         private const int maxJumpTime = 200;
         private int jumpTime;
         private bool jumpComplete, onGround, walking;
-
-        private int Health { get; set; } = 1000000;
+        public const int maxHealth = 1000000;
+        public int Health { get; private set; } = maxHealth;
 
         List<Animation> animations = new List<Animation>();
 
@@ -398,8 +398,7 @@ namespace TeamHaddock
         }
 
 
-        // Created by Noble 11-21 
-        // Edited by Alexander 11-22
+        // Created by Noble 11-21, Edited by Alexander 11-22
         private void MoveLeft()
         {
             // Set direction to left
@@ -408,8 +407,7 @@ namespace TeamHaddock
             AddForce(new Vector2(-baseWalkingSpeed, 0));
         }
 
-        // Created by Noble 11-21 
-        // Edited by Alexander 11-22
+        // Created by Noble 11-21, Edited by Alexander 11-22
         private void MoveRight()
         {
             // Set direction to Right
@@ -539,9 +537,7 @@ namespace TeamHaddock
             // Reset all other animations except from the CurrentAnimation
             foreach (Animation animation in animations)
             {
-                if (ReferenceEquals(animation, CurrentAnimation)) {
-                    Console.WriteLine("CURRENT ANIMATION IS TRUE");
-                    return;}
+                if (ReferenceEquals(animation, CurrentAnimation)) { return;}
                 animation.Reset();
             }
         }
@@ -572,7 +568,7 @@ namespace TeamHaddock
         private void UpdateVelocity(GameTime gameTime)
         {
             // Reduce velocity when player is not doing anything
-            if (direction.Y == 0)
+            if (!walking)
             {
                 velocity.X *= 0.055f * gameTime.ElapsedGameTime.Milliseconds;               
             }
