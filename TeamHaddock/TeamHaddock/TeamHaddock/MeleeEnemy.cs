@@ -60,7 +60,7 @@ namespace TeamHaddock
             );
             attackLeftAnimation = new Animation(new List<Frame>
             {
-                new Frame(new Rectangle(0,0,1,1), 1000)
+                new Frame(new Rectangle(0, 0, 1, 1), 1000)
             });
             attackRightAnimation = new Animation(new List<Frame>
             {
