@@ -101,7 +101,7 @@ namespace TeamHaddock
             for (int i = 0; i < MenuOptionsStr.Length; i++)
             {
                 // If selected menu option is int i have bold font else normal font
-                spriteBatch.DrawString((int)selected.Y == i ? Game1.BoldMenuFont : Game1.NormalMenuFont, MenuOptionsStr[i], new Vector2(10, 40 * i), Color.Black);
+                spriteBatch.DrawString((int)selected.Y == i ? Game1.BoldMenuFont : Game1.NormalMenuFont, MenuOptionsStr[i], new Vector2(10, 40 * i), Color.White);
             }
 
             spriteBatch.End();
