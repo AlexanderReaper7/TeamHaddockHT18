@@ -31,6 +31,7 @@ namespace TeamHaddock
         public static PlayStates playState = PlayStates.Normal;
 
         private static Texture2D Background;
+        private static Texture2D BackgroundNormalMap;
 
         public static Player player;
 
@@ -47,7 +48,7 @@ namespace TeamHaddock
             dynamicLight.LoadContent(content, graphicsDevice);
 
             Background = content.Load<Texture2D>(@"Textures/InGameBackground");
-
+            BackgroundNormalMap = content.Load<Texture2D>(@"Textures/InGameBackgroundNormalMap");
             UserInterface.LoadContent(content);
 
             player = new Player();
@@ -140,6 +141,7 @@ namespace TeamHaddock
             spriteBatch.Begin();
 
             // Draw Background
+            spriteBatch.Draw(BackgroundNormalMap, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
             // Draw Platforms
             // Draw LampPosts
             foreach (LampPost lampPost in lampPosts)

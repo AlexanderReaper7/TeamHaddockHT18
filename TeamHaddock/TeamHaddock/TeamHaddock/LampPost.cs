@@ -27,10 +27,10 @@ namespace TeamHaddock
             InGame.dynamicLight.lights.Add(new PointLight
             {
                 IsEnabled = true,
-                Color = new Vector4(1f, 1f, 1f, 1f),
-                Power = .8f,
-                LightDecay = 200,
-                Position = new Vector3(position, 80)
+                Color = new Vector4(0.88f, 0.345f, 0.134f, 1f),
+                Power = .4f,
+                LightDecay = 500,
+                Position = new Vector3(position.X, position.Y - texture.Height + 38, 20)
             });
         }
 
