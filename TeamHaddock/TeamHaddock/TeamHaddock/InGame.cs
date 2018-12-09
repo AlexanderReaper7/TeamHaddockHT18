@@ -61,8 +61,8 @@ namespace TeamHaddock
 
             enemies.Add(new MeleeEnemy(enemyTexture2D, new Vector2(100), enemyTexture2D));
 
-            lampPosts.Add(new LampPost(new Vector2(Game1.ScreenBounds.X - 120, Game1.ScreenBounds.Y)));
-            lampPosts.Add(new LampPost(new Vector2(120, Game1.ScreenBounds.Y)));
+            lampPosts.Add(new LampPost(new Vector2(Game1.ScreenBounds.X - 250, Game1.ScreenBounds.Y)));
+            lampPosts.Add(new LampPost(new Vector2(250, Game1.ScreenBounds.Y)));
         }
 
         public static void Update(GameTime gameTime)
