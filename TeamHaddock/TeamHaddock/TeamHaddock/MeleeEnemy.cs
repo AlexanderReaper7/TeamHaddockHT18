@@ -37,27 +37,33 @@ namespace TeamHaddock
         private const int maxJumpTime = 200;
         private int jumpTime;
         private bool jumpComplete, onGround;
-
+        // Edited by Noble 12-10
         public MeleeEnemy(Texture2D texture, Vector2 position, Texture2D attackTexture2D) // TODO: Add Animation attackAnimation
         {
-            collidableObject = new CollidableObject(texture, position, new Rectangle(120, 0, 60, 120), 0);
+            collidableObject = new CollidableObject(texture, position, new Rectangle(120, 0, 98, 114), 0);
             attackCollidableObject = new CollidableObject(attackTexture2D, Vector2.Zero);
 
-            // Load all frames into Animation
+            int walkingTime = 200; 
+            
+            // Load all frames into Animation // Edited by Noble 12-10 
             moveRightAnimation = new Animation(new List<Frame>
                 {
-                    new Frame(new Rectangle(0, 0, 60, 120), 100),
-                    new Frame(new Rectangle(60, 0, 60, 120), 100),
-                    new Frame(new Rectangle(120, 0, 60, 120), 100)
+                    new Frame(new Rectangle(0, 0, 98, 114), walkingTime),
+                    new Frame(new Rectangle(99, 0, 98, 114), walkingTime),
+                    new Frame(new Rectangle(198, 0, 98, 114), walkingTime),
+                    new Frame(new Rectangle(99, 0, 98, 114), walkingTime),
                 }
             );
             moveLeftAnimation = new Animation(new List<Frame>
                 {
-                    new Frame(new Rectangle(120, 0, 60, 120), 100),
-                    new Frame(new Rectangle(60, 0, 60, 120), 100),
-                    new Frame(new Rectangle(0, 0, 60, 120), 100)
+                    new Frame(new Rectangle(0, 114, 98, 114), walkingTime),
+                    new Frame(new Rectangle(99, 114, 98, 114), walkingTime),
+                    new Frame(new Rectangle(198, 114, 98, 114), walkingTime),
+                    new Frame(new Rectangle(99, 114, 98, 114), walkingTime),
                 }
             );
+
+             // ALEXANDER FIXA SÅ ATT DET BARA ÄR EN HITBOX SOM GÅR MOT SPELAREN HELA TIDEN
             attackLeftAnimation = new Animation(new List<Frame>
             {
                 new Frame(new Rectangle(0, 0, 1, 1), 1000)

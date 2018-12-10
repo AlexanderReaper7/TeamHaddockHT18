@@ -174,20 +174,20 @@ namespace TeamHaddock
         {
             // Create a new collidableObject
             collidableObject = new CollidableObject(
-                content.Load<Texture2D>(@"Textures/Player"), // The texture
+                content.Load<Texture2D>(@"Textures/Characters/Player"), // The texture
                 new Vector2(250), // The spawning position
                 new Rectangle(0, 0, 79, 104), // Initial size and position of source rectangle
                 0f // The rotation
                 );
 
             // Create a new collidable object for attack collision map
-            attackCollidableObject = new CollidableObject(content.Load<Texture2D>(@"Textures/PlayerCollisionMap"),
+            attackCollidableObject = new CollidableObject(content.Load<Texture2D>(@"Textures/CollisionMaps/PlayerCollisionMap"),
                 collidableObject.Position,
                 collidableObject.SourceRectangle,
                 collidableObject.Rotation);
 
             // Load normal map texture
-            NormalMap = content.Load<Texture2D>(@"Textures/PlayerNormalMap");
+            NormalMap = content.Load<Texture2D>(@"Textures/Characters/PlayerNormalMap");
 
             LoadAnimations();
         }
@@ -284,7 +284,7 @@ namespace TeamHaddock
         }
 
         /// <summary>
-        /// Updates player logic
+        /// Updates all of the players logic
         /// </summary>
         /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)

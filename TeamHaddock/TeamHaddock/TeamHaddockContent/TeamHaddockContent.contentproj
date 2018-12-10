@@ -44,28 +44,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\MainMenuBG.bmp">
-      <Name>MainMenuBG</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Textures\Player.png">
+    <Compile Include="Textures\Characters\Player.png">
       <Name>Player</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\PistolParticle.png">
-      <Name>PistolParticle</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Textures\Ground.png">
+    <Compile Include="Textures\ActiveObjects\Ground.png">
       <Name>Ground</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
@@ -84,50 +70,183 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\LampPost.png">
+    <Compile Include="Textures\ActiveObjects\LampPost.png">
       <Name>LampPost</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\LampPostNormalMap.png">
+    <Compile Include="Textures\ActiveObjects\LampPostNormalMap.png">
       <Name>LampPostNormalMap</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\PlayerNormalMap.png">
+    <Compile Include="Textures\Characters\PlayerNormalMap.png">
       <Name>PlayerNormalMap</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\InGameBackground.png">
+    <Compile Include="Textures\Backgrounds\InGameBackground.png">
       <Name>InGameBackground</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\PlayerCollisionMap.png">
+    <Compile Include="Textures\CollisionMaps\PlayerCollisionMap.png">
       <Name>PlayerCollisionMap</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\HealthBar.png">
+    <Compile Include="Textures\Backgrounds\InGameBackgroundNormalMap.png">
+      <Name>InGameBackgroundNormalMap</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\ActiveObjects\HealthBar.png">
       <Name>HealthBar</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\InGameBackgroundNormalMap.png">
-      <Name>InGameBackgroundNormalMap</Name>
+    <Compile Include="Textures\ActiveObjects\NormalMapGround.png">
+      <Name>NormalMapGround</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Backgrounds\MainMenuBackground.png">
+      <Name>MainMenuBackground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Characters\BatonPolice.png">
+      <Name>BatonPolice</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\CollisionMaps\BatonPoliceCollisionMap.png">
+      <Name>BatonPoliceCollisionMap</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\CollisionMaps\CivillianCollisionMap.png">
+      <Name>CivillianCollisionMap</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Characters\CivillianSpriteSheet.png">
+      <Name>CivillianSpriteSheet</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Backgrounds\CompanyLogo.png">
+      <Name>CompanyLogo</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Backgrounds\Credits.png">
+      <Name>Credits</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\ActiveObjects\PistolParticle.png">
+      <Name>PistolParticle</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Characters\NormalMapBatonPolice.png">
+      <Name>NormalMapBatonPolice</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Characters\NormalmapCivillianSpriteSheet.png">
+      <Name>NormalmapCivillianSpriteSheet</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\ActiveObjects\Platform.png">
+      <Name>Platform</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\ActiveObjects\NormalMapPlatform.png">
+      <Name>NormalMapPlatform</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Backgrounds\NormalMapCompanyLogo.png">
+      <Name>NormalMapCompanyLogo</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Backgrounds\NormalMapMainMenuBackground.png">
+      <Name>NormalMapMainMenuBackground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Backgrounds\Tutorialdone.png">
+      <Name>Tutorialdone</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\CollisionMaps\PlayerAttackCollisionMap.png">
+      <Name>PlayerAttackCollisionMap</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Backgrounds\HighScoreBackground.png">
+      <Name>HighScoreBackground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Backgrounds\NormalMapInGameBackground.png">
+      <Name>NormalMapInGameBackground</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

@@ -28,6 +28,7 @@ namespace TeamHaddock
             MainMenu,
             InGame,
             HighScore,
+            Tutorial, 
             // Options, // Might add later
             Credits,
             Exit
@@ -96,7 +97,7 @@ namespace TeamHaddock
         protected override void UnloadContent()
         {
         }
-
+        // Edited by Noble 12-10
         /// <summary>
         /// Allows the game to run logic such as updating the world,
         /// checking for collisions, gathering input, and playing audio.
@@ -119,6 +120,8 @@ namespace TeamHaddock
                     break;
                 case GameStates.HighScore:
                     break;
+                case GameStates.Tutorial:
+                    break;
                 case GameStates.Credits:
                     break;
                 case GameStates.Exit:
@@ -130,7 +133,7 @@ namespace TeamHaddock
 
             base.Update(gameTime);
         }
-
+        // Edited by Noble 12-10 
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -148,6 +151,8 @@ namespace TeamHaddock
                     InGame.Draw(spriteBatch, GraphicsDevice);
                     break;
                 case GameStates.HighScore:
+                    break;
+                case GameStates.Tutorial:
                     break;
                 case GameStates.Credits:
                     break;

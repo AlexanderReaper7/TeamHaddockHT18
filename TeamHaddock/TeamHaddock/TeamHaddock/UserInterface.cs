@@ -13,11 +13,12 @@ namespace TeamHaddock
     {
         private static Texture2D healthBar;
         private static Vector2 healthBarPosition = new Vector2(4f);
-        private static Rectangle heathBarBackgroundSource = new Rectangle(0,0,141,31);
-        private static Rectangle healthBarFillerSource = new Rectangle(4, 35, 132, 23);
+        // Edited by Noble 12-10 
+        private static Rectangle heathBarBackgroundSource = new Rectangle(0, 0, 364, 100);
+        private static Rectangle healthBarFillerSource = new Rectangle(57, 100, 239, 23);
         public static void LoadContent(ContentManager content)
         {
-            healthBar = content.Load<Texture2D>(@"Textures/HealthBar");
+            healthBar = content.Load<Texture2D>(@"Textures/ActiveObjects/HealthBar");
         }
 
         public static void Draw(SpriteBatch spriteBatch)

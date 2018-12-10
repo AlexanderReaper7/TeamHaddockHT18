@@ -18,7 +18,6 @@ namespace TeamHaddock
 
         public enum PlayStates : byte
         {
-            Tutorial,
             Normal
         }
 
@@ -41,14 +40,15 @@ namespace TeamHaddock
         // Temporary location for pistolParticle location
         public static Texture2D pistolParticle;
 
+        //Edited by Noble 12-10
         public static void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
 
             dynamicLight = new DynamicLight();
             dynamicLight.LoadContent(content, graphicsDevice);
 
-            Background = content.Load<Texture2D>(@"Textures/InGameBackground");
-            BackgroundNormalMap = content.Load<Texture2D>(@"Textures/InGameBackgroundNormalMap");
+            Background = content.Load<Texture2D>(@"Textures/Backgrounds/InGameBackground");
+            BackgroundNormalMap = content.Load<Texture2D>(@"Textures/Backgrounds/InGameBackgroundNormalMap");
             UserInterface.LoadContent(content);
 
             player = new Player();
@@ -56,8 +56,8 @@ namespace TeamHaddock
 
             LampPost.LoadContent(content);
 
-            Texture2D enemyTexture2D = content.Load<Texture2D>(@"Textures/Player");
-            pistolParticle = content.Load<Texture2D>(@"Textures/PistolParticle");
+            Texture2D enemyTexture2D = content.Load<Texture2D>(@"Textures/Characters/BatonPolice");
+            pistolParticle = content.Load<Texture2D>(@"Textures/ActiveObjects/PistolParticle");
 
             enemies.Add(new MeleeEnemy(enemyTexture2D, new Vector2(100), enemyTexture2D));
 

@@ -16,8 +16,8 @@ namespace TeamHaddock
 
         public static void LoadContent(ContentManager content)
         {
-            texture = content.Load<Texture2D>(@"Textures/LampPost");
-            normalMap = content.Load<Texture2D>(@"Textures/LampPostNormalMap");
+            texture = content.Load<Texture2D>(@"Textures/ActiveObjects/LampPost");
+            normalMap = content.Load<Texture2D>(@"Textures/ActiveObjects/LampPostNormalMap");
         }
         // Edited by Noble 12-09 
         public LampPost(Vector2 position)

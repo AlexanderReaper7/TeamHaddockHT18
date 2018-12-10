@@ -40,9 +40,10 @@ namespace TeamHaddock
         public static void LoadContent(ContentManager content)
         {
 
-            Background = content.Load<Texture2D>(@"Textures/MainMenuBG");
+            Background = content.Load<Texture2D>(@"Textures/Backgrounds/MainMenuBackground");
         }
 
+        // Edited by Noble 12-10 
         /// <summary>
         ///     Updates MainMenu gamestate logic
         /// </summary>
@@ -64,8 +65,7 @@ namespace TeamHaddock
 
                 // Tutorial
                 case 1:
-                    Game1.GameState = Game1.GameStates.InGame;
-                    InGame.playState = InGame.PlayStates.Tutorial;
+                    Game1.GameState = Game1.GameStates.Tutorial; 
                     break;
 
                 // HighScore 
@@ -85,7 +85,7 @@ namespace TeamHaddock
                     throw new ArgumentOutOfRangeException();
             }
         }
-
+        // Edited by Noble 12-10
         /// <summary>
         ///     Draws the MainMenu gamestate
         /// </summary>
@@ -101,7 +101,7 @@ namespace TeamHaddock
             for (int i = 0; i < MenuOptionsStr.Length; i++)
             {
                 // If selected menu option is int i have bold font else normal font
-                spriteBatch.DrawString((int)selected.Y == i ? Game1.BoldMenuFont : Game1.NormalMenuFont, MenuOptionsStr[i], new Vector2(10, 40 * i), Color.Black);
+                spriteBatch.DrawString((int)selected.Y == i ? Game1.BoldMenuFont : Game1.NormalMenuFont, MenuOptionsStr[i], new Vector2(Game1.ScreenBounds.X/2 - 70, 100 * i), Color.White);
             }
 
             spriteBatch.End();
