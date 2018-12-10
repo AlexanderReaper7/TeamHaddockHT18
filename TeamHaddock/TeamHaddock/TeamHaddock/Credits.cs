@@ -19,7 +19,7 @@ namespace TeamHaddock
 
         public static void LoadContent(ContentManager content)
         {
-            
+            Background = content.Load<Texture2D>(@"Textures/CreditsBG");
         }
 
         public static void Update()
@@ -32,6 +32,9 @@ namespace TeamHaddock
             spriteBatch.Begin();
 
             //spriteBatch.Draw(creditsBackground, new Vector2(0, 0), Color.White);
+
+            spriteBatch.Draw(Background, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
+
 
             spriteBatch.DrawString(Game1.BoldMenuFont, "Credits".ToString(), new Vector2(5, -5), Color.Black);
 
