@@ -28,8 +28,6 @@ namespace TeamHaddock
         public static int maxHealth = 50000;
         public int Health { get; private set; } = maxHealth;
 
-        public bool dead; 
-
         private List<Animation> animations = new List<Animation>();
 
         // Edited by Noble 12-09
@@ -159,7 +157,7 @@ namespace TeamHaddock
         private CollidableObject attackCollidableObject;
         private bool attacking;
         private int timeAttacking;
-        private const int attackDamage = 500;
+        private const int attackDamage = 750;
         private Point attackDirection;
 
         private int invulnerabilityFrames;
@@ -291,7 +289,11 @@ namespace TeamHaddock
             if (attacking) { UpdateAttack(gameTime);}
             UpdateVelocity(gameTime);
             HealthDepletion(gameTime);
-            Die(gameTime); 
+
+            if (Health <= 0)
+            {
+                Game1.GameState = Game1.GameStates.GameOver;
+            }
         }
 
 
@@ -389,13 +391,6 @@ namespace TeamHaddock
             #endregion 
         }
 
-        private void Die(GameTime gameTime)
-        {
-            if (Health <= 0)
-            {
-                Game1.GameState = Game1.GameStates.GameOver; 
-            }
-        }
         // Created by Noble 11-21, Edited by Alexander 11-22
         private void MoveLeft()
         {

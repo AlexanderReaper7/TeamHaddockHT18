@@ -57,9 +57,13 @@ namespace TeamHaddock
             totalTimeElapsed = 0;
             difficultyModifier = 0;
 
+            enemies.Clear();
+            lampPosts.Clear();
+
             UserInterface.LoadContent(content);
 
             MeleeEnemy.LoadContent(content);
+            CivilianEnemy.LoadContent(content);
 
             LampPost.LoadContent(content);
 
@@ -70,7 +74,7 @@ namespace TeamHaddock
         public static void Update(GameTime gameTime)
         {
             totalTimeElapsed += gameTime.ElapsedGameTime.Milliseconds;
-            difficultyModifier = (float)(totalTimeElapsed / 30000)+1; // double difficulty per 1 minute
+            difficultyModifier = (totalTimeElapsed / 30000f)+1f; // double difficulty per 1 minute
 
             UpdateSpawning(gameTime);
             // Update player logic

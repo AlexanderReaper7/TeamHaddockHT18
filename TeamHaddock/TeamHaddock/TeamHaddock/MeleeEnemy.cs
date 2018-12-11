@@ -27,11 +27,10 @@ namespace TeamHaddock
         private const int defaultHealth = 1000;
         private int health;
 
-        private const float baseWalkingSpeed = 0.15f, baseJumpStrength = -0.1f;
+        private const float baseWalkingSpeed = 0.15f, baseJumpStrength = -1f;
         private readonly Vector2 maxMovementSpeed = new Vector2(0.5f, 100f);
-        private const int maxJumpTime = 200;
-        private int jumpTime;
-        private bool jumpComplete, onGround;
+        private int timeSinceLastJump;
+        private bool onGround;
 
         private int invulnerabilityFrames;
 
@@ -85,81 +84,51 @@ namespace TeamHaddock
             // Update ground
             onGround = collidableObject.Position.Y >= Game1.ScreenBounds.Y - (collidableObject.origin.Y + InGame.groundRectangle.Height);
 
-
             // Move left when player is to the left
-            if (collidableObject.Position.X > InGame.player.collidableObject.Position.X - (InGame.player.collidableObject.origin.X + collidableObject.origin.X))
+            if (collidableObject.Position.X > InGame.player.collidableObject.Position.X - (collidableObject.origin.X))
             {
                 MoveLeft(gameTime);
             }
+
             // Move right when player is to the right
-            if (collidableObject.Position.X < InGame.player.collidableObject.Position.X + (InGame.player.collidableObject.origin.X + collidableObject.origin.X))
+            if (collidableObject.Position.X < InGame.player.collidableObject.Position.X + (collidableObject.origin.X))
             {
                 MoveRight(gameTime);
             }
-            // when enemy is near the player 
-            if (collidableObject.Position.X > InGame.player.collidableObject.Position.X - (InGame.player.collidableObject.origin.X + collidableObject.origin.X) && collidableObject.Position.X < InGame.player.collidableObject.Position.X + (InGame.player.collidableObject.origin.X + collidableObject.origin.X))
-            {
-                //  and jump is not complete
-                if (InGame.player.collidableObject.Position.Y < collidableObject.Position.Y && !jumpComplete)
-                {
-                    // Continue jump
-                    // Jump has already started
-                    if (jumpTime > 0 && jumpTime < maxJumpTime)
-                    {
-                        Jump(gameTime);
-                    }
 
+            if (collidableObject.Position.X > InGame.player.collidableObject.Position.X -
+                2 * (InGame.player.collidableObject.origin.X + collidableObject.origin.X)
+                && collidableObject.Position.X < InGame.player.collidableObject.Position.X +
+                2 * (InGame.player.collidableObject.origin.X + collidableObject.origin.X))
+            {
+                // player is above enemy and jump is not complete
+                if (InGame.player.collidableObject.Position.Y < collidableObject.Position.Y)
+                {
                     // Start jump
                     // If jumpTime is reset and is on ground
-                    if (jumpTime == 0 && onGround)
+                    if (timeSinceLastJump > 1000 && onGround)
                     {
-                        Jump(gameTime);
+                        Jump();
+                        timeSinceLastJump = 0;
                     }
-
                 }
-                else
-                {
-                    // Fall
-                    Fall(gameTime);
-                    jumpTime = 0;
-                }
+            }
 
 
-            // Move left when player is to the left
-            if (collidableObject.Position.X > InGame.player.collidableObject.Position.X - (InGame.player.collidableObject.origin.X + collidableObject.origin.X))
-            {
-                MoveLeft(gameTime);
-            }
-            // Move right when player is to the right
-            if (collidableObject.Position.X < InGame.player.collidableObject.Position.X + (InGame.player.collidableObject.origin.X + collidableObject.origin.X))
-            {
-                MoveRight(gameTime);
-            }
             // Stop when enemy is near the player 
-            if (collidableObject.Position.X > InGame.player.collidableObject.Position.X - (InGame.player.collidableObject.origin.X + collidableObject.origin.X) 
-                && collidableObject.Position.X < InGame.player.collidableObject.Position.X + (InGame.player.collidableObject.origin.X + collidableObject.origin.X))
+            if (collidableObject.Position.X > InGame.player.collidableObject.Position.X - (collidableObject.origin.X)
+            && collidableObject.Position.X < InGame.player.collidableObject.Position.X + (collidableObject.origin.X))
             {
                 StopMoving();
             }
+            timeSinceLastJump += gameTime.ElapsedGameTime.Milliseconds;
+            Fall(gameTime);
         }
 
         // Created by Noble 11-21, Edited by Noble 11-28 , Edited by Alexander 12-06
-        private void Jump(GameTime gameTime)
+        private void Jump()
         {
-            // Add elapsed time to timer
-            jumpTime += gameTime.ElapsedGameTime.Milliseconds;
-            // if timer has not expired
-            if (jumpTime < maxJumpTime)
-            {
-                // set velocity to jump
-                velocity.Y = baseJumpStrength * gameTime.ElapsedGameTime.Milliseconds;
-            }
-            // Else timer has expired
-            else
-            {
-                // Complete jump
-                jumpComplete = true;
-            }
+            velocity.Y = baseJumpStrength;
         }
 
         private void Fall(GameTime gameTime)
@@ -167,7 +136,7 @@ namespace TeamHaddock
             if (!onGround)
             {
                 // Add gravity
-                AddForce(new Vector2(0, 0.04f * gameTime.ElapsedGameTime.Milliseconds));
+                AddForce(new Vector2(0, 0.01f * gameTime.ElapsedGameTime.Milliseconds));
             }
         }
 
@@ -220,7 +189,7 @@ namespace TeamHaddock
         {
             if (collidableObject.IsColliding(InGame.player.collidableObject))
             {
-                InGame.player.TakeDamage((int)(100 * InGame.difficultyModifier), gameTime);
+                InGame.player.TakeDamage((int)(500 * InGame.difficultyModifier), gameTime);
             }
         }
 
