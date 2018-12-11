@@ -1,0 +1,918 @@
+<Project>
+  <Name>TeamHaddock</Name>
+  <ProjectItem type="NClass.DiagramEditor.ClassDiagram.Diagram" assembly="NClass.DiagramEditor, Version=2.4.1823.0, Culture=neutral, PublicKeyToken=null">
+    <Name>overview</Name>
+    <Language>CSharp</Language>
+    <Entities>
+      <Entity type="Class">
+        <Name>Game1</Name>
+        <Access>Public</Access>
+        <Location left="10" top="369" />
+        <Size width="484" height="349" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public static GameStates GameState = GameStates.MainMenu</Member>
+        <Member type="Field">public SpriteFont NormalMenuFont</Member>
+        <Member type="Field">public static FinalActionsDelegate finalActionsDelegate = () =&gt; { Console.WriteLine("Started Delegate");}</Member>
+        <Member type="Field">public static SpriteFont NormalMenuFont</Member>
+        <Member type="Field">public static SpriteFont BoldMenuFont</Member>
+        <Member type="Field">public static SpriteFont CreditsFont</Member>
+        <Member type="Field">public static SpriteFont BoldCreditsFont</Member>
+        <Member type="Field">public static SpriteFont CreditsTitleFont</Member>
+        <Member type="Field">public static SpriteFont ScoreFont</Member>
+        <Member type="Field">GraphicsDeviceManager graphics</Member>
+        <Member type="Field">SpriteBatch spriteBatch</Member>
+        <Member type="Method">protected override void Initialize()</Member>
+        <Member type="Method">protected override void UnloadContent()</Member>
+        <Member type="Method">protected override void Update(GameTime gameTime)</Member>
+        <Member type="Method">protected override void Draw(GameTime gameTime)</Member>
+        <Member type="Property">public static Point ScreenBounds { get; }</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Delegate">
+        <Name>FinalActionsDelegate</Name>
+        <Access>Public</Access>
+        <Location left="2080" top="1146" />
+        <Size width="163" height="61" />
+        <Collapsed>False</Collapsed>
+        <ReturnType>void</ReturnType>
+      </Entity>
+      <Entity type="Enum">
+        <Name>GameStates</Name>
+        <Access>Public</Access>
+        <Location left="354" top="32" />
+        <Size width="163" height="180" />
+        <Collapsed>False</Collapsed>
+        <Value>MainMenu</Value>
+        <Value>InGame</Value>
+        <Value>HighScore</Value>
+        <Value>Tutorial</Value>
+        <Value>Credits</Value>
+        <Value>Exit</Value>
+        <Value>GameOver</Value>
+      </Entity>
+      <Entity type="Class">
+        <Name>MainMenu</Name>
+        <Access>Internal</Access>
+        <Location left="524" top="216" />
+        <Size width="490" height="196" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private static readonly string[] MenuOptionsStr = {"Play", "Tutorial", "High Score", "Credits", "Exit"}</Member>
+        <Member type="Field">private static Vector2 selected</Member>
+        <Member type="Field">private static Texture2D background</Member>
+        <Member type="Field">private static readonly MenuControls menuControl = new MenuControls(new Vector2(MenuOptionsStr.Length - 1, 0))</Member>
+        <Member type="Method">public static void LoadContent(ContentManager content)</Member>
+        <Member type="Method">public static void Draw(SpriteBatch spriteBatch)</Member>
+        <Member type="Method">public static void Update()</Member>
+        <Modifier>Static</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>InGame</Name>
+        <Access>Public</Access>
+        <Location left="541" top="466" />
+        <Size width="413" height="434" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public static DynamicLight dynamicLight</Member>
+        <Member type="Field">public static Player player</Member>
+        <Member type="Field">private static Texture2D backgroundColorMap</Member>
+        <Member type="Field">private static Texture2D backgroundNormalMap</Member>
+        <Member type="Field">private static Texture2D groundColorMap</Member>
+        <Member type="Field">private static Texture2D groundNormalMap</Member>
+        <Member type="Field">public static Rectangle groundRectangle</Member>
+        <Member type="Field">private static int baseSpawnInterval = 3000</Member>
+        <Member type="Field">private static int timeSinceLastSpawn</Member>
+        <Member type="Field">private static Vector2 defaultSpawnPosition</Member>
+        <Member type="Field">private static Random random = new Random()</Member>
+        <Member type="Field">public static int totalTimeElapsed</Member>
+        <Member type="Field">public static float difficultyModifier</Member>
+        <Member type="Field">public static List&lt;IEnemy&gt; enemies = new List&lt;IEnemy&gt;()</Member>
+        <Member type="Field">private static List&lt;LampPost&gt; lampPosts = new List&lt;LampPost&gt;()</Member>
+        <Member type="Method">public static void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)</Member>
+        <Member type="Method">public static void Update(GameTime gameTime)</Member>
+        <Member type="Method">private static void UpdateSpawning(GameTime gameTime)</Member>
+        <Member type="Method">public static void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)</Member>
+        <Member type="Method">private static void DrawColorMap(SpriteBatch spriteBatch)</Member>
+        <Member type="Method">private static void DrawNormalMap(SpriteBatch spriteBatch)</Member>
+        <Modifier>Static</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>HighScore</Name>
+        <Access>Internal</Access>
+        <Location left="85" top="984" />
+        <Size width="162" height="247" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public static readonly string Filename = "saveFile.dat"</Member>
+        <Member type="Field">private static int playerScore = InGame.totalTimeElapsed</Member>
+        <Member type="Field">private static Texture2D backGround</Member>
+        <Member type="Field">static string playerName = "Player1"</Member>
+        <Member type="Method">public static SaveData LoadData(string Filename)</Member>
+        <Member type="Method">public static void DoSave(SaveData data, String filename)</Member>
+        <Member type="Method">private static void SaveHighScore()</Member>
+        <Member type="Method">public static void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)</Member>
+        <Member type="Method">public static void Update(GameTime gameTime)</Member>
+        <Member type="Method">public static void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)</Member>
+        <Modifier>Static</Modifier>
+      </Entity>
+      <Entity type="Structure">
+        <Name>SaveData</Name>
+        <Access>Public</Access>
+        <Location left="331" top="984" />
+        <Size width="163" height="145" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public string[] Playername</Member>
+        <Member type="Field">public int[] Score</Member>
+        <Member type="Field">public int Count</Member>
+        <Member type="Constructor">public SaveData(int count)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>Tutorial</Name>
+        <Access>Internal</Access>
+        <Location left="85" top="821" />
+        <Size width="413" height="145" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private static Texture2D backGround</Member>
+        <Member type="Method">public static void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)</Member>
+        <Member type="Method">public static void Update(GameTime gameTime)</Member>
+        <Member type="Method">public static void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)</Member>
+        <Modifier>Static</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Credits</Name>
+        <Access>Internal</Access>
+        <Location left="85" top="1249" />
+        <Size width="413" height="162" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private static Texture2D backGround</Member>
+        <Member type="Field">private static float creditsTime</Member>
+        <Member type="Method">public static void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)</Member>
+        <Member type="Method">public static void Update(GameTime gameTime)</Member>
+        <Member type="Method">public static void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)</Member>
+        <Modifier>Static</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>GameOver</Name>
+        <Access>Internal</Access>
+        <Location left="85" top="1434" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private static Texture2D backGround</Member>
+        <Member type="Method">public static void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)</Member>
+        <Member type="Method">public static void Update(GameTime gameTime)</Member>
+        <Member type="Method">public static void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)</Member>
+        <Modifier>Static</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>DynamicLight</Name>
+        <Access>Public</Access>
+        <Location left="1222" top="20" />
+        <Size width="416" height="604" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private RenderTarget2D colorMapRenderTarget</Member>
+        <Member type="Field">private RenderTarget2D normalMapRenderTarget</Member>
+        <Member type="Field">private RenderTarget2D shadowMapRenderTarget</Member>
+        <Member type="Field">private Color ambientLight = new Color(0.6f, 0.6f, 0.6f, 1)</Member>
+        <Member type="Field">private Effect lightCombinedEffect</Member>
+        <Member type="Field">private EffectParameter lightEffectParameterScreenWidth</Member>
+        <Member type="Field">private EffectParameter lightEffectParameterScreenHeight</Member>
+        <Member type="Field">private EffectParameter lightEffectParameterNormalMap</Member>
+        <Member type="Field">private EffectTechnique lightCombinedEffectTechnique</Member>
+        <Member type="Field">private EffectParameter lightCombinedEffectParamAmbient</Member>
+        <Member type="Field">private EffectParameter lightCombinedEffectParamLightAmbient</Member>
+        <Member type="Field">private EffectParameter lightCombinedEffectParamAmbientColor</Member>
+        <Member type="Field">private EffectParameter lightCombinedEffectParamColorMap</Member>
+        <Member type="Field">private EffectParameter lightCombinedEffectParamNormalMap</Member>
+        <Member type="Field">private EffectParameter lightCombinedEffectParamShadowMap</Member>
+        <Member type="Field">public List&lt;Light&gt; lights = new List&lt;Light&gt;()</Member>
+        <Member type="Field">private float specularStrength = 1.0f</Member>
+        <Member type="Field">private EffectTechnique lightEffectTechniquePointLight</Member>
+        <Member type="Field">private EffectParameter lightEffectParameterStrength</Member>
+        <Member type="Field">private EffectParameter lightEffectParameterPosition</Member>
+        <Member type="Field">private EffectParameter lightEffectParameterConeDirection</Member>
+        <Member type="Field">private EffectParameter lightEffectParameterLightColor</Member>
+        <Member type="Field">private EffectParameter lightEffectParameterLightDecay</Member>
+        <Member type="Field">public VertexPositionColorTexture[] Vertices</Member>
+        <Member type="Field">public VertexBuffer VertexBuffer</Member>
+        <Member type="Field">public static BlendState BlendBlack = new BlendState()</Member>
+        <Member type="Method">public void LoadContent(ContentManager Content, GraphicsDevice GraphicsDevice)</Member>
+        <Member type="Method">public void DrawCombinedMaps(SpriteBatch spriteBatch)</Member>
+        <Member type="Method">public Texture2D GenerateShadowMap(GraphicsDevice graphicsDevice)</Member>
+        <Member type="Method">public void DrawColorMap(GraphicsDevice graphicsDevice)</Member>
+        <Member type="Method">public void DrawNormalMap(GraphicsDevice graphicsDevice)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>Player</Name>
+        <Access>Public</Access>
+        <Location left="1127" top="892" />
+        <Size width="336" height="825" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private KeyboardState keyboard</Member>
+        <Member type="Field">public CollidableObject collidableObject</Member>
+        <Member type="Field">private Texture2D normalMap</Member>
+        <Member type="Field">private Texture2D colorMap</Member>
+        <Member type="Field">private const float baseWalkingSpeed = 0.1f</Member>
+        <Member type="Field">private const float baseJumpStrength = -0.06f</Member>
+        <Member type="Field">private readonly Vector2 maxMovementSpeed = new Vector2(0.5f, 10f)</Member>
+        <Member type="Field">const float groundResistance = 0.04f</Member>
+        <Member type="Field">private Vector2 velocity</Member>
+        <Member type="Field">private Point direction = new Point(1, 1)</Member>
+        <Member type="Field">private const int maxJumpTime = 130</Member>
+        <Member type="Field">private int jumpTime</Member>
+        <Member type="Field">private bool jumpComplete</Member>
+        <Member type="Field">private bool onGround</Member>
+        <Member type="Field">private bool walking</Member>
+        <Member type="Field">public static int maxHealth = 50000</Member>
+        <Member type="Field">private List&lt;Animation&gt; animations = new List&lt;Animation&gt;()</Member>
+        <Member type="Field">private CollidableObject attackCollidableObject</Member>
+        <Member type="Field">private bool attacking</Member>
+        <Member type="Field">private int timeAttacking</Member>
+        <Member type="Field">private const int attackDamage = 750</Member>
+        <Member type="Field">private Point attackDirection</Member>
+        <Member type="Field">private int invulnerabilityFrames</Member>
+        <Member type="Property">public int Health { get; private set; }</Member>
+        <Member type="Property">private Animation CurrentAnimation { get; }</Member>
+        <Member type="Method">public void LoadContent(ContentManager content)</Member>
+        <Member type="Method">private void LoadAnimations()</Member>
+        <Member type="Method">public void Update(GameTime gameTime)</Member>
+        <Member type="Method">private void UpdateControls(GameTime gameTime)</Member>
+        <Member type="Method">private void MoveLeft()</Member>
+        <Member type="Method">private void MoveRight()</Member>
+        <Member type="Method">private void Jump(GameTime gameTime)</Member>
+        <Member type="Method">private void Fall(GameTime gameTime)</Member>
+        <Member type="Method">private void AddForce(Vector2 force)</Member>
+        <Member type="Method">private void StartAttack()</Member>
+        <Member type="Method">private void UpdateAttack(GameTime gameTime)</Member>
+        <Member type="Method">private void EndAttack()</Member>
+        <Member type="Method">private void HealthDepletion(GameTime gameTime)</Member>
+        <Member type="Method">public void TakeDamage(int damageTaken, GameTime gameTime)</Member>
+        <Member type="Method">private void UpdateAnimation(GameTime gameTime)</Member>
+        <Member type="Method">private void UpdatePosition(GameTime gameTime)</Member>
+        <Member type="Method">private void UpdateVelocity(GameTime gameTime)</Member>
+        <Member type="Method">public void DrawColorMap(SpriteBatch spriteBatch)</Member>
+        <Member type="Method">public void DrawNormalMap(SpriteBatch spriteBatch)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Enum">
+        <Name>LightType</Name>
+        <Access>Public</Access>
+        <Location left="1696" top="205" />
+        <Size width="163" height="216" />
+        <Collapsed>False</Collapsed>
+        <Value>Point</Value>
+      </Entity>
+      <Entity type="Class">
+        <Name>Light</Name>
+        <Access>Public</Access>
+        <Location left="1696" top="467" />
+        <Size width="162" height="315" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">protected float initialPower</Member>
+        <Member type="Field">public Vector3 Position</Member>
+        <Member type="Field">public Vector4 Color</Member>
+        <Member type="Property">public float ActualPower { get; set; }</Member>
+        <Member type="Property">public float Power { get; set; }</Member>
+        <Member type="Property">public int LightDecay { get; set; }</Member>
+        <Member type="Property">public LightType LightType { get; private set; }</Member>
+        <Member type="Property">public bool IsEnabled { get; set; }</Member>
+        <Member type="Property">public Vector3 Direction { get; set; }</Member>
+        <Member type="Constructor">protected Light(LightType lightType)</Member>
+        <Member type="Method">public void EnableLight(bool enabled, float timeToEnable)</Member>
+        <Member type="Method">public virtual void Update(GameTime gameTime)</Member>
+        <Member type="Method">protected void CopyBaseFields(Light light)</Member>
+        <Member type="Method">public abstract Light DeepCopy()</Member>
+        <Modifier>Abstract</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>PointLight</Name>
+        <Access>Public</Access>
+        <Location left="1459" top="674" />
+        <Size width="163" height="111" />
+        <Collapsed>False</Collapsed>
+        <Member type="Constructor">public PointLight()</Member>
+        <Member type="Method">public override Light DeepCopy()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>UserInterface</Name>
+        <Access>Public</Access>
+        <Location left="736" top="984" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private static Texture2D healthBar</Member>
+        <Member type="Field">private static Vector2 healthBarPosition = new Vector2(4f)</Member>
+        <Member type="Field">private static Rectangle heathBarBackgroundSource = new Rectangle(0, 0, 364, 100)</Member>
+        <Member type="Field">private static Rectangle healthBarFillerSource = new Rectangle(57, 100, 239, 23)</Member>
+        <Member type="Method">public static void LoadContent(ContentManager content)</Member>
+        <Member type="Method">public static void Draw(SpriteBatch spriteBatch)</Member>
+        <Modifier>Static</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>UtilityClass</Name>
+        <Access>Public</Access>
+        <Location left="736" top="1298" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private static KeyboardState currentKeyboardState</Member>
+        <Member type="Field">private static KeyboardState previousKeyboardState</Member>
+        <Member type="Method">public static void Update()</Member>
+        <Member type="Method">public static bool SingleActivationKey(Keys key)</Member>
+        <Member type="Method">public static float Truncate(float value, int digits)</Member>
+        <Modifier>Static</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>LampPost</Name>
+        <Access>Public</Access>
+        <Location left="1127" top="649" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private static Texture2D texture</Member>
+        <Member type="Field">private static Texture2D normalMap</Member>
+        <Member type="Field">private Vector2 position</Member>
+        <Member type="Method">public static void LoadContent(ContentManager content)</Member>
+        <Member type="Constructor">public LampPost(Vector2 position)</Member>
+        <Member type="Method">public void DrawColorMap(SpriteBatch spriteBatch)</Member>
+        <Member type="Method">public void DrawNormalMap(SpriteBatch spriteBatch)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Interface">
+        <Name>IEnemy</Name>
+        <Access>Public</Access>
+        <Location left="2080" top="1405" />
+        <Size width="265" height="146" />
+        <Collapsed>False</Collapsed>
+        <Member type="Property">CollidableObject CollidableObject { get; }</Member>
+        <Member type="Method">void DrawColorMap(SpriteBatch spriteBatch)</Member>
+        <Member type="Method">void DrawNormalMap(SpriteBatch spriteBatch)</Member>
+        <Member type="Method">bool TakeDamage(int damageTaken)</Member>
+        <Member type="Method">void Update(GameTime gameTime)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>CollidableObject</Name>
+        <Access>Public</Access>
+        <Location left="1516" top="1367" />
+        <Size width="162" height="366" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public Vector2 Position</Member>
+        <Member type="Field">public Rectangle SourceRectangle</Member>
+        <Member type="Field">public Vector2 origin</Member>
+        <Member type="Field">public float rotation</Member>
+        <Member type="Constructor">public CollidableObject(Texture2D texture, Vector2 position)</Member>
+        <Member type="Constructor">public CollidableObject(Texture2D texture, Vector2 position, Rectangle sourceRectangle, float rotation)</Member>
+        <Member type="Property">public Texture2D Texture { get; private set; }</Member>
+        <Member type="Property">public float Rotation { get; set; }</Member>
+        <Member type="Property">private Color[,] TextureData { get; set; }</Member>
+        <Member type="Property">private Matrix Transform { get; }</Member>
+        <Member type="Property">public Rectangle BoundingRectangle { get; }</Member>
+        <Member type="Method">public bool IsColliding(CollidableObject collidable)</Member>
+        <Member type="Method">public void LoadTexture(Texture2D texture)</Member>
+        <Member type="Method">public void LoadTexture(Texture2D texture, Vector2 origin)</Member>
+        <Member type="Method">public static bool Intersect(CollidableObject collidableObjectA, CollidableObject collidableObjectB)</Member>
+        <Member type="Method">private static bool IntersectPixels(Matrix transformA, Rectangle sourceA, Color[,] dataA, Matrix transformB, Rectangle sourceB, Color[,] dataB)</Member>
+        <Member type="Method">private static Rectangle CalculateBoundingRectangle(Rectangle rectangle, Matrix transform)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>CivilianEnemy</Name>
+        <Access>Public</Access>
+        <Location left="1884" top="1146" />
+        <Size width="162" height="519" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private CollidableObject collidableObject</Member>
+        <Member type="Field">private static Texture2D colorMap</Member>
+        <Member type="Field">private static Texture2D normalMap</Member>
+        <Member type="Field">private bool onGround</Member>
+        <Member type="Field">private bool walkingDirection</Member>
+        <Member type="Field">private Animation moveLeftAnimation</Member>
+        <Member type="Field">private Animation moveRightAnimation</Member>
+        <Member type="Field">private Vector2 velocity</Member>
+        <Member type="Field">private const int defaultHealth = 300</Member>
+        <Member type="Field">private int health</Member>
+        <Member type="Field">private int invulnerabilityFrames</Member>
+        <Member type="Field">private const float baseWalkingSpeed = 0.1f</Member>
+        <Member type="Field">private readonly Vector2 maxMovementSpeed = new Vector2(0.5f, 100f)</Member>
+        <Member type="Property">public CollidableObject CollidableObject { get; }</Member>
+        <Member type="Constructor">public CivilianEnemy(Vector2 position, bool walkingDirection)</Member>
+        <Member type="Method">public static void LoadContent(ContentManager content)</Member>
+        <Member type="Method">public void Update(GameTime gameTime)</Member>
+        <Member type="Method">private void UpdateAI(GameTime gameTime)</Member>
+        <Member type="Method">private void Fall(GameTime gameTime)</Member>
+        <Member type="Method">private void MoveLeft(GameTime gameTime)</Member>
+        <Member type="Method">private void MoveRight(GameTime gameTime)</Member>
+        <Member type="Method">private void AddForce(Vector2 force)</Member>
+        <Member type="Method">private void UpdatePosition(GameTime gameTime)</Member>
+        <Member type="Method">private void RemoveFromList()</Member>
+        <Member type="Method">public void DrawColorMap(SpriteBatch spriteBatch)</Member>
+        <Member type="Method">public void DrawNormalMap(SpriteBatch spriteBatch)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>MeleeEnemy</Name>
+        <Access>Public</Access>
+        <Location left="2373" top="1164" />
+        <Size width="162" height="621" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private CollidableObject collidableObject</Member>
+        <Member type="Field">private static Texture2D colorMap</Member>
+        <Member type="Field">private static Texture2D normalMap</Member>
+        <Member type="Field">private static Texture2D collisionMap</Member>
+        <Member type="Field">public CollidableObject CollidableObject = &gt; collidableObject</Member>
+        <Member type="Field">private Animation moveLeftAnimation</Member>
+        <Member type="Field">private Animation moveRightAnimation</Member>
+        <Member type="Field">private Vector2 velocity</Member>
+        <Member type="Field">private Vector2 direction</Member>
+        <Member type="Field">private const int defaultHealth = 1000</Member>
+        <Member type="Field">private int health</Member>
+        <Member type="Field">private const float baseWalkingSpeed = 0.15f, baseJumpStrength = -1f</Member>
+        <Member type="Field">private readonly Vector2 maxMovementSpeed = new Vector2(0.5f, 100f)</Member>
+        <Member type="Field">private int timeSinceLastJump</Member>
+        <Member type="Field">private bool onGround</Member>
+        <Member type="Field">private int invulnerabilityFrames</Member>
+        <Member type="Constructor">public MeleeEnemy(Vector2 position)</Member>
+        <Member type="Method">public static void LoadContent(ContentManager content)</Member>
+        <Member type="Method">public void Update(GameTime gameTime)</Member>
+        <Member type="Method">private void UpdateAI(GameTime gameTime)</Member>
+        <Member type="Method">private void Jump()</Member>
+        <Member type="Method">private void Fall(GameTime gameTime)</Member>
+        <Member type="Method">private void MoveLeft(GameTime gameTime)</Member>
+        <Member type="Method">private void MoveRight(GameTime gameTime)</Member>
+        <Member type="Method">private void StopMoving()</Member>
+        <Member type="Method">private void UpdateAttack(GameTime gameTime)</Member>
+        <Member type="Method">private void AddForce(Vector2 force)</Member>
+        <Member type="Method">public bool TakeDamage(int damageTaken)</Member>
+        <Member type="Method">private void RemoveFromList()</Member>
+        <Member type="Method">private void UpdatePosition(GameTime gameTime)</Member>
+        <Member type="Method">public void DrawColorMap(SpriteBatch spriteBatch)</Member>
+        <Member type="Method">public void DrawNormalMap(SpriteBatch spriteBatch)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Structure">
+        <Name>Frame</Name>
+        <Access>Public</Access>
+        <Location left="1731" top="832" />
+        <Size width="162" height="216" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public readonly Rectangle sourceRectangle</Member>
+        <Member type="Field">public readonly Vector2 origin</Member>
+        <Member type="Field">public readonly int frameTime</Member>
+        <Member type="Constructor">public Frame(Rectangle sourceRectangle, int frameTime)</Member>
+        <Member type="Constructor">public Frame(Rectangle sourceRectangle, Vector2 origin, int frameTime)</Member>
+      </Entity>
+      <Entity type="Class">
+        <Name>Animation</Name>
+        <Access>Public</Access>
+        <Location left="1516" top="1016" />
+        <Size width="162" height="264" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">public string name</Member>
+        <Member type="Field">public List&lt;Frame&gt; frames</Member>
+        <Member type="Field">private int timeForCurrentFrame</Member>
+        <Member type="Property">public int TotalFrameTime { get; }</Member>
+        <Member type="Property">public int CurrentFrame { get; private set; }</Member>
+        <Member type="Constructor">public Animation(string name, List&lt;Frame&gt; frames)</Member>
+        <Member type="Constructor">public Animation(List&lt;Frame&gt; frames)</Member>
+        <Member type="Method">public void Animate(ref Rectangle sourceRectangle, GameTime gameTime)</Member>
+        <Member type="Method">public void Animate(ref Rectangle sourceRectangle, ref Vector2 origin, GameTime gameTime)</Member>
+        <Member type="Method">public void SetToFrame(ref Rectangle sourceRectangle, int frameToSet)</Member>
+        <Member type="Method">public void Reset()</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+      <Entity type="Class">
+        <Name>MenuControls</Name>
+        <Access>Internal</Access>
+        <Location left="847" top="32" />
+        <Size width="255" height="162" />
+        <Collapsed>False</Collapsed>
+        <Member type="Field">private readonly Vector2 selectionMax</Member>
+        <Member type="Constructor">public MenuControls(Vector2 selectionMax)</Member>
+        <Member type="Property">public bool IsEnterDown { get; private set; }</Member>
+        <Member type="Property">public bool IsEscapeDown { get; private set; }</Member>
+        <Member type="Method">public void UpdateSelected(ref Vector2 selected)</Member>
+        <Modifier>None</Modifier>
+      </Entity>
+    </Entities>
+    <Relationships>
+      <Relationship type="Nesting" first="0" second="1">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>208</X>
+          <Y>10</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Nesting" first="0" second="2">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+      </Relationship>
+      <Relationship type="Nesting" first="5" second="6">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>272</X>
+          <Y>1086</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="21" second="18">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>2210</X>
+          <Y>1351</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Realization" first="20" second="18">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>2111</X>
+          <Y>1346</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Nesting" first="23" second="22">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>1705</X>
+          <Y>891</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Nesting" first="13" second="12">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1762</X>
+          <Y>440</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1762</X>
+          <Y>446</Y>
+        </BendPoint>
+      </Relationship>
+      <Relationship type="Association" first="0" second="3">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>421</X>
+          <Y>313</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="4">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>519</X>
+          <Y>493</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="7">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>445</X>
+          <Y>791</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>54</X>
+          <Y>847</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="5">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>387</X>
+          <Y>767</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>44</X>
+          <Y>995</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="8">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>342</X>
+          <Y>751</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>35</X>
+          <Y>1275</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="9">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>277</X>
+          <Y>743</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>22</X>
+          <Y>1455</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="11" second="19">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+        <EndMultiplicity>2</EndMultiplicity>
+      </Relationship>
+      <Relationship type="Association" first="21" second="19">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1803</X>
+          <Y>1709</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1703</X>
+          <Y>1709</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+        <EndMultiplicity>1</EndMultiplicity>
+      </Relationship>
+      <Relationship type="Association" first="20" second="19">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1851</X>
+          <Y>1253</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+        <EndMultiplicity>1</EndMultiplicity>
+      </Relationship>
+      <Relationship type="Association" first="4" second="11">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>979</X>
+          <Y>869</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1090</X>
+          <Y>918</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+        <EndMultiplicity>1</EndMultiplicity>
+      </Relationship>
+      <Relationship type="Association" first="4" second="10">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>991</X>
+          <Y>575</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+        <EndMultiplicity>1</EndMultiplicity>
+      </Relationship>
+      <Relationship type="Dependency" first="13" second="14">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+      </Relationship>
+      <Relationship type="Association" first="24" second="16">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1060</X>
+          <Y>239</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>923</X>
+          <Y>1391</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="3" second="24">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>591</X>
+          <Y>191</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>806</X>
+          <Y>50</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="4" second="17">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+        <EndMultiplicity>*</EndMultiplicity>
+      </Relationship>
+      <Relationship type="Association" first="17" second="14">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+        <EndMultiplicity>1</EndMultiplicity>
+      </Relationship>
+      <Relationship type="Association" first="4" second="15">
+        <Label>
+        </Label>
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="20" second="23">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1927</X>
+          <Y>1116</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+        <EndMultiplicity>2</EndMultiplicity>
+      </Relationship>
+      <Relationship type="Association" first="21" second="23">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>2388</X>
+          <Y>1097</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>1703</X>
+          <Y>1074</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+        <EndMultiplicity>2</EndMultiplicity>
+      </Relationship>
+      <Relationship type="Association" first="23" second="22">
+        <StartOrientation>Vertical</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>1654</X>
+          <Y>965</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Composition</AssociationType>
+        <EndMultiplicity>*</EndMultiplicity>
+      </Relationship>
+      <Relationship type="Association" first="11" second="23">
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>1491</X>
+          <Y>1179</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Aggregation</AssociationType>
+        <EndMultiplicity>*</EndMultiplicity>
+      </Relationship>
+      <Relationship type="Association" first="21" second="1">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>2337</X>
+          <Y>1286</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>2211</X>
+          <Y>1234</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="20" second="1">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>2113</X>
+          <Y>1284</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="7" second="16">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>523</X>
+          <Y>938</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>523</X>
+          <Y>1221</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="5" second="16">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>521</X>
+          <Y>1223</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>819</X>
+          <Y>1223</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="8" second="16">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>523</X>
+          <Y>1363</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="9" second="16">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>431</X>
+          <Y>1480</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="0" second="16">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Vertical</EndOrientation>
+        <BendPoint relativeToStartShape="True">
+          <X>518</X>
+          <Y>913</Y>
+        </BendPoint>
+        <BendPoint relativeToStartShape="False">
+          <X>648</X>
+          <Y>1220</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+      <Relationship type="Association" first="11" second="16">
+        <Label>
+        </Label>
+        <StartOrientation>Horizontal</StartOrientation>
+        <EndOrientation>Horizontal</EndOrientation>
+        <BendPoint relativeToStartShape="False">
+          <X>923</X>
+          <Y>1421</Y>
+        </BendPoint>
+        <Direction>Unidirectional</Direction>
+        <AssociationType>Association</AssociationType>
+      </Relationship>
+    </Relationships>
+  </ProjectItem>
+</Project>
