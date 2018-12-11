@@ -27,7 +27,7 @@ namespace TeamHaddock
 
         private static int baseSpawnInterval = 3000;
         private static int timeSinceLastSpawn;
-        private static Vector2 defaultSpawnPosition = new Vector2(Game1.ScreenBounds.X + 49, groundRectangle.Top -100);
+        private static Vector2 defaultSpawnPosition;
         private static Random random = new Random();
 
         public static long totalTimeElapsed;
@@ -51,6 +51,8 @@ namespace TeamHaddock
             groundColorMap = content.Load<Texture2D>(@"Textures/ActiveObjects/Ground");
             groundNormalMap = content.Load<Texture2D>(@"Textures/ActiveObjects/GroundNormalMap");
             groundRectangle = new Rectangle(0, Game1.ScreenBounds.Y - groundColorMap.Height, Game1.ScreenBounds.X, groundColorMap.Height);
+
+            defaultSpawnPosition = new Vector2(Game1.ScreenBounds.X + 49, groundRectangle.Top - 100);
 
             totalTimeElapsed = 0;
             difficultyModifier = 0;
@@ -86,18 +88,23 @@ namespace TeamHaddock
 
         private static void UpdateSpawning(GameTime gameTime)
         {
+            // Update timer
             timeSinceLastSpawn += gameTime.ElapsedGameTime.Milliseconds;
-            if (timeSinceLastSpawn >= (baseSpawnInterval / difficultyModifier) * (random.Next(75, 125) / 100))
+            // if timer has reached max
+            if (timeSinceLastSpawn >= (baseSpawnInterval / difficultyModifier) + random.Next(-10, 1000))
             {
+                // Spawn a new enemy
                 if (random.Next(10) <= 5)
                 {
+                    // %50 chance to spawn meleeEnemy
                     enemies.Add(new MeleeEnemy(random.Next(10) < 5 ? defaultSpawnPosition : new Vector2(-49, defaultSpawnPosition.Y)));
                 }
                 else
                 {
+                    // %50 chance to spawn civilianEnemy
                     enemies.Add(new MeleeEnemy(random.Next(10) < 5 ? defaultSpawnPosition : new Vector2(-49, defaultSpawnPosition.Y)));
                 }
-
+                // Reset timer
                 timeSinceLastSpawn = 0;
             }
         }

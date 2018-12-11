@@ -50,7 +50,7 @@ namespace TeamHaddock
             {
                 // And selected.X is GREATER THAN 0, preventing it from exiting the selection range, 
                 if (selected.X > 0)
-                {                    
+                {
                     // Then move selected
                     selected.X--;
                 }

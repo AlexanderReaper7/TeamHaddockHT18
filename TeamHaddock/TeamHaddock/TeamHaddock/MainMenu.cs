@@ -26,12 +26,12 @@ namespace TeamHaddock
         /// <summary>
         ///     MainMenu background image
         /// </summary>
-        public static Texture2D Background;
+        private static Texture2D background;
 
         /// <summary>
         ///     Controls keyboard actions in menus
         /// </summary>
-        private static readonly MenuControls MenuControl = new MenuControls(new Vector2(0, MenuOptionsStr.Length - 1));
+        private static readonly MenuControls menuControl = new MenuControls(new Vector2(MenuOptionsStr.Length - 1, 0));
 
         /// <summary>
         /// Load MainMenu Textures, e.g the background
@@ -39,8 +39,7 @@ namespace TeamHaddock
         /// <param name="content"></param>
         public static void LoadContent(ContentManager content)
         {
-
-            Background = content.Load<Texture2D>(@"Textures/Backgrounds/MainMenuBackground");
+            background = content.Load<Texture2D>(@"Textures/Backgrounds/MainMenuBackground");
         }
 
         // Edited by Noble 12-10 
@@ -49,13 +48,13 @@ namespace TeamHaddock
         /// </summary>
         public static void Update()
         {
-            MenuControl.UpdateSelected(ref selected); // Updates selected menu option
+            menuControl.UpdateSelected(ref selected); // Updates selected menu option
 
             // If enter is not pressed Then return
-            if (!MenuControl.IsEnterDown) return;
+            if (!menuControl.IsEnterDown) return;
       
             // Else (enter is pressed) Then change gamestate and playstate
-            switch ((int) selected.X)
+            switch ((int)selected.X)
             {
                 // Play
                 case 0:
@@ -92,7 +91,7 @@ namespace TeamHaddock
             spriteBatch.Begin();
 
             // Draw background in whole window
-            spriteBatch.Draw(Background, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
+            spriteBatch.Draw(background, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
 
             // Iterate through every entry in menuOptionsStr array
             for (int i = 0; i < MenuOptionsStr.Length; i++)
