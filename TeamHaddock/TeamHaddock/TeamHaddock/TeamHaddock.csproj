@@ -86,6 +86,7 @@
     <None Include="PistolParticle.cs" />
     <Compile Include="Animation.cs" />
     <Compile Include="PointLight.cs" />
+    <Compile Include="Tutorial.cs" />
     <Compile Include="UserInterface.cs" />
     <Compile Include="UtilityClass.cs" />
     <Compile Include="Player.cs" />

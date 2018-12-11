@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-// Class created by Alexander 11-07
+// Class created by Alexander 11-07 // Edited by Noble 12-11
 namespace TeamHaddock
 {
     /// <summary>
@@ -55,7 +55,7 @@ namespace TeamHaddock
             if (!MenuControl.IsEnterDown) return;
       
             // Else (enter is pressed) Then change gamestate and playstate
-            switch ((int) selected.Y)
+            switch ((int) selected.X)
             {
                 // Play
                 case 0:
@@ -82,7 +82,7 @@ namespace TeamHaddock
                     throw new ArgumentOutOfRangeException();
             }
         }
-        // Edited by Noble 12-10
+        // Edited by Noble 12-10, 12-11
         /// <summary>
         ///     Draws the MainMenu gamestate
         /// </summary>
@@ -98,7 +98,7 @@ namespace TeamHaddock
             for (int i = 0; i < MenuOptionsStr.Length; i++)
             {
                 // If selected menu option is int i have bold font else normal font
-                spriteBatch.DrawString((int)selected.Y == i ? Game1.BoldMenuFont : Game1.NormalMenuFont, MenuOptionsStr[i], new Vector2(Game1.ScreenBounds.X/2 - 70, 100 * i), Color.White);
+                spriteBatch.DrawString((int)selected.X == i ? Game1.BoldMenuFont : Game1.NormalMenuFont, MenuOptionsStr[i], new Vector2(200 + 200 * i, 400), Color.White);
             }
 
             spriteBatch.End();

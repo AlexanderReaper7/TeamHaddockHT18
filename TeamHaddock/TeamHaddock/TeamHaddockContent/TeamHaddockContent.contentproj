@@ -225,7 +225,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Textures\Backgrounds\Tutorialdone.png">
-      <Name>Tutorialdone</Name>
+      <Name>Tutorial</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

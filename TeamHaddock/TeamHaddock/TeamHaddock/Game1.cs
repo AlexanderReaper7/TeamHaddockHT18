@@ -88,6 +88,8 @@ namespace TeamHaddock
 
             MainMenu.LoadContent(Content);
             InGame.LoadContent(Content, GraphicsDevice);
+            Tutorial.LoadContent(Content, GraphicsDevice);
+            Credits.LoadContent(Content, GraphicsDevice);
         }
 
         /// <summary>
@@ -121,8 +123,10 @@ namespace TeamHaddock
                 case GameStates.HighScore:
                     break;
                 case GameStates.Tutorial:
+                    Tutorial.Update(gameTime);
                     break;
                 case GameStates.Credits:
+                    Credits.Update(gameTime);
                     break;
                 case GameStates.Exit:
                     this.Exit();
@@ -153,8 +157,10 @@ namespace TeamHaddock
                 case GameStates.HighScore:
                     break;
                 case GameStates.Tutorial:
+                    Tutorial.Draw(spriteBatch, GraphicsDevice);
                     break;
                 case GameStates.Credits:
+                    Credits.Draw(spriteBatch, GraphicsDevice);
                     break;
                 case GameStates.Exit:
                     break;
