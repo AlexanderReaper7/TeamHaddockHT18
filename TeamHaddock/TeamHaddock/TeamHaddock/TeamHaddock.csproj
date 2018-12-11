@@ -72,6 +72,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CivilianEnemy.cs" />
     <Compile Include="CollidableObject.cs" />
     <Compile Include="Credits.cs" />
     <Compile Include="DynamicLight.cs" />
