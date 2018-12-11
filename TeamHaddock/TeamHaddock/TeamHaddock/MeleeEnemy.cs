@@ -24,8 +24,8 @@ namespace TeamHaddock
 
         private Vector2 velocity;
         private Vector2 direction;
-
-        private int Health { get; set; } = 100;
+        private const int defaultHealth = 1000;
+        private int health;
 
         private const float baseWalkingSpeed = 0.1f, baseJumpStrength = -0.08f;
         private readonly Vector2 maxMovementSpeed = new Vector2(0.5f, 100f);
@@ -39,7 +39,7 @@ namespace TeamHaddock
         public MeleeEnemy(Vector2 position)
         {
             collidableObject = new CollidableObject(collisionMap, position, new Rectangle(120, 0, 98, 114), 0);
-
+            health = (int)(defaultHealth * InGame.difficultyModifier);
             int walkingTime = 200; 
             
             // Load all frames into Animation // Edited by Noble 12-10 
@@ -86,7 +86,7 @@ namespace TeamHaddock
             onGround = collidableObject.Position.Y >= Game1.ScreenBounds.Y - collidableObject.origin.Y + InGame.groundRectangle.Height;
 
             //  and jump is not complete
-            if (!jumpComplete)
+            if (InGame.player.collidableObject.Position.Y > collidableObject.Position.Y && !jumpComplete)
             {
                 // Start jump
                 // If jumpTime is reset and is on ground
@@ -178,7 +178,7 @@ namespace TeamHaddock
             // Set direction to right
             direction.X = 1;
             // Set velocity
-            velocity.X = -baseWalkingSpeed; 
+            velocity.X = baseWalkingSpeed; 
         }
 
         /// <summary>
@@ -228,11 +228,11 @@ namespace TeamHaddock
             bool tookDamage = false;
             if (invulnerabilityFrames <= 0)
             {
-                Health -= damageTaken;
+                health -= damageTaken;
                 tookDamage = true;
             }
             // If health reaches 0, kill this enemy.
-            if (Health <= 0)
+            if (health <= 0)
             {
                 RemoveFromList();
             }

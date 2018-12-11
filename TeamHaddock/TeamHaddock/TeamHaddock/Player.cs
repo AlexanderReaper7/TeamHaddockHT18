@@ -170,7 +170,7 @@ namespace TeamHaddock
             // Create a new collidableObject
             collidableObject = new CollidableObject(
                 content.Load<Texture2D>(@"Textures/CollisionMaps/PlayerCollisionMap"), // The collision map
-                new Vector2(Game1.ScreenBounds.X / 2, InGame.groundRectangle.Top +100), // The spawning position
+                new Vector2(Game1.ScreenBounds.X / 2, InGame.groundRectangle.Top), // The spawning position
                 new Rectangle(0, 0, 79, 104), // Initial size and position of source rectangle
                 0f // The rotation
                 );
@@ -186,6 +186,7 @@ namespace TeamHaddock
             colorMap = content.Load<Texture2D>(@"Textures/Characters/Player");
             LoadAnimations();
         }
+
         // Edited by Noble 12-07, 12-08, 12-09, 
         private void LoadAnimations()
         {
@@ -280,6 +281,7 @@ namespace TeamHaddock
         /// <param name="gameTime"></param>
         public void Update(GameTime gameTime)
         {
+            invulnerabilityFrames -= gameTime.ElapsedGameTime.Milliseconds;
             UpdateControls(gameTime);
             UpdateAnimation(gameTime);
             UpdatePosition(gameTime);
@@ -504,7 +506,6 @@ namespace TeamHaddock
 
         public void TakeDamage(int damageTaken, GameTime gameTime)
         {
-            invulnerabilityFrames -= gameTime.ElapsedGameTime.Milliseconds;
             if (invulnerabilityFrames <= 0)
             {
                 invulnerabilityFrames += 750;
@@ -572,7 +573,7 @@ namespace TeamHaddock
             spriteBatch.Draw(colorMap,
                 collidableObject.Position,
                 collidableObject.SourceRectangle,
-                Color.White,
+                invulnerabilityFrames > 0 ? Color.Red : Color.White,
                 collidableObject.Rotation,
                 collidableObject.origin,
                 1.0f,
@@ -582,7 +583,7 @@ namespace TeamHaddock
             Game1.finalActionsDelegate += () =>
             {
                 spriteBatch.Begin();
-                spriteBatch.DrawString(Game1.NormalMenuFont, $" {velocity}\n {CurrentAnimation.name}", Vector2.One, Color.White);
+                spriteBatch.DrawString(Game1.NormalMenuFont, $" {velocity}\n {CurrentAnimation.name}\n {Health}\n {InGame.difficultyModifier}\n {InGame.totalTimeElapsed} ", Vector2.One, Color.White);
                 spriteBatch.End();
             };
 #endif
