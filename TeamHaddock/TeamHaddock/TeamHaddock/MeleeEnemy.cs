@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-// Created by Alexander 11-28
+// Created by Alexander 11-28 
 namespace TeamHaddock
 {
     public class MeleeEnemy : IEnemy
@@ -53,10 +53,10 @@ namespace TeamHaddock
             );
             moveLeftAnimation = new Animation(new List<Frame>
                 {
-                    new Frame(new Rectangle(0, 114, 98, 114), walkingTime),
-                    new Frame(new Rectangle(99, 114, 98, 114), walkingTime),
-                    new Frame(new Rectangle(198, 114, 98, 114), walkingTime),
-                    new Frame(new Rectangle(99, 114, 98, 114), walkingTime),
+                    new Frame(new Rectangle(0, 115, 98, 113), walkingTime),
+                    new Frame(new Rectangle(99, 115, 98, 113), walkingTime),
+                    new Frame(new Rectangle(198, 115, 98, 113), walkingTime),
+                    new Frame(new Rectangle(99, 115, 98, 113), walkingTime),
                 }
             );
         }
