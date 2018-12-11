@@ -26,6 +26,7 @@ namespace TeamHaddock
         private int jumpTime;
         private bool jumpComplete, onGround, walking;
         public static int maxHealth = 50000;
+        private int baseHealthRegained = 750; 
         public int Health { get; private set; } = maxHealth;
 
         private List<Animation> animations = new List<Animation>();
@@ -187,6 +188,7 @@ namespace TeamHaddock
             colorMap = content.Load<Texture2D>(@"Textures/Characters/Player");
             animations.Clear();
             LoadAnimations();
+    
         }
 
         // Edited by Noble 12-07, 12-08, 12-09, 
@@ -240,6 +242,7 @@ namespace TeamHaddock
                 new Frame(new Rectangle(232, 312, 78, 104), walkingFrameTime),
                 new Frame(new Rectangle(151, 312, 80, 104), walkingFrameTime),
             }));
+
 
             animations.Add(new Animation("attackGroundedRight", new List<Frame>
             {
@@ -466,7 +469,7 @@ namespace TeamHaddock
                     if (enemy.TakeDamage(attackDamage))
                     {
                         // Give player health
-                        Health = (int)MathHelper.Clamp(Health + attackDamage, 0f, maxHealth);
+                        Health = (int)MathHelper.Clamp(baseHealthRegained + Health + attackDamage, 0f, maxHealth);
                     }
                 }
             }
@@ -494,7 +497,7 @@ namespace TeamHaddock
         /// <param name="gameTime"></param>
         private void HealthDepletion(GameTime gameTime)
         {
-            Health -= (int)(gameTime.ElapsedGameTime.Milliseconds * InGame.difficultyModifier);
+            Health -= (int)(gameTime.ElapsedGameTime.Milliseconds * InGame.difficultyModifier * 1.3f);
         }
 
         public void TakeDamage(int damageTaken, GameTime gameTime)

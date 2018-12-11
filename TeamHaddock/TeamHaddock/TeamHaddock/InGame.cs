@@ -25,7 +25,7 @@ namespace TeamHaddock
         private static Texture2D groundNormalMap;
         public static Rectangle groundRectangle;
 
-        private static int baseSpawnInterval = 3000;
+        private static int baseSpawnInterval = 350;
         private static int timeSinceLastSpawn;
         private static Vector2 defaultSpawnPosition;
         private static Random random = new Random();
@@ -103,7 +103,7 @@ namespace TeamHaddock
                 else
                 {
                     // %50 chance to spawn civilianEnemy
-                    enemies.Add(random.Next(10) < 5 ? new CivilianEnemy(new Vector2(-49, defaultSpawnPosition.Y), true) : new CivilianEnemy(defaultSpawnPosition, false));
+                    enemies.Add(random.Next(10) < 5 ? new CivilianEnemy(new Vector2(-49, defaultSpawnPosition.Y + 200), true) : new CivilianEnemy(defaultSpawnPosition, false));
                 }
                 // Reset timer
                 timeSinceLastSpawn = 0;
