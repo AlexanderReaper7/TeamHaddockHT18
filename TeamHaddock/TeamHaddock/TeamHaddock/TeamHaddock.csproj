@@ -79,7 +79,7 @@
     <Compile Include="LampPost.cs" />
     <Compile Include="Light.cs" />
     <Compile Include="MeleeEnemy.cs" />
-    <None Include="HighScore.cs" />
+    <Compile Include="HighScore.cs" />
     <Compile Include="InGame.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="MenuControls.cs" />

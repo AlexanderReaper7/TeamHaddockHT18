@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -7,19 +8,23 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Xml.Serialization;
 using System.IO;
+using Microsoft.Xna.Framework.Input;
 
 namespace TeamHaddock
 {
-    public class HighScore
+    // Created by Elias 11-29 // Edited By Noble 12-11 
+    internal static class HighScore
     {
         // file variable
-        public readonly string Filename = "saveFile.dat";
+        public static readonly string Filename = "saveFile.dat";
 
-        int playerScore = 0;
+        static int playerScore = 0;
 
-        string playerName = "Player1";
+        private static Texture2D backGround; 
 
-        //parts that is going te used in SaveHighScore
+        static string playerName = "Player1";
+
+        // This helps save the two variables PlayerName and Score to the file 
         [Serializable]
         public struct SaveData
         {
@@ -36,33 +41,7 @@ namespace TeamHaddock
             }
         }
 
-        private void SaveHighScore()
-        {
-            // create the data to save
-            SaveData data = LoadData(Filename);
-            int ScoreIndex = -1;
-            for (int i = 0; i < data.Count; i++)
-            {
-                if (playerScore > data.Score[i])
-                {
-                    ScoreIndex = i;
-                    break;
-                }
-            }
-
-            if (ScoreIndex > -1)
-            {
-                //new high score found... do swaps
-                for (int i = data.Count - 1; i > ScoreIndex; i--)
-                {
-                    data.Score[i] = data.Score[i - 1];
-                }
-                data.Score[ScoreIndex] = playerScore;
-                data.Playername[ScoreIndex] = playerName;
-                DoSave(data, Filename);
-            }
-        }
-
+        // This loads the data of the "Filename" file 
         public static SaveData LoadData(string Filename)
         {
             SaveData data;
@@ -86,19 +65,90 @@ namespace TeamHaddock
             return (data);
         }
 
-        public static void LoadContent(ContentManager content)
+        // This saves the data and filename to the file
+        public static void DoSave(SaveData data, String filename)
         {
+            FileStream stream = File.Open(filename, FileMode.Create);
 
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(SaveData));
+                serializer.Serialize(stream, data);
+            }
+            finally
+            {
+                stream.Close();
+            }
         }
 
-        public static void Update()
-        {
 
+
+        // This saves the score and name to the file 
+        private static void SaveHighScore()
+        {
+            SaveData data = LoadData(Filename);
+
+            int scoreIndex = -1;
+
+            for (int x = 0; x < data.Count; x++)
+            {
+                if (playerScore > data.Score[x])
+                {
+                    scoreIndex = x;
+                    break;
+                }
+            }
+
+            if (scoreIndex > -1)
+            {
+                for (int x = data.Count - 1; x > scoreIndex; x--)
+                {
+                    data.Score[x] = data.Score[x - 1];
+                }
+
+
+                data.Score[scoreIndex] = playerScore;
+
+                //if (playerCharacter == 0)
+                //{
+                //    data.PlayerName[scoreIndex] = names[0];
+                //}
+                //if (playerCharacter == 1)
+                //{
+                //    data.PlayerName[scoreIndex] = names[1];
+                //}
+                //if (playerCharacter == 2)
+                //{
+                //    data.PlayerName[scoreIndex] = names[2];
+                //}
+
+
+                DoSave(data, Filename);
+            }
+        }   
+
+
+        public static void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
+        {
+            backGround = content.Load<Texture2D>(@"Textures/Backgrounds/HighScoreBackGround"); 
         }
 
-        public static void Draw(SpriteBatch spriteBatch)
+        public static void Update(GameTime gameTime)
         {
+            if (UtilityClass.SingleActivationKey(Keys.Escape))
+            {
+                Game1.GameState = Game1.GameStates.MainMenu; 
+            }
+        }
 
+        public static void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)
+        {
+            // Draw 
+            spriteBatch.Begin();
+            spriteBatch.Draw(backGround, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
+            spriteBatch.End();
+            // Clear all render targets
+            graphicsDevice.SetRenderTarget(null);
         }
     }
 }

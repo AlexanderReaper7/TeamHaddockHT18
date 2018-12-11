@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 // Class created by Alexander 11-07 // Class edited by Adam 12-10 // Class edited by Noble 12-11
 namespace TeamHaddock
 {
-    static class Credits
+    internal static class Credits
     {
 
         public static Texture2D Background;
@@ -88,12 +88,12 @@ namespace TeamHaddock
 
             if (creditsTime > 2200)
             {
-                spriteBatch.DrawString(Game1.NormalMenuFont, "Stock graphic 3", new Vector2(10, 170), Color.White);
+                spriteBatch.DrawString(Game1.NormalMenuFont, "Noble ", new Vector2(10, 170), Color.White);
             }
 
             if (creditsTime > 2400)
             {
-                spriteBatch.DrawString(Game1.NormalMenuFont, "Stock Graphic 4", new Vector2(10, 190), Color.White);
+                spriteBatch.DrawString(Game1.NormalMenuFont, "Elias ", new Vector2(10, 190), Color.White);
             }
 
             if (creditsTime > 2600)
@@ -123,6 +123,8 @@ namespace TeamHaddock
 
 
             spriteBatch.End();
+
+            graphicsDevice.SetRenderTarget(null);
         }
     
     }

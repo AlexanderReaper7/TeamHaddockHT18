@@ -121,6 +121,7 @@ namespace TeamHaddock
                     InGame.Update(gameTime);
                     break;
                 case GameStates.HighScore:
+                    HighScore.Update(gameTime); 
                     break;
                 case GameStates.Tutorial:
                     Tutorial.Update(gameTime);
@@ -155,6 +156,7 @@ namespace TeamHaddock
                     InGame.Draw(spriteBatch, GraphicsDevice);
                     break;
                 case GameStates.HighScore:
+                    Credits.Draw(spriteBatch, GraphicsDevice);
                     break;
                 case GameStates.Tutorial:
                     Tutorial.Draw(spriteBatch, GraphicsDevice);
