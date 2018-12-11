@@ -13,14 +13,14 @@ namespace TeamHaddock
     internal static class Credits
     {
 
-        public static Texture2D Background;
+        private static Texture2D backGround;
 
         private static float creditsTime;
 
         // Edited by Noble 12-11 
         public static void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
-            Background = content.Load<Texture2D>(@"Textures/Backgrounds/Credits");
+            backGround = content.Load<Texture2D>(@"Textures/Backgrounds/Credits");
         }
         
         // Edited by Noble 12-11 
@@ -31,7 +31,7 @@ namespace TeamHaddock
                 Game1.GameState = Game1.GameStates.MainMenu; 
             }
 
-            creditsTime += gameTime.ElapsedGameTime.Milliseconds  / 2; 
+            creditsTime += gameTime.ElapsedGameTime.Milliseconds / 2; 
         }
         
         // Edited by Noble 12-11 
@@ -41,7 +41,7 @@ namespace TeamHaddock
 
             //spriteBatch.Draw(creditsBackground, new Vector2(0, 0), Color.White);
 
-            spriteBatch.Draw(Background, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
+            spriteBatch.Draw(backGround, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
 
 
             spriteBatch.DrawString(Game1.CreditsTitleFont, "Credits", new Vector2(50, 30), Color.White);
@@ -113,7 +113,7 @@ namespace TeamHaddock
 
             if (creditsTime > 3200)
             {
-                spriteBatch.DrawString(Game1.CreditsFont, "Other guy ", new Vector2(20, 510), Color.White);
+                spriteBatch.DrawString(Game1.CreditsFont, "Elias ", new Vector2(20, 510), Color.White);
             }
 
             if (creditsTime > 3400)
@@ -140,9 +140,6 @@ namespace TeamHaddock
             {
                 spriteBatch.DrawString(Game1.CreditsFont, "Noble ", new Vector2(400, 450), Color.White);
             }
-
-
-
 
             spriteBatch.End();
 

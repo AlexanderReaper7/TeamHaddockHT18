@@ -18,7 +18,7 @@ namespace TeamHaddock
         // file variable
         public static readonly string Filename = "saveFile.dat";
 
-        static int playerScore = 0;
+        private static int playerScore = InGame.totalTimeElapsed; 
 
         private static Texture2D backGround; 
 
@@ -146,6 +146,8 @@ namespace TeamHaddock
             // Draw 
             spriteBatch.Begin();
             spriteBatch.Draw(backGround, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
+            spriteBatch.DrawString(Game1.ScoreFont, playerScore.ToString(), new Vector2(Game1.ScreenBounds.X / 2 - 50, Game1.ScreenBounds.Y + 20), Color.White);
+ 
             spriteBatch.End();
             // Clear all render targets
             graphicsDevice.SetRenderTarget(null);

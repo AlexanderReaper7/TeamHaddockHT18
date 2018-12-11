@@ -30,7 +30,7 @@ namespace TeamHaddock
         private static Vector2 defaultSpawnPosition;
         private static Random random = new Random();
 
-        public static long totalTimeElapsed;
+        public static int totalTimeElapsed;
         public static float difficultyModifier;
 
         public static List<IEnemy> enemies = new List<IEnemy>();
@@ -69,7 +69,7 @@ namespace TeamHaddock
 
         public static void Update(GameTime gameTime)
         {
-            totalTimeElapsed += gameTime.ElapsedGameTime.Milliseconds;
+            totalTimeElapsed += gameTime.ElapsedGameTime.Milliseconds / 1000;
             difficultyModifier = (float)(totalTimeElapsed / 30000 +1); // double difficulty per 1 minute
 
             UpdateSpawning(gameTime);
