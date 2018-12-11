@@ -200,7 +200,7 @@ namespace TeamHaddock
         {
             if (collidableObject.IsColliding(InGame.player.collidableObject))
             {
-                InGame.player.TakeDamage(Player.maxHealth / 5, gameTime);
+                InGame.player.TakeDamage((int)(100 * InGame.difficultyModifier), gameTime);
             }
         }
 
@@ -221,6 +221,7 @@ namespace TeamHaddock
             {
                 health -= damageTaken;
                 tookDamage = true;
+                invulnerabilityFrames += 650;
             }
             // If health reaches 0, kill this enemy.
             if (health <= 0)

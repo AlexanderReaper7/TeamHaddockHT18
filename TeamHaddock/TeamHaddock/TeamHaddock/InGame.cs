@@ -61,9 +61,6 @@ namespace TeamHaddock
 
             MeleeEnemy.LoadContent(content);
 
-            enemies.Add( new MeleeEnemy(Vector2.One));
-            enemies.Add(new MeleeEnemy(defaultSpawnPosition));
-
             LampPost.LoadContent(content);
 
             lampPosts.Add(new LampPost(new Vector2(Game1.ScreenBounds.X - 250, groundRectangle.Top)));

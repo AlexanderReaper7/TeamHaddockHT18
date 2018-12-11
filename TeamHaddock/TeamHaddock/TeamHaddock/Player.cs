@@ -24,7 +24,7 @@ namespace TeamHaddock
         private const int maxJumpTime = 130;
         private int jumpTime;
         private bool jumpComplete, onGround, walking;
-        public static int maxHealth = 1000000;
+        public static int maxHealth = 100000;
         public int Health { get; private set; } = maxHealth;
 
         private List<Animation> animations = new List<Animation>();
@@ -156,7 +156,7 @@ namespace TeamHaddock
         private CollidableObject attackCollidableObject;
         private bool attacking;
         private int timeAttacking;
-        private const int attackDamage = 10;
+        private const int attackDamage = 500;
         private Point attackDirection;
 
         private int invulnerabilityFrames;
