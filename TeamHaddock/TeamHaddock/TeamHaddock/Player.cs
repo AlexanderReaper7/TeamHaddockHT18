@@ -315,19 +315,19 @@ namespace TeamHaddock
             // If W or Up arrow key is pressed down And jump is not complete TODO: Fix jumping
             if ((keyboard.IsKeyDown(Keys.W) || keyboard.IsKeyDown(Keys.Up)) && !jumpComplete)
             {
-                    // Continue jump
-                    // Jump has already started
-                    if (jumpTime > 0)
-                    {
-                        Jump(gameTime);
-                    }
+                // Continue jump
+                // Jump has already started
+                if (jumpTime > 0)
+                {
+                    Jump(gameTime);
+                }
 
-                    // Start jump
-                    // If jumpTime is reset and is on ground
-                    if (jumpTime == 0 && onGround)
-                    {
-                        Jump(gameTime);
-                    }
+                // Start jump
+                // If jumpTime is reset and is on ground
+                if (jumpTime == 0 && onGround)
+                {
+                    Jump(gameTime);
+                }
             }
             else
             {
@@ -502,7 +502,7 @@ namespace TeamHaddock
         /// <param name="gameTime"></param>
         private void HealthDepletion(GameTime gameTime)
         {
-            Health -= gameTime.ElapsedGameTime.Milliseconds;
+            Health -= (int)(gameTime.ElapsedGameTime.Milliseconds * InGame.difficultyModifier);
         }
 
         public void TakeDamage(int damageTaken, GameTime gameTime)

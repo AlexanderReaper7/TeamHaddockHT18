@@ -83,30 +83,7 @@ namespace TeamHaddock
         private void UpdateAI(GameTime gameTime)
         {
             // Update ground
-            onGround = collidableObject.Position.Y >= Game1.ScreenBounds.Y - collidableObject.origin.Y + InGame.groundRectangle.Height;
-
-            //  and jump is not complete
-            if (InGame.player.collidableObject.Position.Y > collidableObject.Position.Y && onGround)
-                {
-                    // Continue jump
-                    // Jump has already started
-                    if (jumpTime > 0)
-                    {
-                        Jump(gameTime);
-                    }
-
-                    // Start jump
-                    // If jumpTime is reset and is on ground
-                    if (jumpTime == 0 && onGround)
-                    {
-                        Jump(gameTime);
-                    }
-                }
-                else
-                {
-                    // Fall
-                    Fall(gameTime);
-                }
+            onGround = collidableObject.Position.Y >= Game1.ScreenBounds.Y - (collidableObject.origin.Y + InGame.groundRectangle.Height);
 
 
             // Move left when player is to the left
@@ -119,9 +96,34 @@ namespace TeamHaddock
             {
                 MoveRight(gameTime);
             }
-            // Stop when enemy is near the player 
+            // when enemy is near the player 
             if (collidableObject.Position.X > InGame.player.collidableObject.Position.X - (InGame.player.collidableObject.origin.X + collidableObject.origin.X) && collidableObject.Position.X < InGame.player.collidableObject.Position.X + (InGame.player.collidableObject.origin.X + collidableObject.origin.X))
             {
+                //  and jump is not complete
+                if (InGame.player.collidableObject.Position.Y < collidableObject.Position.Y && !jumpComplete)
+                {
+                    // Continue jump
+                    // Jump has already started
+                    if (jumpTime > 0 && jumpTime < maxJumpTime)
+                    {
+                        Jump(gameTime);
+                    }
+
+                    // Start jump
+                    // If jumpTime is reset and is on ground
+                    if (jumpTime == 0 && onGround)
+                    {
+                        Jump(gameTime);
+                    }
+
+                }
+                else
+                {
+                    // Fall
+                    Fall(gameTime);
+                    jumpTime = 0;
+                }
+
                 StopMoving();
             }
         }
@@ -131,13 +133,16 @@ namespace TeamHaddock
         {
             // Add elapsed time to timer
             jumpTime += gameTime.ElapsedGameTime.Milliseconds;
+            // if timer has not expired
             if (jumpTime < maxJumpTime)
             {
-                // set jump force
+                // set velocity to jump
                 velocity.Y = baseJumpStrength * gameTime.ElapsedGameTime.Milliseconds;
             }
+            // Else timer has expired
             else
             {
+                // Complete jump
                 jumpComplete = true;
             }
         }

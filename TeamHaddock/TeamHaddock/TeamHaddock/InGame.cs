@@ -70,7 +70,7 @@ namespace TeamHaddock
         public static void Update(GameTime gameTime)
         {
             totalTimeElapsed += gameTime.ElapsedGameTime.Milliseconds;
-            difficultyModifier = (float)(totalTimeElapsed / 30000 +1); // double difficulty per 1 minute
+            difficultyModifier = (float)(totalTimeElapsed / 30000)+1; // double difficulty per 1 minute
 
             UpdateSpawning(gameTime);
             // Update player logic
