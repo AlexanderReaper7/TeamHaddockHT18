@@ -27,7 +27,7 @@ namespace TeamHaddock
         private const int defaultHealth = 1000;
         private int health;
 
-        private const float baseWalkingSpeed = 0.1f, baseJumpStrength = -0.08f;
+        private const float baseWalkingSpeed = 0.15f, baseJumpStrength = -0.1f;
         private readonly Vector2 maxMovementSpeed = new Vector2(0.5f, 100f);
         private const int maxJumpTime = 200;
         private int jumpTime;
@@ -124,6 +124,21 @@ namespace TeamHaddock
                     jumpTime = 0;
                 }
 
+
+            // Move left when player is to the left
+            if (collidableObject.Position.X > InGame.player.collidableObject.Position.X - (InGame.player.collidableObject.origin.X + collidableObject.origin.X))
+            {
+                MoveLeft(gameTime);
+            }
+            // Move right when player is to the right
+            if (collidableObject.Position.X < InGame.player.collidableObject.Position.X + (InGame.player.collidableObject.origin.X + collidableObject.origin.X))
+            {
+                MoveRight(gameTime);
+            }
+            // Stop when enemy is near the player 
+            if (collidableObject.Position.X > InGame.player.collidableObject.Position.X - (InGame.player.collidableObject.origin.X + collidableObject.origin.X) 
+                && collidableObject.Position.X < InGame.player.collidableObject.Position.X + (InGame.player.collidableObject.origin.X + collidableObject.origin.X))
+            {
                 StopMoving();
             }
         }

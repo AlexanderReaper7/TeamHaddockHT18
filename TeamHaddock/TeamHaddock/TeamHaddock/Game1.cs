@@ -29,9 +29,9 @@ namespace TeamHaddock
             InGame,
             HighScore,
             Tutorial, 
-            // Options, // Might add later
             Credits,
-            Exit
+            Exit,
+            GameOver, 
         }
 
         /// <summary>
@@ -45,6 +45,8 @@ namespace TeamHaddock
         public static SpriteFont CreditsFont;
         public static SpriteFont BoldCreditsFont;
         public static SpriteFont CreditsTitleFont;
+
+        public static SpriteFont ScoreFont; 
 
         /// <summary>
         /// Size of game window
@@ -94,10 +96,13 @@ namespace TeamHaddock
             BoldCreditsFont = Content.Load<SpriteFont>(@"Fonts/BoldCreditsFont");
             CreditsTitleFont = Content.Load<SpriteFont>(@"Fonts/CreditsTitleFont");
 
+            ScoreFont = Content.Load<SpriteFont>(@"Fonts/CreditsTitleFont"); 
+
             MainMenu.LoadContent(Content);
             InGame.LoadContent(Content, GraphicsDevice);
             Tutorial.LoadContent(Content, GraphicsDevice);
             Credits.LoadContent(Content, GraphicsDevice);
+            GameOver.LoadContent(Content, GraphicsDevice);
         }
 
         /// <summary>
@@ -140,6 +145,9 @@ namespace TeamHaddock
                 case GameStates.Exit:
                     this.Exit();
                     break;
+                case GameStates.GameOver:
+                    GameOver.Update(gameTime); 
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -173,6 +181,8 @@ namespace TeamHaddock
                     Credits.Draw(spriteBatch, GraphicsDevice);
                     break;
                 case GameStates.Exit:
+                    break;
+                case GameStates.GameOver:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

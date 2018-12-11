@@ -30,7 +30,7 @@ namespace TeamHaddock
         private static Vector2 defaultSpawnPosition;
         private static Random random = new Random();
 
-        public static long totalTimeElapsed;
+        public static int totalTimeElapsed;
         public static float difficultyModifier;
 
         public static List<IEnemy> enemies = new List<IEnemy>();

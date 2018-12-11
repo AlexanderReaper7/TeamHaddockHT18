@@ -9,17 +9,16 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TeamHaddock
 {
-    // Class created by Noble 12-11 
-    internal static class Tutorial
+    // Created by Noble 12-11 
+    internal static class GameOver
     {
-
-        
+        // Background for game over
         private static Texture2D backGround;
-       
+
         //Edited by Noble 12-11
         public static void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
-            backGround = content.Load<Texture2D>(@"Textures/Backgrounds/Tutorial");
+            backGround = content.Load<Texture2D>(@"Textures/Backgrounds/Credits");
         }
 
         //Edited by Noble 12-11
@@ -27,14 +26,14 @@ namespace TeamHaddock
         {
             if (UtilityClass.SingleActivationKey(Keys.Escape))
             {
-                Game1.GameState = Game1.GameStates.MainMenu; 
+                Game1.GameState = Game1.GameStates.MainMenu;
             }
         }
 
         //Edited by Noble 12-11
         public static void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)
         {
-            // Draw
+            // Draw 
             spriteBatch.Begin();
             spriteBatch.Draw(backGround, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
             spriteBatch.End();

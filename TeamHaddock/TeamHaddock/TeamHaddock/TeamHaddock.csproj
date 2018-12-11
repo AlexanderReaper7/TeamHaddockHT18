@@ -76,6 +76,7 @@
     <Compile Include="CollidableObject.cs" />
     <Compile Include="Credits.cs" />
     <Compile Include="DynamicLight.cs" />
+    <Compile Include="GameOver.cs" />
     <Compile Include="IEnemy.cs" />
     <Compile Include="LampPost.cs" />
     <Compile Include="Light.cs" />
