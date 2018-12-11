@@ -23,9 +23,14 @@ namespace TeamHaddock
         public Rectangle SourceRectangle;
 
         /// <summary>
+        ///     The origin of the object, by default this is the center point of the sourceRectangle.
+        /// </summary>
+        public Vector2 origin;
+
+        /// <summary>
         ///     The rotation factor
         /// </summary>
-        private float rotation;
+        public float rotation;
 
 
         /// <summary>
@@ -68,10 +73,6 @@ namespace TeamHaddock
             set { rotation = value % MathHelper.TwoPi; }
         }
 
-        /// <summary>
-        ///     The origin of the object, by default this is the center point of the sourceRectangle.
-        /// </summary>
-        public Vector2 Origin { get; private set; }
 
         /// <summary>
         ///     The pixel data of the loaded texture in a 2D array
@@ -81,7 +82,7 @@ namespace TeamHaddock
         /// <summary>
         ///     A Matrix based on the current rotation and position.
         /// </summary>
-        private Matrix Transform => Matrix.CreateTranslation(new Vector3(-Origin, 0.0f)) * Matrix.CreateRotationZ(Rotation) * Matrix.CreateTranslation(new Vector3(Position, 0.0f));
+        private Matrix Transform => Matrix.CreateTranslation(new Vector3(-origin, 0.0f)) * Matrix.CreateRotationZ(Rotation) * Matrix.CreateTranslation(new Vector3(Position, 0.0f));
 
         /// <summary>
         ///     An axis aligned rectangle which fully contains an arbitrarily transformed axis aligned rectangle.
@@ -121,7 +122,7 @@ namespace TeamHaddock
             
             Texture = texture;
             // Create a new origin 
-            Origin = new Vector2(SourceRectangle.Width / 2, SourceRectangle.Height / 2); // texture.X / SourceRectangle.x = number of frames
+            origin = new Vector2(SourceRectangle.Width / 2, SourceRectangle.Height / 2); // texture.X / SourceRectangle.x = number of frames
             // Set size of TextureData
             TextureData = new Color[texture.Width, texture.Height];
             // Get texture data 
@@ -148,7 +149,7 @@ namespace TeamHaddock
         public void LoadTexture(Texture2D texture, Vector2 origin)
         {
             LoadTexture(texture);
-            Origin = origin;
+            this.origin = origin;
         }
 
         /// <summary>

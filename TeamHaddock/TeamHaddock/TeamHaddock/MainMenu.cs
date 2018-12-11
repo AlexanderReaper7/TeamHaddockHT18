@@ -60,14 +60,11 @@ namespace TeamHaddock
                 // Play
                 case 0:
                     Game1.GameState = Game1.GameStates.InGame;
-                    InGame.playState = InGame.PlayStates.Normal;
                     break;
-
                 // Tutorial
                 case 1:
                     Game1.GameState = Game1.GameStates.Tutorial; 
                     break;
-
                 // HighScore 
                 case 2:
                     Game1.GameState = Game1.GameStates.HighScore;

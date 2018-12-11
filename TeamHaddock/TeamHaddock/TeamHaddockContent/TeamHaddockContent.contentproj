@@ -119,8 +119,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\ActiveObjects\NormalMapGround.png">
-      <Name>NormalMapGround</Name>
+    <Compile Include="Textures\ActiveObjects\GroundNormalMap.png">
+      <Name>GroundNormalMap</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -154,8 +154,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\Characters\CivillianSpriteSheet.png">
-      <Name>CivillianSpriteSheet</Name>
+    <Compile Include="Textures\Characters\Civillian.png">
+      <Name>Civillian</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -182,15 +182,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\Characters\NormalMapBatonPolice.png">
-      <Name>NormalMapBatonPolice</Name>
+    <Compile Include="Textures\Characters\BatonPoliceNormalMap.png">
+      <Name>BatonPoliceNormalMap</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\Characters\NormalmapCivillianSpriteSheet.png">
-      <Name>NormalmapCivillianSpriteSheet</Name>
+    <Compile Include="Textures\Characters\CivillianNormalMap.png">
+      <Name>CivillianNormalMap</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -203,8 +203,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\ActiveObjects\NormalMapPlatform.png">
-      <Name>NormalMapPlatform</Name>
+    <Compile Include="Textures\ActiveObjects\PlatformNormalMap.png">
+      <Name>PlatformNormalMap</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

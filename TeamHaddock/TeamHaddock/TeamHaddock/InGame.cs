@@ -16,53 +16,45 @@ namespace TeamHaddock
     {
         public static DynamicLight dynamicLight;
 
-        public enum PlayStates : byte
-        {
-            Normal
-        }
-
-        public enum DamageTypes : byte
-        {
-            Pistol,
-            Melee
-        }
-
-        public static PlayStates playState = PlayStates.Normal;
-
-        private static Texture2D Background;
-        private static Texture2D BackgroundNormalMap;
-
         public static Player player;
 
-        public static List<IEnemy> enemies = new List<IEnemy>();
-        public static List<PistolParticle> particles = new List<PistolParticle>();
-        private static List<LampPost> lampPosts = new List<LampPost>();
-        // Temporary location for pistolParticle location
-        public static Texture2D pistolParticle;
+        private static Texture2D backgroundColorMap;
+        private static Texture2D backgroundNormalMap;
 
-        //Edited by Noble 12-10
+        private static Texture2D groundColorMap;
+        private static Texture2D groundNormalMap;
+        public static Rectangle groundRectangle;
+
+        public static int time;
+
+        public static List<IEnemy> enemies = new List<IEnemy>();
+        private static List<LampPost> lampPosts = new List<LampPost>();
+
+        //Edited by Noble 12-10, Alexander 12-11
         public static void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
 
             dynamicLight = new DynamicLight();
             dynamicLight.LoadContent(content, graphicsDevice);
 
-            Background = content.Load<Texture2D>(@"Textures/Backgrounds/InGameBackground");
-            BackgroundNormalMap = content.Load<Texture2D>(@"Textures/Backgrounds/InGameBackgroundNormalMap");
+            backgroundColorMap = content.Load<Texture2D>(@"Textures/Backgrounds/InGameBackground");
+            backgroundNormalMap = content.Load<Texture2D>(@"Textures/Backgrounds/InGameBackgroundNormalMap");
+
+            groundColorMap = content.Load<Texture2D>(@"Textures/ActiveObjects/Ground");
+            groundNormalMap = content.Load<Texture2D>(@"Textures/ActiveObjects/GroundNormalMap");
+            groundRectangle = new Rectangle(0, Game1.ScreenBounds.Y - groundColorMap.Height, Game1.ScreenBounds.X, groundColorMap.Height);
+
             UserInterface.LoadContent(content);
 
             player = new Player();
             player.LoadContent(content);
 
+            MeleeEnemy.LoadContent(content);
+
             LampPost.LoadContent(content);
 
-            Texture2D enemyTexture2D = content.Load<Texture2D>(@"Textures/Characters/BatonPolice");
-            pistolParticle = content.Load<Texture2D>(@"Textures/ActiveObjects/PistolParticle");
-
-            enemies.Add(new MeleeEnemy(enemyTexture2D, new Vector2(100), enemyTexture2D));
-
-            lampPosts.Add(new LampPost(new Vector2(Game1.ScreenBounds.X - 250, Game1.ScreenBounds.Y)));
-            lampPosts.Add(new LampPost(new Vector2(250, Game1.ScreenBounds.Y)));
+            lampPosts.Add(new LampPost(new Vector2(Game1.ScreenBounds.X - 250, groundRectangle.Top)));
+            lampPosts.Add(new LampPost(new Vector2(250, groundRectangle.Top)));
         }
 
         public static void Update(GameTime gameTime)
@@ -74,12 +66,6 @@ namespace TeamHaddock
             foreach (IEnemy enemy in enemies)
             {
                 enemy.Update(gameTime);
-            }
-
-            // Update the particles logic
-            foreach (PistolParticle particle in particles)
-            {
-                particle.Update(gameTime);
             }
         }
 
@@ -112,8 +98,9 @@ namespace TeamHaddock
         {
             spriteBatch.Begin();
             // Draw Background
-            spriteBatch.Draw(Background, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
-            // Draw Platforms
+            spriteBatch.Draw(backgroundColorMap, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
+            // Draw Platforms and ground
+            spriteBatch.Draw(groundColorMap, groundRectangle, Color.White);
             // Draw LampPosts
             foreach (LampPost lampPost in lampPosts)
             {
@@ -124,11 +111,6 @@ namespace TeamHaddock
             foreach (IEnemy enemy in enemies)
             {
                 enemy.DrawColorMap(spriteBatch);
-            }
-            // Draw the particles
-            foreach (PistolParticle particle in particles)
-            {
-                particle.Draw(spriteBatch);
             }
             // Draw player
             player.DrawColorMap(spriteBatch);
@@ -141,8 +123,9 @@ namespace TeamHaddock
             spriteBatch.Begin();
 
             // Draw Background
-            spriteBatch.Draw(BackgroundNormalMap, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
-            // Draw Platforms
+            spriteBatch.Draw(backgroundNormalMap, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
+            // Draw Platforms and ground
+            spriteBatch.Draw(groundNormalMap, groundRectangle, Color.White);
             // Draw LampPosts
             foreach (LampPost lampPost in lampPosts)
             {
@@ -150,10 +133,10 @@ namespace TeamHaddock
             }
 
             // Draw the enemies
-            //foreach (IEnemy enemy in enemies)
-            //{
-            //    enemy.DrawNormalMap(spriteBatch);
-            //}
+            foreach (IEnemy enemy in enemies)
+            {
+                enemy.DrawNormalMap(spriteBatch);
+            }
             // Draw player
             player.DrawNormalMap(spriteBatch);
 

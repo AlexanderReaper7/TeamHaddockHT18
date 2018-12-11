@@ -8,7 +8,7 @@ namespace TeamHaddock
         CollidableObject CollidableObject { get; }
         void DrawColorMap(SpriteBatch spriteBatch);
         void DrawNormalMap(SpriteBatch spriteBatch);
-        void TakeDamage(int damageTaken);
+        bool TakeDamage(int damageTaken);
         void Update(GameTime gameTime);
     }
 }

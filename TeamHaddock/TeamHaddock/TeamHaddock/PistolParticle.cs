@@ -16,11 +16,6 @@ namespace TeamHaddock
         private Vector2 direction;
 
         /// <summary>
-        /// Type of damage 
-        /// </summary>
-        private const InGame.DamageTypes damageType = InGame.DamageTypes.Pistol;
-
-        /// <summary>
         /// Creates a new pistol bullet/particle
         /// </summary>
         /// <param name="texture"></param>

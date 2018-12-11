@@ -13,6 +13,9 @@ namespace TeamHaddock
     public class MeleeEnemy : IEnemy
     {
         private CollidableObject collidableObject;
+        private static Texture2D colorMap;
+        private static Texture2D normalMap;
+        private static Texture2D collisionMap;
 
         public CollidableObject CollidableObject => collidableObject;
 
@@ -23,25 +26,19 @@ namespace TeamHaddock
         private Vector2 direction;
 
         private int Health { get; set; } = 100;
-        private Color color = Color.White;
-
-        private CollidableObject attackCollidableObject;
-        private Animation attackLeftAnimation;
-        private Animation attackRightAnimation;
-        private int attackOffSet;
-        private int timeAttacking;
-        private bool attacking;
 
         private const float baseWalkingSpeed = 0.1f, baseJumpStrength = -0.08f;
         private readonly Vector2 maxMovementSpeed = new Vector2(0.5f, 100f);
         private const int maxJumpTime = 200;
         private int jumpTime;
         private bool jumpComplete, onGround;
-        // Edited by Noble 12-10
-        public MeleeEnemy(Texture2D texture, Vector2 position, Texture2D attackTexture2D) // TODO: Add Animation attackAnimation
+
+        private int invulnerabilityFrames;
+
+        // Edited by Noble 12-10, Alexander 12-11
+        public MeleeEnemy(Vector2 position)
         {
-            collidableObject = new CollidableObject(texture, position, new Rectangle(120, 0, 98, 114), 0);
-            attackCollidableObject = new CollidableObject(attackTexture2D, Vector2.Zero);
+            collidableObject = new CollidableObject(collisionMap, position, new Rectangle(120, 0, 98, 114), 0);
 
             int walkingTime = 200; 
             
@@ -62,26 +59,21 @@ namespace TeamHaddock
                     new Frame(new Rectangle(99, 114, 98, 114), walkingTime),
                 }
             );
+        }
 
-             // ALEXANDER FIXA SÅ ATT DET BARA ÄR EN HITBOX SOM GÅR MOT SPELAREN HELA TIDEN
-            attackLeftAnimation = new Animation(new List<Frame>
-            {
-                new Frame(new Rectangle(0, 0, 1, 1), 1000)
-            });
-            attackRightAnimation = new Animation(new List<Frame>
-            {
-                new Frame(new Rectangle(0,0,1,1), 1000)
-            });
-
-            attackOffSet = 8;
+        public static void LoadContent(ContentManager content)
+        {
+            colorMap = content.Load<Texture2D>(@"Textures/Characters/BatonPolice");
+            normalMap = content.Load<Texture2D>(@"Textures/Characters/BatonPoliceNormalMap");
+            collisionMap = content.Load<Texture2D>(@"Textures/CollisionMaps/BatonPoliceCollisionMap");
         }
 
         public void Update(GameTime gameTime)
         {
+            invulnerabilityFrames -= gameTime.ElapsedGameTime.Milliseconds;
             UpdateAI(gameTime);
             UpdatePosition(gameTime);
-            if (attacking) { UpdateAttack(gameTime);}
-            
+            UpdateAttack(gameTime);
         }
 
         /// <summary>
@@ -91,7 +83,7 @@ namespace TeamHaddock
         private void UpdateAI(GameTime gameTime)
         {
             // Update ground
-            onGround = collidableObject.Position.Y >= Game1.ScreenBounds.Y - collidableObject.SourceRectangle.Y - 3;
+            onGround = collidableObject.Position.Y >= Game1.ScreenBounds.Y - collidableObject.origin.Y + InGame.groundRectangle.Height;
 
             //  and jump is not complete
             if (!jumpComplete)
@@ -127,23 +119,19 @@ namespace TeamHaddock
 
 
             // Move left when player is to the left
-            if (collidableObject.Position.X > InGame.player.collidableObject.Position.X - (InGame.player.collidableObject.Origin.X + collidableObject.Origin.X))
+            if (collidableObject.Position.X > InGame.player.collidableObject.Position.X - (InGame.player.collidableObject.origin.X + collidableObject.origin.X))
             {
                 MoveLeft(gameTime);
             }
             // Move right when player is to the right
-            if (collidableObject.Position.X < InGame.player.collidableObject.Position.X + (InGame.player.collidableObject.Origin.X + collidableObject.Origin.X))
+            if (collidableObject.Position.X < InGame.player.collidableObject.Position.X + (InGame.player.collidableObject.origin.X + collidableObject.origin.X))
             {
                 MoveRight(gameTime);
             }
             // Stop when enemy is near the player 
-            if (collidableObject.Position.X > InGame.player.collidableObject.Position.X - (InGame.player.collidableObject.Origin.X + collidableObject.Origin.X) && collidableObject.Position.X < InGame.player.collidableObject.Position.X + (InGame.player.collidableObject.Origin.X + collidableObject.Origin.X))
+            if (collidableObject.Position.X > InGame.player.collidableObject.Position.X - (InGame.player.collidableObject.origin.X + collidableObject.origin.X) && collidableObject.Position.X < InGame.player.collidableObject.Position.X + (InGame.player.collidableObject.origin.X + collidableObject.origin.X))
             {
                 StopMoving();
-                if (!attacking)
-                {
-                    StartAttack();
-                }
             }
         }
 
@@ -178,9 +166,9 @@ namespace TeamHaddock
             // Animate left
             moveLeftAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
             // Set direction to left
-            direction = -Vector2.UnitX;
+            direction.X = -1;
             // Set velocity
-            velocity.X = -0.3f; // TODO: Add acceleration
+            velocity.X = -baseWalkingSpeed; 
         }
 
         private void MoveRight(GameTime gameTime)
@@ -188,11 +176,14 @@ namespace TeamHaddock
             // Animate right
             moveRightAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
             // Set direction to right
-            direction = Vector2.UnitX;
+            direction.X = 1;
             // Set velocity
-            velocity.X = 0.3f; // TODO: Add acceleration
+            velocity.X = -baseWalkingSpeed; 
         }
 
+        /// <summary>
+        /// resets animation and velocity
+        /// </summary>
         private void StopMoving()
         {
             // Set velocity to 0
@@ -211,77 +202,51 @@ namespace TeamHaddock
             }
         }
 
+        /// <summary>
+        /// Checks for a collision between the player and this enemy and deals damage to player when true
+        /// </summary>
+        private void UpdateAttack(GameTime gameTime)
+        {
+            if (collidableObject.IsColliding(InGame.player.collidableObject))
+            {
+                InGame.player.TakeDamage(Player.maxHealth / 5, gameTime);
+            }
+        }
+
+        /// <summary>
+        /// Adds a force to velocity while clamping velocity to maxMovementSpeed
+        /// </summary>
+        /// <param name="force"></param>
         private void AddForce(Vector2 force)
         {
             velocity.X = MathHelper.Clamp(velocity.X + force.X, -maxMovementSpeed.X, maxMovementSpeed.X);
             velocity.Y = MathHelper.Clamp(velocity.Y + force.Y, -maxMovementSpeed.Y, maxMovementSpeed.Y);
         }
 
-        private void StartAttack()
+        public bool TakeDamage(int damageTaken)
         {
-            // Set attacking to active
-            attacking = true;
+            bool tookDamage = false;
+            if (invulnerabilityFrames <= 0)
+            {
+                Health -= damageTaken;
+                tookDamage = true;
+            }
+            // If health reaches 0, kill this enemy.
+            if (Health <= 0)
+            {
+                RemoveFromList();
+            }
+
+            return tookDamage;
+        }
+        /// <summary>
+        /// Removes this object from the particles list
+        /// </summary>
+        private void RemoveFromList()
+        {
+            Game1.finalActionsDelegate += () => { InGame.enemies.Remove(this); };
         }
 
-        private void UpdateAttack(GameTime gameTime)
-        {
-            timeAttacking += gameTime.ElapsedGameTime.Milliseconds;
-            // If direction is right
-            if (direction.X > 0)
-            {
-                // Animate right
-                attackRightAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
-                attackCollidableObject.Position.X = collidableObject.Position.X + attackOffSet;
-                attackCollidableObject.Position.Y = collidableObject.Position.Y;
-
-                if (timeAttacking >= attackRightAnimation.TotalFrameTime)
-                {
-                   EndAttack();
-                }
-            }
-            // Else direction is left
-            else
-            {
-                // Animate Left
-                attackLeftAnimation.Animate(ref attackCollidableObject.SourceRectangle, gameTime);
-                attackCollidableObject.Position.X = collidableObject.Position.X - attackOffSet;
-                attackCollidableObject.Position.Y = collidableObject.Position.Y;
-
-                if (timeAttacking >= attackLeftAnimation.TotalFrameTime)
-                {
-                    EndAttack();
-                }
-            }
-            // If attack is colliding with player
-            if (attackCollidableObject.IsColliding(InGame.player.collidableObject))
-            {
-                // Deal damage to player
-                InGame.player.TakeDamage(InGame.DamageTypes.Melee);
-                // Deactivate attack
-                EndAttack();
-            }
-        }
-
-        private void EndAttack()
-        {
-            attacking = false;
-            if (direction.X > 0)
-            {
-                attackRightAnimation.SetToFrame(ref collidableObject.SourceRectangle, 0);
-            }
-            else
-            {
-                attackLeftAnimation.SetToFrame(ref collidableObject.SourceRectangle, 0);
-            }
-        }
-
-        public void TakeDamage(int damageTaken)
-        {
-            // Give invincibility frames
-            
-            // Deal damage
-            Health -= damageTaken;
-        }
 
         // Created by Alexander 11-22
         /// <summary>
@@ -293,30 +258,24 @@ namespace TeamHaddock
             // Clamp X position + velocity to not go beyond the window + texture
             collidableObject.Position.X = MathHelper.Clamp(
                 collidableObject.Position.X + (velocity.X * gameTime.ElapsedGameTime.Milliseconds),
-                0 - collidableObject.Origin.X,
-                Game1.ScreenBounds.X + collidableObject.Origin.X);
+                0 - collidableObject.origin.X,
+                Game1.ScreenBounds.X + collidableObject.origin.X);
 
             // Clamp Y position + velocity to not go beyond the window - texture
             collidableObject.Position.Y = MathHelper.Clamp(
                 collidableObject.Position.Y + (velocity.Y * gameTime.ElapsedGameTime.Milliseconds),
-                0 + collidableObject.Origin.Y,
-                Game1.ScreenBounds.Y - collidableObject.Origin.Y);
+                0 + collidableObject.origin.Y,
+                Game1.ScreenBounds.Y - collidableObject.origin.Y);
         }
 
         public void DrawColorMap(SpriteBatch spriteBatch)
         {
-            // Draw enemy
-            spriteBatch.Draw(collidableObject.Texture, collidableObject.Position, collidableObject.SourceRectangle, color, collidableObject.Rotation, collidableObject.Origin, 1.0f, SpriteEffects.None, 0.0f);
-            // If this enemy is attacking
-            if (attacking)
-            {
-                // Draw attack
-                spriteBatch.Draw(attackCollidableObject.Texture, attackCollidableObject.Position, attackCollidableObject.SourceRectangle, Color.White, attackCollidableObject.Rotation, attackCollidableObject.Origin, 1.0f, SpriteEffects.None, 0.0f);
-            }
+            spriteBatch.Draw(colorMap, collidableObject.Position, collidableObject.SourceRectangle, invulnerabilityFrames > 0 ? Color.Red : Color.White, collidableObject.Rotation, collidableObject.origin, 1.0f, SpriteEffects.None, 0.0f);
         }
 
         public void DrawNormalMap(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(normalMap, collidableObject.Position, collidableObject.SourceRectangle, Color.White, collidableObject.Rotation, collidableObject.origin, 1.0f, SpriteEffects.None, 0.0f);
         }
     }
 }

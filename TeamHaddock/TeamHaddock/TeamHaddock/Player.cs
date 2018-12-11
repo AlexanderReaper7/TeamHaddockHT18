@@ -14,19 +14,20 @@ namespace TeamHaddock
     {
         private KeyboardState keyboard;
         public CollidableObject collidableObject;
-        private Texture2D NormalMap;
+        private Texture2D normalMap, colorMap;
 
         private const float baseWalkingSpeed = 0.1f, baseJumpStrength = -0.06f;
         private readonly Vector2 maxMovementSpeed = new Vector2(0.5f, 10f);
+        const float groundResistance = 0.055f;
         private Vector2 velocity;
         private Point direction = new Point(1, 1);
         private const int maxJumpTime = 130;
         private int jumpTime;
         private bool jumpComplete, onGround, walking;
-        public const int maxHealth = 1000000;
+        public static int maxHealth = 1000000;
         public int Health { get; private set; } = maxHealth;
 
-        List<Animation> animations = new List<Animation>();
+        private List<Animation> animations = new List<Animation>();
 
         // Edited by Noble 12-09
         private Animation CurrentAnimation
@@ -152,19 +153,13 @@ namespace TeamHaddock
             }
         }
 
-
         private CollidableObject attackCollidableObject;
         private bool attacking;
         private int timeAttacking;
         private const int attackDamage = 10;
         private Point attackDirection;
 
-        
-
-        /// <summary>
-        /// The base damage for the enemies pistol 
-        /// </summary>
-        private const int basePistolDamage = 8;
+        private int invulnerabilityFrames;
 
         /// <summary>
         /// Called upon to load player textures etc.
@@ -174,21 +169,21 @@ namespace TeamHaddock
         {
             // Create a new collidableObject
             collidableObject = new CollidableObject(
-                content.Load<Texture2D>(@"Textures/Characters/Player"), // The texture
-                new Vector2(250), // The spawning position
+                content.Load<Texture2D>(@"Textures/CollisionMaps/PlayerCollisionMap"), // The collision map
+                new Vector2(Game1.ScreenBounds.X / 2, InGame.groundRectangle.Top +100), // The spawning position
                 new Rectangle(0, 0, 79, 104), // Initial size and position of source rectangle
                 0f // The rotation
                 );
 
             // Create a new collidable object for attack collision map
-            attackCollidableObject = new CollidableObject(content.Load<Texture2D>(@"Textures/CollisionMaps/PlayerCollisionMap"),
+            attackCollidableObject = new CollidableObject(content.Load<Texture2D>(@"Textures/CollisionMaps/PlayerAttackCollisionMap"),
                 collidableObject.Position,
                 collidableObject.SourceRectangle,
                 collidableObject.Rotation);
 
             // Load normal map texture
-            NormalMap = content.Load<Texture2D>(@"Textures/Characters/PlayerNormalMap");
-
+            normalMap = content.Load<Texture2D>(@"Textures/Characters/PlayerNormalMap");
+            colorMap = content.Load<Texture2D>(@"Textures/Characters/Player");
             LoadAnimations();
         }
         // Edited by Noble 12-07, 12-08, 12-09, 
@@ -246,13 +241,13 @@ namespace TeamHaddock
             animations.Add(new Animation("attackGroundedRight", new List<Frame>
             {
                 new Frame(new Rectangle(165, 423, 61, 103), preparationAnimationFrameTime),
-                new Frame(new Rectangle(0, 423, 150, 103), attackAnimationFrameTime),                
+                new Frame(new Rectangle(0, 423, 150, 103), new Vector2(20, 51), attackAnimationFrameTime),                
             }));
 
             animations.Add(new Animation("attackGroundedLeft", new List<Frame>
             {
                 new Frame(new Rectangle(165, 533, 59, 103), preparationAnimationFrameTime),
-                new Frame(new Rectangle(15, 533, 150, 103), attackAnimationFrameTime),                
+                new Frame(new Rectangle(15, 533, 150, 103), new Vector2(130, 51), attackAnimationFrameTime),
             }));
 
             animations.Add( new Animation("fallingRight", new List<Frame>
@@ -266,20 +261,16 @@ namespace TeamHaddock
                 new Frame(new Rectangle(0, 1020, 69, 107), walkingFrameTime)
             }));
 
-            animations.Add(new Animation("attackFallingRight",
-                new List<Frame>
+            animations.Add(new Animation("attackFallingRight", new List<Frame>
                 {
                     new Frame(new Rectangle(231, 896, 61, 108), preparationAnimationFrameTime),
-                    new Frame(new Rectangle(70, 896, 146, 108), attackAnimationFrameTime),
-                    
+                    new Frame(new Rectangle(70, 896, 146, 108), new Vector2(16, 54), attackAnimationFrameTime),
                 }));
-            animations.Add(new Animation("attackFallingLeft",
-                new List<Frame>
-                {
 
+            animations.Add(new Animation("attackFallingLeft", new List<Frame>
+                {
                     new Frame(new Rectangle(232, 1019, 61, 108), preparationAnimationFrameTime),
-                    new Frame(new Rectangle(85, 1019, 146, 108), attackAnimationFrameTime),
-                    
+                    new Frame(new Rectangle(85, 1019, 146, 108), new Vector2(130, 54), attackAnimationFrameTime),
                 }));
         }
 
@@ -308,7 +299,7 @@ namespace TeamHaddock
             walking = false;
 
             // if player hits the ground //or the top of a platform
-            if (collidableObject.Position.Y >= Game1.ScreenBounds.Y - collidableObject.Origin.Y)
+            if (collidableObject.Position.Y >= InGame.groundRectangle.Top - collidableObject.origin.Y)
             {
                 onGround = true;
                 direction.Y = 0;
@@ -392,7 +383,6 @@ namespace TeamHaddock
             #endregion 
         }
 
-
         // Created by Noble 11-21, Edited by Alexander 11-22
         private void MoveLeft()
         {
@@ -410,7 +400,6 @@ namespace TeamHaddock
             walking = true;
             AddForce(new Vector2(baseWalkingSpeed, 0));
         }
-
 
         // Created by Noble 11-21, Edited by Noble 11-28, Edited by Alexander 12-06
         private void Jump(GameTime gameTime)
@@ -478,7 +467,12 @@ namespace TeamHaddock
             {
                 if (enemy.CollidableObject.IsColliding(attackCollidableObject))
                 {
-                    enemy.TakeDamage(attackDamage);
+                    // If enemy took damage
+                    if (enemy.TakeDamage(attackDamage))
+                    {
+                        // Give player health
+                        Health += attackDamage;
+                    }
                 }
             }
 
@@ -508,27 +502,20 @@ namespace TeamHaddock
             Health -= gameTime.ElapsedGameTime.Milliseconds;
         }
 
-        public void TakeDamage(InGame.DamageTypes damageType)
+        public void TakeDamage(int damageTaken, GameTime gameTime)
         {
-            switch (damageType)
+            invulnerabilityFrames -= gameTime.ElapsedGameTime.Milliseconds;
+            if (invulnerabilityFrames <= 0)
             {
-                case InGame.DamageTypes.Pistol:
-                    Health -= basePistolDamage * WaveManager.CurrentWave; // TODO: REDO
-                    break;
-
-                case InGame.DamageTypes.Melee:
-                    Health -= 100; // TODO: Change this
-                    break;
-
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(damageType), damageType, null);
+                invulnerabilityFrames += 750;
+                Health -= damageTaken;
             }
         }
 
 
         private void UpdateAnimation(GameTime gameTime)
         {
-            CurrentAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
+            CurrentAnimation.Animate(ref collidableObject.SourceRectangle, ref collidableObject.origin, gameTime);
 
             // Reset all other animations except from the CurrentAnimation
             foreach (Animation animation in animations)
@@ -547,14 +534,14 @@ namespace TeamHaddock
             // Clamp X position + velocity
             collidableObject.Position.X = MathHelper.Clamp(
                 collidableObject.Position.X + (velocity.X * gameTime.ElapsedGameTime.Milliseconds),
-                0 + collidableObject.Origin.X,
-                Game1.ScreenBounds.X - collidableObject.Origin.X);
+                0 + collidableObject.origin.X,
+                Game1.ScreenBounds.X - collidableObject.origin.X);
 
             // Clamp Y position + velocity
             collidableObject.Position.Y = MathHelper.Clamp(
                 collidableObject.Position.Y + (velocity.Y * gameTime.ElapsedGameTime.Milliseconds),
-                0 + collidableObject.Origin.Y,
-                Game1.ScreenBounds.Y - collidableObject.Origin.Y);
+                0 + collidableObject.origin.Y,
+                InGame.groundRectangle.Top - collidableObject.origin.Y);
         }
 
         /// <summary>
@@ -566,7 +553,7 @@ namespace TeamHaddock
             // Reduce velocity when player is not doing anything
             if (!walking)
             {
-                velocity.X *= 0.055f * gameTime.ElapsedGameTime.Milliseconds;               
+                velocity.X *= groundResistance * gameTime.ElapsedGameTime.Milliseconds;
             }
 
             // Truncate velocity
@@ -582,34 +569,35 @@ namespace TeamHaddock
         public void DrawColorMap(SpriteBatch spriteBatch)
         {
             // Draw player
-            spriteBatch.Draw(collidableObject.Texture,
+            spriteBatch.Draw(colorMap,
                 collidableObject.Position,
                 collidableObject.SourceRectangle,
                 Color.White,
                 collidableObject.Rotation,
-                collidableObject.Origin,
+                collidableObject.origin,
                 1.0f,
                 SpriteEffects.None,
                 0.0f);
-
+#if DEBUG
             Game1.finalActionsDelegate += () =>
             {
                 spriteBatch.Begin();
-                spriteBatch.DrawString(Game1.NormalMenuFont, $" {attacking}\n {velocity}\n {CurrentAnimation.name}", Vector2.One, Color.White);
+                spriteBatch.DrawString(Game1.NormalMenuFont, $" {velocity}\n {CurrentAnimation.name}", Vector2.One, Color.White);
                 spriteBatch.End();
             };
+#endif
         }
 
 
         public void DrawNormalMap(SpriteBatch spriteBatch)
         {
             // Draw player normal map
-            spriteBatch.Draw(NormalMap,
+            spriteBatch.Draw(normalMap,
                 collidableObject.Position,
                 collidableObject.SourceRectangle,
                 Color.White,
                 collidableObject.Rotation,
-                collidableObject.Origin,
+                collidableObject.origin,
                 1.0f,
                 SpriteEffects.None,
                 0.0f);
