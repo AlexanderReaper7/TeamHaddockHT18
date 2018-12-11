@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-// Class created by Alexander 11-07
+// Class created by Alexander 11-07 // Edited by Noble 12-11
 namespace TeamHaddock
 {
     /// <summary>
@@ -41,6 +41,10 @@ namespace TeamHaddock
 
         public static SpriteFont NormalMenuFont;
         public static SpriteFont BoldMenuFont;
+
+        public static SpriteFont CreditsFont;
+        public static SpriteFont BoldCreditsFont;
+        public static SpriteFont CreditsTitleFont;
 
         /// <summary>
         /// Size of game window
@@ -85,6 +89,10 @@ namespace TeamHaddock
 
             NormalMenuFont = Content.Load<SpriteFont>(@"Fonts/NormalMenuFont");
             BoldMenuFont = Content.Load<SpriteFont>(@"Fonts/BoldMenuFont");
+
+            CreditsFont = Content.Load<SpriteFont>(@"Fonts/CreditsFont");
+            BoldCreditsFont = Content.Load<SpriteFont>(@"Fonts/BoldCreditsFont");
+            CreditsTitleFont = Content.Load<SpriteFont>(@"Fonts/CreditsTitleFont");
 
             MainMenu.LoadContent(Content);
             InGame.LoadContent(Content, GraphicsDevice);
