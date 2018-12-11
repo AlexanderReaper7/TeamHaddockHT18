@@ -148,7 +148,7 @@ namespace TeamHaddock
             // Set direction to left
             direction.X = -1;
             // Set velocity
-            velocity.X = -baseWalkingSpeed; 
+            velocity.X = MathHelper.Clamp(baseWalkingSpeed * InGame.difficultyModifier, -maxMovementSpeed.X, 0);
         }
 
         private void MoveRight(GameTime gameTime)
@@ -158,7 +158,7 @@ namespace TeamHaddock
             // Set direction to right
             direction.X = 1;
             // Set velocity
-            velocity.X = baseWalkingSpeed; 
+            velocity.X = MathHelper.Clamp(baseWalkingSpeed * InGame.difficultyModifier, 0, maxMovementSpeed.X);
         }
 
         /// <summary>

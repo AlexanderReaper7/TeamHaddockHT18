@@ -185,6 +185,7 @@ namespace TeamHaddock
             // Load normal map texture
             normalMap = content.Load<Texture2D>(@"Textures/Characters/PlayerNormalMap");
             colorMap = content.Load<Texture2D>(@"Textures/Characters/Player");
+            animations.Clear();
             LoadAnimations();
         }
 
@@ -374,21 +375,6 @@ namespace TeamHaddock
                     StartAttack();
                 }
             }
-
-            #region Debug controls
-            #if DEBUG
-                // If Q key is pressed down then rotate counter-clockwise
-                if (keyboard.IsKeyDown(Keys.Q))
-                {
-                    collidableObject.Rotation -= MathHelper.TwoPi / 1000 * gameTime.ElapsedGameTime.Milliseconds;
-                }
-                // If E key is pressed down then rotate clockwise
-                if (keyboard.IsKeyDown(Keys.E))
-                {
-                    collidableObject.Rotation += MathHelper.TwoPi / 1000 * gameTime.ElapsedGameTime.Milliseconds;
-                }
-            #endif
-            #endregion 
         }
 
         // Created by Noble 11-21, Edited by Alexander 11-22

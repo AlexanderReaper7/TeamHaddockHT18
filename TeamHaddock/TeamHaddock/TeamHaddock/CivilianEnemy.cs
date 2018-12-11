@@ -22,7 +22,7 @@ namespace TeamHaddock
         private Animation moveRightAnimation;
 
         private Vector2 velocity;
-        private const int defaultHealth = 1000;
+        private const int defaultHealth = 300;
         private int health;
         private int invulnerabilityFrames;
 
@@ -43,7 +43,7 @@ namespace TeamHaddock
 
             int walkingTime = 200;
 
-            // Load all frames into Animation // Edited by Noble 12-10 
+            // Load all frames into Animation // Edited by Noble 12-10 TODO:
             moveRightAnimation = new Animation(new List<Frame>
                 {
 
@@ -68,6 +68,11 @@ namespace TeamHaddock
             invulnerabilityFrames -= gameTime.ElapsedGameTime.Milliseconds;
             UpdateAI(gameTime);
             UpdatePosition(gameTime);
+
+            if (collidableObject.Position.X <= -collidableObject.SourceRectangle.Width || collidableObject.Position.X >= Game1.ScreenBounds.X + collidableObject.SourceRectangle.Width)
+            {
+                RemoveFromList();
+            }
         }
 
         private void UpdateAI(GameTime gameTime)
@@ -102,7 +107,7 @@ namespace TeamHaddock
             // Animate left
             moveLeftAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
             // Set velocity
-            velocity.X = -baseWalkingSpeed;
+            velocity.X = MathHelper.Clamp(baseWalkingSpeed * InGame.difficultyModifier, -maxMovementSpeed.X, 0);
         }
 
         private void MoveRight(GameTime gameTime)
@@ -110,7 +115,7 @@ namespace TeamHaddock
             // Animate right
             moveRightAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
             // Set velocity
-            velocity.X = baseWalkingSpeed;
+            velocity.X = MathHelper.Clamp(baseWalkingSpeed * InGame.difficultyModifier, 0, maxMovementSpeed.X) ;
         }
 
         /// <summary>
@@ -150,13 +155,13 @@ namespace TeamHaddock
             // Clamp X position + velocity to not go beyond the window + texture
             collidableObject.Position.X = MathHelper.Clamp(
                 collidableObject.Position.X + (velocity.X * gameTime.ElapsedGameTime.Milliseconds),
-                0 - collidableObject.origin.X,
-                Game1.ScreenBounds.X + collidableObject.origin.X);
+                -collidableObject.origin.X,
+                Game1.ScreenBounds.X + collidableObject.SourceRectangle.Width);
 
             // Clamp Y position + velocity to not go beyond the window - texture
             collidableObject.Position.Y = MathHelper.Clamp(
                 collidableObject.Position.Y + (velocity.Y * gameTime.ElapsedGameTime.Milliseconds),
-                0 + collidableObject.origin.Y,
+                collidableObject.origin.Y,
                 InGame.groundRectangle.Top - collidableObject.origin.Y);
         }
 

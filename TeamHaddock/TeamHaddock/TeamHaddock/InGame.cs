@@ -103,7 +103,7 @@ namespace TeamHaddock
                 else
                 {
                     // %50 chance to spawn civilianEnemy
-                    enemies.Add(new MeleeEnemy(random.Next(10) < 5 ? defaultSpawnPosition : new Vector2(-49, defaultSpawnPosition.Y)));
+                    enemies.Add(random.Next(10) < 5 ? new CivilianEnemy(new Vector2(-49, defaultSpawnPosition.Y), true) : new CivilianEnemy(defaultSpawnPosition, false));
                 }
                 // Reset timer
                 timeSinceLastSpawn = 0;
