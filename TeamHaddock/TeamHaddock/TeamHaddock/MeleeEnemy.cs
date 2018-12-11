@@ -189,7 +189,7 @@ namespace TeamHaddock
         {
             if (collidableObject.IsColliding(InGame.player.collidableObject))
             {
-                InGame.player.TakeDamage((int)(500 * InGame.difficultyModifier), gameTime);
+                InGame.player.TakeDamage((int)(850 * InGame.difficultyModifier), gameTime);
             }
         }
 

@@ -104,11 +104,12 @@ namespace TeamHaddock
                 for (int x = data.Count - 1; x > scoreIndex; x--)
                 {
                     data.Score[x] = data.Score[x - 1];
+                    
                 }
 
 
                 data.Score[scoreIndex] = playerScore;
-
+                data.Playername[scoreIndex] = playerName;
                 //if (playerCharacter == 0)
                 //{
                 //    data.PlayerName[scoreIndex] = names[0];

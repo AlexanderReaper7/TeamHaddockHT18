@@ -497,7 +497,7 @@ namespace TeamHaddock
         /// <param name="gameTime"></param>
         private void HealthDepletion(GameTime gameTime)
         {
-            Health -= (int)(gameTime.ElapsedGameTime.Milliseconds * InGame.difficultyModifier * 1.3f);
+            Health -= (int)(gameTime.ElapsedGameTime.Milliseconds * InGame.difficultyModifier * 1.42f);
         }
 
         public void TakeDamage(int damageTaken, GameTime gameTime)
