@@ -18,13 +18,13 @@ namespace TeamHaddock
 
         private const float baseWalkingSpeed = 0.1f, baseJumpStrength = -0.06f;
         private readonly Vector2 maxMovementSpeed = new Vector2(0.5f, 10f);
-        const float groundResistance = 0.055f;
+        const float groundResistance = 0.04f;
         private Vector2 velocity;
         private Point direction = new Point(1, 1);
         private const int maxJumpTime = 130;
         private int jumpTime;
         private bool jumpComplete, onGround, walking;
-        public static int maxHealth = 100000;
+        public static int maxHealth = 50000;
         public int Health { get; private set; } = maxHealth;
 
         private List<Animation> animations = new List<Animation>();
@@ -474,7 +474,7 @@ namespace TeamHaddock
                     if (enemy.TakeDamage(attackDamage))
                     {
                         // Give player health
-                        Health += attackDamage;
+                        Health = (int)MathHelper.Clamp(Health + attackDamage, 0f, maxHealth);
                     }
                 }
             }
