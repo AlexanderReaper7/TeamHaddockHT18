@@ -25,7 +25,13 @@ namespace TeamHaddock
         private static Texture2D groundNormalMap;
         public static Rectangle groundRectangle;
 
-        public static int time;
+        private static int baseSpawnInterval = 3000;
+        private static int timeSinceLastSpawn;
+        private static Vector2 defaultSpawnPosition = new Vector2(Game1.ScreenBounds.X + 49, groundRectangle.Top -100);
+        private static Random random = new Random();
+
+        public static long totalTimeElapsed;
+        public static float difficultyModifier;
 
         public static List<IEnemy> enemies = new List<IEnemy>();
         private static List<LampPost> lampPosts = new List<LampPost>();
@@ -33,9 +39,11 @@ namespace TeamHaddock
         //Edited by Noble 12-10, Alexander 12-11
         public static void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
         {
-
             dynamicLight = new DynamicLight();
             dynamicLight.LoadContent(content, graphicsDevice);
+
+            player = new Player();
+            player.LoadContent(content);
 
             backgroundColorMap = content.Load<Texture2D>(@"Textures/Backgrounds/InGameBackground");
             backgroundNormalMap = content.Load<Texture2D>(@"Textures/Backgrounds/InGameBackgroundNormalMap");
@@ -44,12 +52,15 @@ namespace TeamHaddock
             groundNormalMap = content.Load<Texture2D>(@"Textures/ActiveObjects/GroundNormalMap");
             groundRectangle = new Rectangle(0, Game1.ScreenBounds.Y - groundColorMap.Height, Game1.ScreenBounds.X, groundColorMap.Height);
 
+            totalTimeElapsed = 0;
+            difficultyModifier = 0;
+
             UserInterface.LoadContent(content);
 
-            player = new Player();
-            player.LoadContent(content);
-
             MeleeEnemy.LoadContent(content);
+
+            enemies.Add( new MeleeEnemy(Vector2.One));
+            enemies.Add(new MeleeEnemy(defaultSpawnPosition));
 
             LampPost.LoadContent(content);
 
@@ -59,6 +70,10 @@ namespace TeamHaddock
 
         public static void Update(GameTime gameTime)
         {
+            totalTimeElapsed += gameTime.ElapsedGameTime.Milliseconds;
+            difficultyModifier = (float)(totalTimeElapsed / 30000 +1); // double difficulty per 1 minute
+
+            UpdateSpawning(gameTime);
             // Update player logic
             player.Update(gameTime);
 
@@ -66,6 +81,24 @@ namespace TeamHaddock
             foreach (IEnemy enemy in enemies)
             {
                 enemy.Update(gameTime);
+            }
+        }
+
+        private static void UpdateSpawning(GameTime gameTime)
+        {
+            timeSinceLastSpawn += gameTime.ElapsedGameTime.Milliseconds;
+            if (timeSinceLastSpawn >= (baseSpawnInterval / difficultyModifier) * (random.Next(75, 125) / 100))
+            {
+                if (random.Next(10) <= 5)
+                {
+                    enemies.Add(new MeleeEnemy(random.Next(10) < 5 ? defaultSpawnPosition : new Vector2(-49, defaultSpawnPosition.Y)));
+                }
+                else
+                {
+                    enemies.Add(new MeleeEnemy(random.Next(10) < 5 ? defaultSpawnPosition : new Vector2(-49, defaultSpawnPosition.Y)));
+                }
+
+                timeSinceLastSpawn = 0;
             }
         }
 
