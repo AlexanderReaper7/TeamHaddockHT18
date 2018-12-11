@@ -86,36 +86,27 @@ namespace TeamHaddock
             onGround = collidableObject.Position.Y >= Game1.ScreenBounds.Y - collidableObject.origin.Y + InGame.groundRectangle.Height;
 
             //  and jump is not complete
-            if (InGame.player.collidableObject.Position.Y > collidableObject.Position.Y && !jumpComplete)
-            {
-                // Start jump
-                // If jumpTime is reset and is on ground
-                if (jumpTime == 0 && onGround)
+            if (InGame.player.collidableObject.Position.Y > collidableObject.Position.Y && onGround)
                 {
-                    Jump(gameTime);
-                    return;
-                }
-                // Continue jump
-                // Jump has already started
-                if (jumpTime > 0)
-                {
-                    Jump(gameTime);
-                }
-            }
-            else
-            {
-                // A key was released, therefore set jump to complete
-                jumpComplete = true;
-                // if both keys are up and player is on ground
-                if (onGround)
-                {
-                    // Reset jump
-                    jumpTime = 0;
-                    jumpComplete = false;
-                }
+                    // Continue jump
+                    // Jump has already started
+                    if (jumpTime > 0)
+                    {
+                        Jump(gameTime);
+                    }
 
-                Fall(gameTime);
-            }
+                    // Start jump
+                    // If jumpTime is reset and is on ground
+                    if (jumpTime == 0 && onGround)
+                    {
+                        Jump(gameTime);
+                    }
+                }
+                else
+                {
+                    // Fall
+                    Fall(gameTime);
+                }
 
 
             // Move left when player is to the left
@@ -265,7 +256,7 @@ namespace TeamHaddock
             collidableObject.Position.Y = MathHelper.Clamp(
                 collidableObject.Position.Y + (velocity.Y * gameTime.ElapsedGameTime.Milliseconds),
                 0 + collidableObject.origin.Y,
-                Game1.ScreenBounds.Y - collidableObject.origin.Y);
+                InGame.groundRectangle.Top - collidableObject.origin.Y);
         }
 
         public void DrawColorMap(SpriteBatch spriteBatch)

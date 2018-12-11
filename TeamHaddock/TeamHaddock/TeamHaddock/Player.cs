@@ -462,6 +462,7 @@ namespace TeamHaddock
             // Update attack collidable
             attackCollidableObject.Position = collidableObject.Position;
             attackCollidableObject.SourceRectangle = collidableObject.SourceRectangle;
+            attackCollidableObject.origin = collidableObject.origin;
             attackCollidableObject.Rotation = collidableObject.Rotation;
 
             // Check attack collision to every enemy
@@ -583,7 +584,7 @@ namespace TeamHaddock
             Game1.finalActionsDelegate += () =>
             {
                 spriteBatch.Begin();
-                spriteBatch.DrawString(Game1.NormalMenuFont, $" {velocity}\n {CurrentAnimation.name}\n {Health}\n {InGame.difficultyModifier}\n {InGame.totalTimeElapsed} ", Vector2.One, Color.White);
+                spriteBatch.DrawString(Game1.NormalMenuFont, $" {velocity}\n {CurrentAnimation.name}\n {Health}\n {InGame.difficultyModifier}\n {InGame.totalTimeElapsed}\n {InGame.enemies.Count} ", Vector2.One, Color.White);
                 spriteBatch.End();
             };
 #endif
