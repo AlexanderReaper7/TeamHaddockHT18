@@ -183,6 +183,7 @@ namespace TeamHaddock
                 case GameStates.Exit:
                     break;
                 case GameStates.GameOver:
+                    GameOver.Draw(spriteBatch, GraphicsDevice);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

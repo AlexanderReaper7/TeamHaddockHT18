@@ -22,11 +22,11 @@ namespace TeamHaddock
         private Animation moveRightAnimation;
 
         private Vector2 velocity;
-        private const int defaultHealth = 300;
+        private const int defaultHealth = 500;
         private int health;
         private int invulnerabilityFrames;
 
-        private const float baseWalkingSpeed = 0.1f;
+        private const float baseWalkingSpeed = 0.15f;
         private readonly Vector2 maxMovementSpeed = new Vector2(0.5f, 100f);
 
 
@@ -43,15 +43,21 @@ namespace TeamHaddock
 
             int walkingTime = 200;
 
-            // Load all frames into Animation // Edited by Noble 12-10 TODO:
+            // Load all frames into Animation // Edited by Noble 12-11
             moveRightAnimation = new Animation(new List<Frame>
                 {
-
+                    new Frame(new Rectangle(0, 0, 53, 142), walkingTime),
+                    new Frame(new Rectangle(53, 0, 53, 142), walkingTime),
+                    new Frame(new Rectangle(0, 0, 53, 142), walkingTime),
+                    new Frame(new Rectangle(106, 0, 53, 142 ), walkingTime),             
                 }
             );
             moveLeftAnimation = new Animation(new List<Frame>
                 {
-
+                    new Frame(new Rectangle(0, 0, 53, 142), walkingTime),
+                    new Frame(new Rectangle(53, 0, 53, 142), walkingTime),
+                    new Frame(new Rectangle(0, 0, 53, 142), walkingTime),
+                    new Frame(new Rectangle(106, 0, 53, 142 ), walkingTime),
                 }
             );
         }

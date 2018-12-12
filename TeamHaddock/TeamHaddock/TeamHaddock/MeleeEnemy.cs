@@ -27,7 +27,7 @@ namespace TeamHaddock
         private const int defaultHealth = 1000;
         private int health;
 
-        private const float baseWalkingSpeed = 0.15f, baseJumpStrength = -1f;
+        private const float baseWalkingSpeed = 0.17f, baseJumpStrength = -1.35f;
         private readonly Vector2 maxMovementSpeed = new Vector2(0.5f, 100f);
         private int timeSinceLastJump;
         private bool onGround;
@@ -46,16 +46,16 @@ namespace TeamHaddock
                 {
                     new Frame(new Rectangle(0, 0, 98, 114), walkingTime),
                     new Frame(new Rectangle(99, 0, 98, 114), walkingTime),
-                    new Frame(new Rectangle(198, 0, 98, 114), walkingTime),
-                    new Frame(new Rectangle(99, 0, 98, 114), walkingTime),
+                    new Frame(new Rectangle(0, 0, 98, 114), walkingTime),
+                    new Frame(new Rectangle(198, 0, 98, 114), walkingTime),                  
                 }
             );
             moveLeftAnimation = new Animation(new List<Frame>
                 {
                     new Frame(new Rectangle(0, 115, 98, 113), walkingTime),
                     new Frame(new Rectangle(99, 115, 98, 113), walkingTime),
-                    new Frame(new Rectangle(198, 115, 98, 113), walkingTime),
-                    new Frame(new Rectangle(99, 115, 98, 113), walkingTime),
+                    new Frame(new Rectangle(0, 0, 98, 113), walkingTime),
+                    new Frame(new Rectangle(198, 115, 98, 113), walkingTime),               
                 }
             );
         }
@@ -189,7 +189,7 @@ namespace TeamHaddock
         {
             if (collidableObject.IsColliding(InGame.player.collidableObject))
             {
-                InGame.player.TakeDamage((int)(500 * InGame.difficultyModifier), gameTime);
+                InGame.player.TakeDamage((int)(850 * InGame.difficultyModifier), gameTime);
             }
         }
 
