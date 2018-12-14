@@ -28,6 +28,7 @@ namespace TeamHaddock
         public static int maxHealth = 50000;
         private int baseHealthRegained = 750; 
         public int Health { get; private set; } = maxHealth;
+        string playerName;
 
         private List<Animation> animations = new List<Animation>();
 
@@ -186,6 +187,11 @@ namespace TeamHaddock
             // Load normal map texture
             normalMap = content.Load<Texture2D>(@"Textures/Characters/PlayerNormalMap");
             colorMap = content.Load<Texture2D>(@"Textures/Characters/Player");
+
+            Random rand = new Random();
+            playerName = $"Player {rand.Next(1, 999).ToString()}";
+
+
             animations.Clear();
             LoadAnimations();
     
@@ -296,6 +302,8 @@ namespace TeamHaddock
 
             if (Health <= 0)
             {
+                HighScore.SaveHighScore(playerName, InGame.totalTimeElapsed);
+                GameOver.UpdatePlayerScore(playerName, InGame.totalTimeElapsed);
                 Game1.GameState = Game1.GameStates.GameOver;
             }
         }

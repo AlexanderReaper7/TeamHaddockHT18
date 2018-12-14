@@ -120,9 +120,9 @@ namespace TeamHaddock
             {
                 // Go to next frame in frames
                 CurrentFrame = (CurrentFrame + 1) % frames.Count;
-                // Set sourceRectangle to this frame
+                // Set object´s source rectangle to this frame´s source rectangle
                 sourceRectangle = frames[CurrentFrame].sourceRectangle;
-                // Set origin for this frame
+                // Set object´s origin this frame´s origin
                 origin = frames[CurrentFrame].origin;
                 // Reset time elapsed
                 timeForCurrentFrame = 0;

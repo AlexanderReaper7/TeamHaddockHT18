@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -46,8 +47,6 @@ namespace TeamHaddock
         public static SpriteFont BoldCreditsFont;
         public static SpriteFont CreditsTitleFont;
 
-        public static SpriteFont ScoreFont; 
-
         /// <summary>
         /// Size of game window
         /// </summary>
@@ -76,6 +75,8 @@ namespace TeamHaddock
             graphics.PreferredBackBufferHeight = ScreenBounds.Y;
             graphics.ApplyChanges();
 
+            HighScore.Initilize();
+
             base.Initialize();
         }
 
@@ -96,13 +97,12 @@ namespace TeamHaddock
             BoldCreditsFont = Content.Load<SpriteFont>(@"Fonts/BoldCreditsFont");
             CreditsTitleFont = Content.Load<SpriteFont>(@"Fonts/CreditsTitleFont");
 
-            ScoreFont = Content.Load<SpriteFont>(@"Fonts/CreditsTitleFont"); 
-
             MainMenu.LoadContent(Content);
             InGame.LoadContent(Content, GraphicsDevice);
             Tutorial.LoadContent(Content, GraphicsDevice);
+            HighScore.LoadContent(Content);
             Credits.LoadContent(Content, GraphicsDevice);
-            GameOver.LoadContent(Content, GraphicsDevice);
+            GameOver.LoadContent(Content);
         }
 
         /// <summary>
@@ -133,9 +133,6 @@ namespace TeamHaddock
                 case GameStates.InGame:
                     InGame.Update(gameTime);
                     break;
-                case GameStates.HighScore:
-                    HighScore.Update(gameTime); 
-                    break;
                 case GameStates.Tutorial:
                     Tutorial.Update(gameTime);
                     break;
@@ -145,11 +142,13 @@ namespace TeamHaddock
                 case GameStates.Exit:
                     this.Exit();
                     break;
-                case GameStates.GameOver:
-                    GameOver.Update(gameTime); 
-                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+
+            if (UtilityClass.SingleActivationKey(Keys.Escape))
+            {
+                GameState = GameStates.MainMenu;
             }
 
             base.Update(gameTime);
@@ -172,7 +171,7 @@ namespace TeamHaddock
                     InGame.Draw(spriteBatch, GraphicsDevice);
                     break;
                 case GameStates.HighScore:
-                    Credits.Draw(spriteBatch, GraphicsDevice);
+                    HighScore.Draw(spriteBatch);
                     break;
                 case GameStates.Tutorial:
                     Tutorial.Draw(spriteBatch, GraphicsDevice);
@@ -180,10 +179,8 @@ namespace TeamHaddock
                 case GameStates.Credits:
                     Credits.Draw(spriteBatch, GraphicsDevice);
                     break;
-                case GameStates.Exit:
-                    break;
                 case GameStates.GameOver:
-                    GameOver.Draw(spriteBatch, GraphicsDevice);
+                    GameOver.Draw(spriteBatch);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

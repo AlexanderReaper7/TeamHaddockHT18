@@ -12,146 +12,135 @@ using Microsoft.Xna.Framework.Input;
 
 namespace TeamHaddock
 {
-    // Created by Elias 11-29 // Edited By Noble 12-11 
-    internal static class HighScore
+    [Serializable]
+    public struct SaveData
     {
-        // file variable
-        public static readonly string Filename = "saveFile.dat";
+        public string[] PlayerName;
+        public int[] Score;
 
-        private static int playerScore = InGame.totalTimeElapsed; 
+        public int Count;
 
-        private static Texture2D backGround; 
-
-        static string playerName = "Player1";
-
-        // This helps save the two variables PlayerName and Score to the file 
-        [Serializable]
-        public struct SaveData
+        public SaveData(int count)
         {
-            public string[] Playername;
-            public int[] Score;
+            PlayerName = new string[count];
+            Score = new int[count];
+            Count = count;
+        }
+    }
 
-            public int Count;
+    // Created by Elias 11-29 // Edited By Noble 12-11 
+    public static class HighScore
+    {
+        private static Texture2D background;
 
-            public SaveData(int count)
+        private static readonly string FileName = "save.dat";
+
+        private static SaveData currentData;
+        private static SpriteFont scoreFont;
+
+        public static void Initilize()
+        {
+            if (!File.Exists(FileName))
             {
-                Playername = new string[count];
-                Score = new int[count];
-                Count = count;
+                SaveData data = new SaveData(1);
+                data.PlayerName[0] = "kalle";
+                data.Score[0] = 0;
+
+                DoSave(data, FileName);
             }
+
         }
 
-        // This loads the data of the "Filename" file 
-        public static SaveData LoadData(string Filename)
+        public static void LoadContent(ContentManager content)
         {
-            SaveData data;
-
-            // get path of the save game
-            string fullpath = Filename;
-
-            //open the file
-            FileStream stream = File.Open(fullpath, FileMode.OpenOrCreate, FileAccess.Read);
-            try
-            {
-                // read the data from the file
-                XmlSerializer serializer = new XmlSerializer(typeof(SaveData));
-                data = (SaveData)serializer.Deserialize(stream);
-            }
-            finally
-            {
-                // close file
-                stream.Close();
-            }
-            return (data);
+            background = content.Load<Texture2D>(@"Textures/Backgrounds/HighScoreBackGround");
+            scoreFont = content.Load<SpriteFont>(@"Fonts/CreditsTitleFont");
         }
 
-        // This saves the data and filename to the file
-        public static void DoSave(SaveData data, String filename)
+        /// <summary>
+        /// Opens file and saves data
+        /// </summary>
+        /// <param name="data">data to write</param>
+        /// <param name="filename">name of file to write to</param>
+        private static void DoSave(SaveData data, string filename)
         {
-            FileStream stream = File.Open(filename, FileMode.Create);
-
+            // Open or create file
+            FileStream stream = File.Open(filename, FileMode.OpenOrCreate);
             try
             {
+                // Make to XML and try to open filestream
                 XmlSerializer serializer = new XmlSerializer(typeof(SaveData));
                 serializer.Serialize(stream, data);
             }
             finally
             {
+                // Close file
                 stream.Close();
             }
         }
 
-
-
-        // This saves the score and name to the file 
-        private static void SaveHighScore()
+        private static SaveData LoadData(string FileName)
         {
-            SaveData data = LoadData(Filename);
+            SaveData data;
+
+            string fullpath = FileName;
+
+            FileStream stream = File.Open(fullpath, FileMode.OpenOrCreate, FileAccess.Read);
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(SaveData));
+                data = (SaveData)serializer.Deserialize(stream);
+            }
+            finally
+            {
+                stream.Close();
+            }
+
+            return data;
+        }
+
+        public static void SaveHighScore(string playerName, int score)
+        {
+            SaveData data = LoadData(FileName);
 
             int scoreIndex = -1;
-
-            for (int x = 0; x < data.Count; x++)
+            for (int i = 0; i < data.Count; i++)
             {
-                if (playerScore > data.Score[x])
+                if (score > data.Score[i])
                 {
-                    scoreIndex = x;
+                    scoreIndex = i;
                     break;
                 }
             }
 
             if (scoreIndex > -1)
             {
-                for (int x = data.Count - 1; x > scoreIndex; x--)
+                for (int i = 0; i > scoreIndex; i--)
                 {
-                    data.Score[x] = data.Score[x - 1];
-                    
+                    data.Score[i] = data.Score[i - 1];
                 }
 
-
-                data.Score[scoreIndex] = playerScore;
-                data.Playername[scoreIndex] = playerName;
-                //if (playerCharacter == 0)
-                //{
-                //    data.PlayerName[scoreIndex] = names[0];
-                //}
-                //if (playerCharacter == 1)
-                //{
-                //    data.PlayerName[scoreIndex] = names[1];
-                //}
-                //if (playerCharacter == 2)
-                //{
-                //    data.PlayerName[scoreIndex] = names[2];
-                //}
-
-
-                DoSave(data, Filename);
+                data.PlayerName[scoreIndex] = playerName;
+                data.Score[scoreIndex] = score;
             }
-        }   
 
-
-        public static void LoadContent(ContentManager content, GraphicsDevice graphicsDevice)
-        {
-            backGround = content.Load<Texture2D>(@"Textures/Backgrounds/HighScoreBackGround"); 
+            currentData = data;
         }
 
-        public static void Update(GameTime gameTime)
+        public static void Draw(SpriteBatch spriteBatch)
         {
-            if (UtilityClass.SingleActivationKey(Keys.Escape))
-            {
-                Game1.GameState = Game1.GameStates.MainMenu; 
-            }
-        }
-
-        public static void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)
-        {
-            // Draw 
             spriteBatch.Begin();
-            spriteBatch.Draw(backGround, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
-            spriteBatch.DrawString(Game1.ScoreFont, playerScore.ToString(), new Vector2(Game1.ScreenBounds.X / 2 - 50, Game1.ScreenBounds.Y + 20), Color.White);
- 
+            // Draw background
+            spriteBatch.Draw(background, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
+            // Draw score
+            for (int i = 0; i < currentData.Count -1 && i < 10; i++)
+            {
+                // Draw Name
+                spriteBatch.DrawString(scoreFont, currentData.PlayerName[i], new Vector2(Game1.ScreenBounds.X * 0.25f, i * 60 + 40), Color.White);
+                // Draw score
+                spriteBatch.DrawString(scoreFont, currentData.Score[i].ToString(), new Vector2(Game1.ScreenBounds.X * 0.75f, i * 60 + 40), Color.White);
+            }
             spriteBatch.End();
-            // Clear all render targets
-            graphicsDevice.SetRenderTarget(null);
         }
     }
 }

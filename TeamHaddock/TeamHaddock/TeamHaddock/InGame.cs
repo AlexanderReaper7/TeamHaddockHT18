@@ -92,18 +92,18 @@ namespace TeamHaddock
             // Update timer
             timeSinceLastSpawn += gameTime.ElapsedGameTime.Milliseconds;
             // if timer has reached max
-            if (timeSinceLastSpawn >= (baseSpawnInterval / difficultyModifier) + random.Next(-10, 1000))
+            if (timeSinceLastSpawn >= (baseSpawnInterval / difficultyModifier) + random.Next(1000))
             {
                 // Spawn a new enemy
-                if (random.Next(10) <= 5)
+                if (random.Next(1) == 1)
                 {
                     // %50 chance to spawn meleeEnemy
-                    enemies.Add(new MeleeEnemy(random.Next(10) < 5 ? defaultSpawnPosition : new Vector2(-49, defaultSpawnPosition.Y)));
+                    enemies.Add(new MeleeEnemy(random.Next(1) == 1 ? defaultSpawnPosition : new Vector2(-49, defaultSpawnPosition.Y)));
                 }
                 else
                 {
                     // %50 chance to spawn civilianEnemy
-                    enemies.Add(random.Next(10) < 5 ? new CivilianEnemy(new Vector2(-49, defaultSpawnPosition.Y + 200), true) : new CivilianEnemy(defaultSpawnPosition, false));
+                    enemies.Add(random.Next(1) == 1 ? new CivilianEnemy(new Vector2(-49, defaultSpawnPosition.Y + 200), true) : new CivilianEnemy(defaultSpawnPosition, false));
                 }
                 // Reset timer
                 timeSinceLastSpawn = 0;
