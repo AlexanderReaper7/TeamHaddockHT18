@@ -54,10 +54,10 @@ namespace TeamHaddock
             );
             moveLeftAnimation = new Animation(new List<Frame>
                 {
-                    new Frame(new Rectangle(0, 0, 53, 142), walkingTime),
-                    new Frame(new Rectangle(53, 0, 53, 142), walkingTime),
-                    new Frame(new Rectangle(0, 0, 53, 142), walkingTime),
-                    new Frame(new Rectangle(106, 0, 53, 142 ), walkingTime),
+                    new Frame(new Rectangle(0, 143, 53, 142), walkingTime),
+                    new Frame(new Rectangle(53, 143, 53, 142), walkingTime),
+                    new Frame(new Rectangle(0, 143, 53, 142), walkingTime),
+                    new Frame(new Rectangle(106, 143, 53, 142 ), walkingTime),
                 }
             );
         }
@@ -113,7 +113,7 @@ namespace TeamHaddock
             // Animate left
             moveLeftAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
             // Set velocity
-            velocity.X = MathHelper.Clamp(baseWalkingSpeed * InGame.difficultyModifier, -maxMovementSpeed.X, 0);
+            velocity.X = MathHelper.Clamp(-baseWalkingSpeed * InGame.difficultyModifier, -maxMovementSpeed.X, maxMovementSpeed.X);
         }
 
         private void MoveRight(GameTime gameTime)
@@ -121,7 +121,7 @@ namespace TeamHaddock
             // Animate right
             moveRightAnimation.Animate(ref collidableObject.SourceRectangle, gameTime);
             // Set velocity
-            velocity.X = MathHelper.Clamp(baseWalkingSpeed * InGame.difficultyModifier, 0, maxMovementSpeed.X) ;
+            velocity.X = MathHelper.Clamp(baseWalkingSpeed * InGame.difficultyModifier, -maxMovementSpeed.X, maxMovementSpeed.X) ;
         }
 
         /// <summary>

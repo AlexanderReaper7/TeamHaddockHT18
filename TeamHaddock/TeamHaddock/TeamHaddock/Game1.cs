@@ -103,6 +103,8 @@ namespace TeamHaddock
             HighScore.LoadContent(Content);
             Credits.LoadContent(Content, GraphicsDevice);
             GameOver.LoadContent(Content);
+
+            GameState = GameStates.MainMenu;
         }
 
         /// <summary>
@@ -142,13 +144,17 @@ namespace TeamHaddock
                 case GameStates.Exit:
                     this.Exit();
                     break;
+                case GameStates.HighScore:
+                    break;
+                case GameStates.GameOver:
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
 
             if (UtilityClass.SingleActivationKey(Keys.Escape))
             {
-                GameState = GameStates.MainMenu;
+                LoadContent();
             }
 
             base.Update(gameTime);
@@ -181,6 +187,8 @@ namespace TeamHaddock
                     break;
                 case GameStates.GameOver:
                     GameOver.Draw(spriteBatch);
+                    break;
+                case GameStates.Exit:
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

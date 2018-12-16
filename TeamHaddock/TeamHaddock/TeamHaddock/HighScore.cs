@@ -13,18 +13,26 @@ using Microsoft.Xna.Framework.Input;
 namespace TeamHaddock
 {
     [Serializable]
+    public struct HighScoreEntry
+    {
+        public string name;
+        public int score;
+
+        public HighScoreEntry(string name, int score)
+        {
+            this.name = name;
+            this.score = score;
+        }
+    }
+
+    [Serializable]
     public struct SaveData
     {
-        public string[] PlayerName;
-        public int[] Score;
+        public List<HighScoreEntry> Scores;
 
-        public int Count;
-
-        public SaveData(int count)
+        public SaveData(List<HighScoreEntry> newHighScoreEntries)
         {
-            PlayerName = new string[count];
-            Score = new int[count];
-            Count = count;
+            Scores = newHighScoreEntries;
         }
     }
 
@@ -32,23 +40,24 @@ namespace TeamHaddock
     public static class HighScore
     {
         private static Texture2D background;
+        private static SpriteFont scoreFont;
 
         private static readonly string FileName = "save.dat";
 
         private static SaveData currentData;
-        private static SpriteFont scoreFont;
 
         public static void Initilize()
         {
             if (!File.Exists(FileName))
             {
-                SaveData data = new SaveData(1);
-                data.PlayerName[0] = "kalle";
-                data.Score[0] = 0;
-
+                SaveData data = new SaveData(new List<HighScoreEntry>(10) { new HighScoreEntry("default", 0)});
+                currentData = data;
                 DoSave(data, FileName);
             }
-
+            else
+            {
+                currentData = LoadData(FileName);
+            }
         }
 
         public static void LoadContent(ContentManager content)
@@ -83,9 +92,7 @@ namespace TeamHaddock
         {
             SaveData data;
 
-            string fullpath = FileName;
-
-            FileStream stream = File.Open(fullpath, FileMode.OpenOrCreate, FileAccess.Read);
+            FileStream stream = File.Open(FileName, FileMode.Open, FileAccess.ReadWrite);
             try
             {
                 XmlSerializer serializer = new XmlSerializer(typeof(SaveData));
@@ -99,32 +106,36 @@ namespace TeamHaddock
             return data;
         }
 
-        public static void SaveHighScore(string playerName, int score)
+        public static void SaveHighScore(HighScoreEntry newScore)
         {
-            SaveData data = LoadData(FileName);
-
-            int scoreIndex = -1;
-            for (int i = 0; i < data.Count; i++)
+            // If there are already 10 scores
+            if (currentData.Scores.Count >= 10)
             {
-                if (score > data.Score[i])
+                // And newScore is smaller than the smallest score
+                if (newScore.score < currentData.Scores.Min().score)
                 {
-                    scoreIndex = i;
-                    break;
+                    // Do not add score
+                    return;
+                }
+            }
+            // add newScore
+            currentData.Scores.Add(newScore);
+            // sort scores
+            for (int write = 0; write < currentData.Scores.Count; write++)
+            {
+                for (int sort = 0; sort < currentData.Scores.Count - 1; sort++)
+                {
+                    if (currentData.Scores[sort].score > currentData.Scores[sort + 1].score)
+                    {
+                        HighScoreEntry temp = currentData.Scores[sort + 1];
+                        currentData.Scores[sort + 1] = currentData.Scores[sort];
+                        currentData.Scores[sort] = temp;
+                    }
                 }
             }
 
-            if (scoreIndex > -1)
-            {
-                for (int i = 0; i > scoreIndex; i--)
-                {
-                    data.Score[i] = data.Score[i - 1];
-                }
-
-                data.PlayerName[scoreIndex] = playerName;
-                data.Score[scoreIndex] = score;
-            }
-
-            currentData = data;
+            currentData.Scores.Reverse();
+            DoSave(currentData, FileName);
         }
 
         public static void Draw(SpriteBatch spriteBatch)
@@ -133,12 +144,12 @@ namespace TeamHaddock
             // Draw background
             spriteBatch.Draw(background, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
             // Draw score
-            for (int i = 0; i < currentData.Count -1 && i < 10; i++)
+            for (int i = 0; i < currentData.Scores.Count && i < 10; i++ )
             {
                 // Draw Name
-                spriteBatch.DrawString(scoreFont, currentData.PlayerName[i], new Vector2(Game1.ScreenBounds.X * 0.25f, i * 60 + 40), Color.White);
+                spriteBatch.DrawString(scoreFont, currentData.Scores[i].name, new Vector2(Game1.ScreenBounds.X * 0.25f, i * 60 + 120), Color.White);
                 // Draw score
-                spriteBatch.DrawString(scoreFont, currentData.Score[i].ToString(), new Vector2(Game1.ScreenBounds.X * 0.75f, i * 60 + 40), Color.White);
+                spriteBatch.DrawString(scoreFont, currentData.Scores[i].score.ToString(), new Vector2(Game1.ScreenBounds.X * 0.75f, i * 60 + 120), Color.White);
             }
             spriteBatch.End();
         }

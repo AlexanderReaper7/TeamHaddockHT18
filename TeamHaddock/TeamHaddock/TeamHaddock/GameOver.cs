@@ -17,15 +17,15 @@ namespace TeamHaddock
         private static Texture2D background;
 
         private static string name;
-        private static Vector2 namePosition;
+        private static Vector2 namePosition = new Vector2(Game1.ScreenBounds.X / 2f, Game1.ScreenBounds.Y / 3f);
         private static int score;
-        private static Vector2 scorePosition;
+        private static Vector2 scorePosition = new Vector2(Game1.ScreenBounds.X / 2f, Game1.ScreenBounds.Y / 2f);
 
 
         //Edited by Noble 12-11
         public static void LoadContent(ContentManager content)
         {
-            background = content.Load<Texture2D>(@"Textures/Backgrounds/Credits");
+            background = content.Load<Texture2D>(@"Textures/Backgrounds/GameOver");
         }
 
         public static void UpdatePlayerScore(string name, int score)
@@ -43,7 +43,7 @@ namespace TeamHaddock
             // Draw Name
             spriteBatch.DrawString(Game1.NormalMenuFont, name, namePosition, Color.White);
             // Draw Score
-            spriteBatch.DrawString(Game1.NormalMenuFont, score.ToString(), namePosition, Color.White);
+            spriteBatch.DrawString(Game1.NormalMenuFont, score.ToString(), scorePosition, Color.White);
             spriteBatch.End();
         }
     }

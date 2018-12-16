@@ -46,16 +46,16 @@ namespace TeamHaddock
                 {
                     new Frame(new Rectangle(0, 0, 98, 114), walkingTime),
                     new Frame(new Rectangle(99, 0, 98, 114), walkingTime),
-                    new Frame(new Rectangle(0, 0, 98, 114), walkingTime),
-                    new Frame(new Rectangle(198, 0, 98, 114), walkingTime),                  
+                    new Frame(new Rectangle(198, 0, 98, 114), walkingTime),
+                    new Frame(new Rectangle(99, 0, 98, 114), walkingTime),
                 }
             );
             moveLeftAnimation = new Animation(new List<Frame>
                 {
                     new Frame(new Rectangle(0, 115, 98, 113), walkingTime),
                     new Frame(new Rectangle(99, 115, 98, 113), walkingTime),
-                    new Frame(new Rectangle(0, 0, 98, 113), walkingTime),
-                    new Frame(new Rectangle(198, 115, 98, 113), walkingTime),               
+                    new Frame(new Rectangle(198, 115, 98, 113), walkingTime),
+                    new Frame(new Rectangle(99, 115, 98, 113), walkingTime),
                 }
             );
         }
@@ -148,7 +148,7 @@ namespace TeamHaddock
             // Set direction to left
             direction.X = -1;
             // Set velocity
-            velocity.X = MathHelper.Clamp(baseWalkingSpeed * InGame.difficultyModifier, -maxMovementSpeed.X, 0);
+            velocity.X = MathHelper.Clamp(-baseWalkingSpeed * InGame.difficultyModifier, -maxMovementSpeed.X, maxMovementSpeed.X);
         }
 
         private void MoveRight(GameTime gameTime)
@@ -158,7 +158,7 @@ namespace TeamHaddock
             // Set direction to right
             direction.X = 1;
             // Set velocity
-            velocity.X = MathHelper.Clamp(baseWalkingSpeed * InGame.difficultyModifier, 0, maxMovementSpeed.X);
+            velocity.X = MathHelper.Clamp(baseWalkingSpeed * InGame.difficultyModifier, -maxMovementSpeed.X, maxMovementSpeed.X);
         }
 
         /// <summary>

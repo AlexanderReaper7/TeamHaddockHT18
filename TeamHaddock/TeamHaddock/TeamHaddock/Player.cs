@@ -302,7 +302,7 @@ namespace TeamHaddock
 
             if (Health <= 0)
             {
-                HighScore.SaveHighScore(playerName, InGame.totalTimeElapsed);
+                HighScore.SaveHighScore(new HighScoreEntry(playerName, InGame.totalTimeElapsed));
                 GameOver.UpdatePlayerScore(playerName, InGame.totalTimeElapsed);
                 Game1.GameState = Game1.GameStates.GameOver;
             }

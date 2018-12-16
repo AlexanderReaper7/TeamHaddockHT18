@@ -85,7 +85,7 @@ namespace SparaFiler_Noble
         Vector2 helpfulMessagePos1 = new Vector2(0, 5);
         Vector2 helpfulMessagePos2;
         Vector2 helpfulMessagePos3;
-        Vector2 helpfulMessagePos4;
+        Vector2 helpfulMessagePos4; 
         Vector2 helpfulMessagePos5;
         Vector2 helpfulMessagePos6;
 
