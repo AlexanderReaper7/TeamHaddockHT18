@@ -50,7 +50,7 @@ namespace TeamHaddock
         {
             if (!File.Exists(FileName))
             {
-                SaveData data = new SaveData(new List<HighScoreEntry>(10) { new HighScoreEntry("default", 0)});
+                SaveData data = new SaveData(new List<HighScoreEntry>(5) { new HighScoreEntry("default", 0)});
                 currentData = data;
                 DoSave(data, FileName);
             }
@@ -109,10 +109,10 @@ namespace TeamHaddock
         public static void SaveHighScore(HighScoreEntry newScore)
         {
             // If there are already 10 scores
-            if (currentData.Scores.Count >= 10)
+            if (currentData.Scores.Count >= 5)
             {
                 // And newScore is smaller than the smallest score
-                if (newScore.score < currentData.Scores.Min().score)
+                if (newScore.score < currentData.Scores[4].score)
                 {
                     // Do not add score
                     return;
@@ -144,7 +144,7 @@ namespace TeamHaddock
             // Draw background
             spriteBatch.Draw(background, new Rectangle(0, 0, Game1.ScreenBounds.X, Game1.ScreenBounds.Y), Color.White);
             // Draw score
-            for (int i = 0; i < currentData.Scores.Count && i < 10; i++ )
+            for (int i = 0; i < currentData.Scores.Count; i++ )
             {
                 // Draw Name
                 spriteBatch.DrawString(scoreFont, currentData.Scores[i].name, new Vector2(Game1.ScreenBounds.X * 0.25f, i * 60 + 120), Color.White);

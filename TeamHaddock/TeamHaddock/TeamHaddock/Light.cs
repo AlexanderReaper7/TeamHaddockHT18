@@ -22,7 +22,7 @@ namespace TeamHaddock
         public Vector3 Position;
 
         public Vector4 Color;
-
+        
         public float ActualPower { get; set; }
 
         public float Power

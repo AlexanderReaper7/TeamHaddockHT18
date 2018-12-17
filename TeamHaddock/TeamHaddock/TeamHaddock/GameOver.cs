@@ -17,9 +17,9 @@ namespace TeamHaddock
         private static Texture2D background;
 
         private static string name;
-        private static Vector2 namePosition = new Vector2(Game1.ScreenBounds.X / 2f, Game1.ScreenBounds.Y / 3f);
+        private static Vector2 namePosition = new Vector2(600, 550);
         private static int score;
-        private static Vector2 scorePosition = new Vector2(Game1.ScreenBounds.X / 2f, Game1.ScreenBounds.Y / 2f);
+        private static Vector2 scorePosition = new Vector2(340, 280);
 
 
         //Edited by Noble 12-11
